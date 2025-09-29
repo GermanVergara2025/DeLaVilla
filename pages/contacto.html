@@ -900,7 +900,11 @@ Artículo agregado a tu carrito
     text-align: left;
     max-width: 600px; /* ajusta el ancho a gusto */
   }</style><div class="color-background-1 gradient">
-  <div class="contact page-width page-width--narrow section-template--25330821071213__form-padding"><h2 class="visually-hidden">Formulario de contacto</h2><form method="post" action="/contacto.html#ContactForm" id="ContactForm" accept-charset="UTF-8" class="isolate scroll-trigger animate--slide-in"><input type="hidden" name="form_type" value="contact"><input type="hidden" name="utf8" value="✓"><div class="contact__fields">
+  <div class="contact page-width page-width--narrow section-template--25330821071213__form-padding"><h2 class="visually-hidden">Formulario de contacto</h2><div id="success-message" style="display: none; padding: 15px; margin-bottom: 20px; border-radius: 5px; background: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
+    ✅ ¡Gracias por contactarnos! Tu mensaje ha sido enviado correctamente.
+</div>
+
+<form method="post" action="/contact#ContactForm" id="ContactForm" accept-charset="UTF-8" class="isolate scroll-trigger animate--slide-in"><form method="post" action="/contacto.html#ContactForm" id="ContactForm" accept-charset="UTF-8" class="isolate scroll-trigger animate--slide-in"><input type="hidden" name="form_type" value="contact"><input type="hidden" name="utf8" value="✓"><div class="contact__fields">
         <div class="field">
           <input class="field__input" autocomplete="name" type="text" id="ContactForm-name" name="contact[Nombre]" value="" placeholder="Nombre">
           <label class="field__label" for="ContactForm-name">Nombre</label>
@@ -997,7 +1001,35 @@ Artículo agregado a tu carrito
   </div>
 </footer>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const successMessage = document.getElementById('success-message');
+  const contactForm = document.getElementById('ContactForm');
 
+  // 1. Verifica si el parámetro de éxito está presente en la URL
+  if (urlParams.has('contact_posted') && urlParams.get('contact_posted') === 'true') {
+    
+    if (successMessage) {
+      // 2. Muestra el mensaje de éxito
+      successMessage.style.display = 'block';
+    }
+    
+    if (contactForm) {
+      // 3. Oculta el formulario (para que el usuario no envíe dos veces)
+      contactForm.style.display = 'none';
+    }
+    
+    // 4. Desplaza la vista al mensaje de éxito (usando el ancla #ContactForm o el mensaje)
+    const formAnchor = document.getElementById('ContactForm');
+    if (formAnchor) {
+      formAnchor.scrollIntoView({ behavior: 'smooth' });
+    } else if (successMessage) {
+      successMessage.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+});
+</script>
 </body>
 <script>
 (function(){
