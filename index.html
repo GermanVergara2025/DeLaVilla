@@ -541,11 +541,51 @@ nav a.active {
     #wa-floating-button{ right: 14px; bottom: 14px; width: 56px; height: 56px; }
     #wa-floating-button svg{ width:28px; height:28px; }
   }
+.top-banner {
+  background-color: #1f1400;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  position: fixed; /* 🔹 cambia de relative a fixed */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100; /* 🔹 superior al header */
+    }
+
+    .top-banner .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      padding: 0 15px;
+    }
+
+    .arrow.left {
+      left: 0;
+    }
+
+    .arrow.right {
+      right: 0;
+    }
 
   </style>
 </head>
 <body>
-
+<div class="top-banner">
+    <div class="arrow left" onclick="changeMessage(-1)">&#8249;</div>
+    <div id="banner-text">VUELVE A LO NATURAL</div>
+    <div class="arrow right" onclick="changeMessage(1)">&#8250;</div>
+  </div>
 <header>
   <div class="header-left">
     <div class="logo">
@@ -682,8 +722,7 @@ nav a.active {
       </div>
     </div>
   </footer>
-</body>
-  
+    
 <script>
   // Mostrar / ocultar barra de búsqueda
   document.getElementById("search-toggle").addEventListener("click", function(e) {
@@ -743,4 +782,26 @@ nav a.active {
   });
 })();
 </script>
+    <script>
+    const messages = [
+      "VUELVE A LO NATURAL",
+      "ALIMENTACIÓN AGROECOLÓGICA",
+      "CONSUMO RESPONSABLE",
+      "PRODUCTOS LOCALES Y ARTESANALES"
+    ];
+
+    let currentIndex = 0;
+    const bannerText = document.getElementById("banner-text");
+
+    function changeMessage(direction) {
+      currentIndex = (currentIndex + direction + messages.length) % messages.length;
+      bannerText.textContent = messages[currentIndex];
+    }
+
+    // 🔄 Cambio automático cada 5 segundos
+    setInterval(() => {
+      changeMessage(1);
+    }, 5000);
+  </script>
+</body>
 </html>
