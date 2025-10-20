@@ -1,173 +1,414 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Productos - De La Villa</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background-color: #f8f6ef;
-      color: #1e1200;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Productos - De La Villa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #1e1200;
+  color: white;
+}
 
-    /* --- SECCIÓN DE PRODUCTOS --- */
-    .productos-section {
-      padding: 100px 80px;
-      background-color: #f8f6ef;
-    }
+/* ---------------- HEADER ---------------- */
+.top-banner {
+  background-color: #1f1400;
+  color: white;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+}
+.top-banner .arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  padding: 0 15px;
+}
+.arrow.left { left: 0; }
+.arrow.right { right: 0; }
 
-    .productos-header {
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-      margin-bottom: 50px;
-    }
+header {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #1e1200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 60px;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+}
 
-    .productos-header h1 {
-      font-size: 2.4rem;
-      font-weight: 600;
-      color: #1e1200;
-    }
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
 
-    .productos-filtros {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 25px;
-      font-size: 0.95rem;
-    }
+.logo img {
+  height: 60px;
+}
 
-    .filtro label,
-    .ordenar label {
-      font-weight: 500;
-      margin-right: 8px;
-    }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
 
-    .filtro select,
-    .ordenar select {
-      padding: 6px 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      font-family: inherit;
-      cursor: pointer;
-    }
+nav a {
+  text-decoration: none;
+  color: #f0f0f0;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+nav a:hover,
+nav a.active {
+  color: #ffffff;
+  text-decoration: underline;
+}
 
-    .productos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 40px;
-    }
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.icons a {
+  color: #f0f0f0;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+.icons a:hover i {
+  transform: scale(1.2);
+  color: #ffffff;
+}
 
-    .producto {
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      text-align: left;
-    }
+.search-bar {
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 60px;
+  background: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+.search-bar input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 200px;
+}
+.search-bar button {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.search-bar button:hover {
+  background: #222;
+}
 
-    .producto:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-    }
+/* ---------------- SECCIÓN PRODUCTOS ---------------- */
+main {
+  margin-top: 160px;
+  padding: 40px 80px;
+  background-color: #f8f7f3;
+  color: #2e2e2e;
+  min-height: 80vh;
+}
 
-    .producto img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      display: block;
-    }
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
 
-    .producto h3 {
-      margin: 15px 20px 8px;
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #1e1200;
-    }
+.filtros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  color: #444;
+}
 
-    .precio {
-      margin: 0 20px 20px;
-      font-weight: 600;
-      color: #333;
-    }
+.filtros select {
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  color: #444;
+  cursor: pointer;
+}
 
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .productos-section {
-        padding: 60px 20px;
-      }
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
 
-      .productos-header {
-        text-align: center;
-      }
+.producto {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.producto:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+.producto img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.producto:hover img {
+  transform: scale(1.05);
+}
+.producto .info {
+  padding: 15px 20px 25px;
+}
+.producto .info h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.producto .info p {
+  color: #333;
+  font-weight: bold;
+}
 
-      .productos-filtros {
-        justify-content: center;
-      }
-    }
-  </style>
+/* ---------------- FOOTER ---------------- */
+footer {
+  background-color: #1f1400;
+  padding: 50px 20px 30px;
+  position: relative;
+  color: white;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-content h3 {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.email-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  max-width: 400px;
+}
+
+.email-form input[type="email"] {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid white;
+  border-radius: 6px;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+}
+
+.email-form button {
+  padding: 12px 20px;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+.email-form button i { pointer-events: none; }
+
+.footer-bottom {
+  border-top: 1px solid #2e1d00;
+  margin-top: 50px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #cfcfcf;
+  flex-wrap: wrap;
+}
+.social-icons a {
+  color: white;
+  margin-left: 65px;
+  font-size: 18px;
+  text-decoration: none;
+}
+.social-icons a:hover {
+  color: #aaaaaa;
+}
+@media (max-width: 600px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .social-icons {
+    margin-top: 10px;
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <section class="productos-section">
-    <div class="productos-header">
-      <h1>Productos</h1>
+<!-- 🔸 BANNER SUPERIOR -->
+<div class="top-banner">
+  <div class="arrow left" onclick="changeMessage(-1)">&#8249;</div>
+  <div id="banner-text">VUELVE A LO NATURAL</div>
+  <div class="arrow right" onclick="changeMessage(1)">&#8250;</div>
+</div>
 
-      <div class="productos-filtros">
-        <div class="filtro">
-          <label>Filtrar:</label>
-          <select>
-            <option>Disponibilidad</option>
-            <option>Disponible</option>
-            <option>Agotado</option>
-          </select>
-        </div>
-
-        <div class="filtro">
-          <label>Precio:</label>
-          <select>
-            <option>Todos</option>
-            <option>Menor a mayor</option>
-            <option>Mayor a menor</option>
-          </select>
-        </div>
-
-        <div class="ordenar">
-          <label>Ordenar por:</label>
-          <select>
-            <option>Alfabéticamente, A-Z</option>
-            <option>Alfabéticamente, Z-A</option>
-            <option>Precio, menor a mayor</option>
-            <option>Precio, mayor a menor</option>
-          </select>
-        </div>
-      </div>
+<!-- 🔸 HEADER -->
+<header>
+  <div class="header-left">
+    <div class="logo">
+      <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
     </div>
 
-    <div class="productos-grid">
-      <div class="producto">
-        <img src="https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&width=533" alt="Cubeta de Huevos">
+    <nav>
+      <ul>
+        <li><a href="/DeLaVilla" >Inicio</a></li>
+        <li><a href="/DeLaVilla/pages/productos.html" class="active">Catálogo</a></li>
+        <li><a href="/DeLaVilla/pages/galeria.html">Galería</a></li>
+        <li><a href="/DeLaVilla/pages/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="icons">
+    <a href="#" id="search-toggle" title="Buscar"><i class="fas fa-search"></i></a>
+
+    <div class="search-bar" id="search-bar">
+      <input type="text" id="search-input" placeholder="Buscar productos..." />
+      <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
+    </div>
+
+    <a href="/DeLaVilla/pages/login.html" title="Mi cuenta"><i class="fas fa-user"></i></a>
+    <a href="/DeLaVilla/pages/cart.html" title="Carrito de compras"><i class="fas fa-shopping-bag"></i></a>
+  </div>
+</header>
+
+<!-- 🔸 SECCIÓN PRODUCTOS -->
+<main>
+  <h1>Productos</h1>
+  <div class="filtros">
+    <div>
+      <label>Filtrar:</label>
+      <select><option>Disponibilidad</option></select>
+      <select><option>Precio</option></select>
+    </div>
+    <div>
+      <label>Ordenar por:</label>
+      <select><option>Alfabéticamente, A-Z</option></select>
+      <span>3 productos</span>
+    </div>
+  </div>
+
+  <div class="productos-grid">
+    <div class="producto">
+      <img src="https://cdn.shopify.com/s/files/1/0880/8379/1548/files/huevos_cubeta.jpg?v=1729489503" alt="Cubeta de Huevos">
+      <div class="info">
         <h3>Cubeta de Huevos</h3>
-        <p class="precio">$32.000,00 COP</p>
-      </div>
-
-      <div class="producto">
-        <img src="https://delavillaa.myshopify.com/cdn/shop/files/propiedades-miel.jpg?v=1758305857&width=533" alt="Miel natural">
-        <h3>Miel natural</h3>
-        <p class="precio">$30.000,00 COP</p>
-      </div>
-
-      <div class="producto">
-        <img src="https://delavillaa.myshopify.com/cdn/shop/files/22-Nov-cabecera.jpg?v=1758305780&width=533" alt="Pollo de campo">
-        <h3>Pollo de campo</h3>
-        <p class="precio">$22.000,00 COP</p>
+        <p>$32.000,00 COP</p>
       </div>
     </div>
-  </section>
+
+    <div class="producto">
+      <img src="https://cdn.shopify.com/s/files/1/0880/8379/1548/files/miel_natural.jpg?v=1729489503" alt="Miel natural">
+      <div class="info">
+        <h3>Miel natural</h3>
+        <p>$30.000,00 COP</p>
+      </div>
+    </div>
+
+    <div class="producto">
+      <img src="https://cdn.shopify.com/s/files/1/0880/8379/1548/files/pollo_de_campo.jpg?v=1729489503" alt="Pollo de campo">
+      <div class="info">
+        <h3>Pollo de campo</h3>
+        <p>$22.000,00 COP</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- 🔸 FOOTER -->
+<footer>
+  <div class="footer-content">
+    <h3>Sé el primero en recibir nuestras noticias</h3>
+    <form class="email-form">
+      <input type="email" placeholder="Correo electrónico" required>
+      <button type="submit"><i class="fas fa-arrow-right"></i></button>
+    </form>
+  </div>
+
+  <div class="footer-bottom">
+    <div>©️ 2025, DeLaVilla</div>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
+      <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
+    </div>
+  </div>
+</footer>
+
+<!-- 🔸 SCRIPTS -->
+<script>
+document.getElementById("search-toggle").addEventListener("click", function(e) {
+  e.preventDefault();
+  const bar = document.getElementById("search-bar");
+  bar.style.display = (bar.style.display === "block") ? "none" : "block";
+  document.getElementById("search-input").focus();
+});
+
+const messages = [
+  "VUELVE A LO NATURAL",
+  "ALIMENTACIÓN AGROECOLÓGICA",
+  "CONSUMO RESPONSABLE",
+  "PRODUCTOS LOCALES Y ARTESANALES"
+];
+let currentIndex = 0;
+const bannerText = document.getElementById("banner-text");
+
+function changeMessage(direction) {
+  currentIndex = (currentIndex + direction + messages.length) % messages.length;
+  bannerText.textContent = messages[currentIndex];
+}
+setInterval(() => { changeMessage(1); }, 5000);
+</script>
 
 </body>
 </html>
