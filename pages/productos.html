@@ -3,16 +3,224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Productos</title>
+<title>Productos - De La Villa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
+/* ----------- ESTILOS GLOBALES (HEADER + FOOTER) ----------- */
 body {
-  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #1e1200;
+  color: white;
+}
+
+/* ---------------- HEADER ---------------- */
+.top-banner {
+  background-color: #1f1400;
+  color: white;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+}
+
+.top-banner .arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  padding: 0 15px;
+}
+.arrow.left { left: 0; }
+.arrow.right { right: 0; }
+
+header {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #1e1200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 60px;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.logo img {
+  height: 60px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: #f0f0f0;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+nav a:hover,
+nav a.active {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.icons a {
+  color: #f0f0f0;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+.icons a:hover i {
+  transform: scale(1.2);
+  color: #ffffff;
+}
+
+.search-bar {
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 60px;
+  background: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+.search-bar input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 200px;
+}
+.search-bar button {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.search-bar button:hover {
+  background: #222;
+}
+
+/* ---------------- FOOTER ---------------- */
+footer {
+  background-color: #1f1400;
+  padding: 50px 20px 30px;
+  position: relative;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-content h3 {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.email-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  max-width: 400px;
+}
+
+.email-form input[type="email"] {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid white;
+  border-radius: 6px;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+}
+
+.email-form button {
+  padding: 12px 20px;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+.email-form button i { pointer-events: none; }
+
+.footer-bottom {
+  border-top: 1px solid #2e1d00;
+  margin-top: 50px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #cfcfcf;
+  flex-wrap: wrap;
+}
+.social-icons a {
+  color: white;
+  margin-left: 65px;
+  font-size: 18px;
+  text-decoration: none;
+}
+.social-icons a:hover {
+  color: #aaaaaa;
+}
+@media (max-width: 600px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .social-icons {
+    margin-top: 10px;
+  }
+}
+
+/* ---------------- SECCIÓN PRODUCTOS ---------------- */
+.productos-section {
   background-color: #fafaf3;
   color: #3b3b2f;
-  margin: 0;
-  padding: 0 60px;
+  padding: 160px 60px 100px;
 }
-h1 {
+.productos-section h1 {
   font-size: 48px;
   margin: 40px 0 20px;
   color: #2f3b28;
@@ -68,10 +276,6 @@ h1 {
   gap: 8px;
   font-size: 15px;
   margin-bottom: 8px;
-}
-.dropdown-content input[type="checkbox"], 
-.dropdown-content input[type="number"] {
-  cursor: pointer;
 }
 .dropdown-content input[type="number"] {
   width: 70px;
@@ -137,20 +341,48 @@ h1 {
 .whatsapp:hover {
   background-color: #20b358;
 }
-@media (max-width: 900px) {
-  .product {
-    width: 45%;
-  }
-}
-@media (max-width: 600px) {
-  body { padding: 0 20px; }
-  .product {
-    width: 100%;
-  }
-}
 </style>
 </head>
+
 <body>
+
+<!-- 🔸 BANNER -->
+<div class="top-banner">
+  <div class="arrow left" onclick="changeMessage(-1)">&#8249;</div>
+  <div id="banner-text">VUELVE A LO NATURAL</div>
+  <div class="arrow right" onclick="changeMessage(1)">&#8250;</div>
+</div>
+
+<!-- 🔸 HEADER -->
+<header>
+  <div class="header-left">
+    <div class="logo">
+      <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="/DeLaVilla" class="active">Inicio</a></li>
+        <li><a href="/DeLaVilla/pages/productos.html">Catálogo</a></li>
+        <li><a href="/DeLaVilla/pages/galeria.html">Galería</a></li>
+        <li><a href="/DeLaVilla/pages/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="icons">
+    <a href="#" id="search-toggle" title="Buscar"><i class="fas fa-search"></i></a>
+    <div class="search-bar" id="search-bar">
+      <input type="text" id="search-input" placeholder="Buscar productos..." />
+      <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
+    </div>
+    <a href="/DeLaVilla/pages/login.html" title="Mi cuenta"><i class="fas fa-user"></i></a>
+    <a href="/DeLaVilla/pages/cart.html" title="Carrito de compras"><i class="fas fa-shopping-bag"></i></a>
+  </div>
+</header>
+
+<!-- 🔸 SECCIÓN PRODUCTOS -->
+<section class="productos-section">
 
 <h1>Productos</h1>
 
@@ -220,9 +452,51 @@ h1 {
 <a href="https://wa.me/573001112233" target="_blank" class="whatsapp">
   <i class="fa-brands fa-whatsapp"></i>
 </a>
+</section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
+<!-- 🔸 FOOTER -->
+<footer>
+  <div class="footer-content">
+    <h3>Sé el primero en recibir nuestras noticias</h3>
+    <form class="email-form">
+      <input type="email" placeholder="Correo electrónico" required>
+      <button type="submit"><i class="fas fa-arrow-right"></i></button>
+    </form>
+  </div>
+
+  <div class="footer-bottom">
+    <div>©️ 2025, DeLaVilla</div>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
+      <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
+    </div>
+  </div>
+</footer>
+
+<!-- 🔸 SCRIPTS -->
 <script>
+document.getElementById("search-toggle").addEventListener("click", function(e) {
+  e.preventDefault();
+  const bar = document.getElementById("search-bar");
+  bar.style.display = (bar.style.display === "block") ? "none" : "block";
+  document.getElementById("search-input").focus();
+});
+
+const messages = [
+  "VUELVE A LO NATURAL",
+  "ALIMENTACIÓN AGROECOLÓGICA",
+  "CONSUMO RESPONSABLE",
+  "PRODUCTOS LOCALES Y ARTESANALES"
+];
+let currentIndex = 0;
+const bannerText = document.getElementById("banner-text");
+function changeMessage(direction) {
+  currentIndex = (currentIndex + direction + messages.length) % messages.length;
+  bannerText.textContent = messages[currentIndex];
+}
+setInterval(() => { changeMessage(1); }, 5000);
+
+/* --- LÓGICA DE FILTROS --- */
 const dropdowns = document.querySelectorAll('.dropdown');
 dropdowns.forEach(d => {
   d.querySelector('button').addEventListener('click', () => {
@@ -249,38 +523,33 @@ function actualizarProductos() {
   const max = precioMax.value ? parseInt(precioMax.value) : Infinity;
   const disp = document.getElementById('enExistencia').checked;
 
-  let visibles = productos.filter(p => {
+  productos.forEach(p => {
     const precio = parseInt(p.dataset.precio);
-    const disponible = p.dataset.disponible === 'true';
-    return precio >= min && precio <= max && (!disp || disponible);
+    const disponible = p.dataset.disponible === "true";
+    const visible = precio >= min && precio <= max && (!disp || disponible);
+    p.style.display = visible ? "block" : "none";
   });
+
+  const visibles = productos.filter(p => p.style.display !== "none");
+  contador.textContent = visibles.length + " producto" + (visibles.length !== 1 ? "s" : "");
 
   const orden = ordenSelect.value;
   visibles.sort((a,b)=>{
-    if(orden==="az") return a.querySelector("h3").textContent.localeCompare(b.querySelector("h3").textContent);
-    if(orden==="za") return b.querySelector("h3").textContent.localeCompare(a.querySelector("h3").textContent);
-    if(orden==="menor") return a.dataset.precio - b.dataset.precio;
-    if(orden==="mayor") return b.dataset.precio - a.dataset.precio;
-    if(orden==="fechaAntigua") return new Date(a.dataset.fecha) - new Date(b.dataset.fecha);
-    if(orden==="fechaReciente") return new Date(b.dataset.fecha) - new Date(a.dataset.fecha);
+    if (orden === "az") return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent);
+    if (orden === "za") return b.querySelector('h3').textContent.localeCompare(a.querySelector('h3').textContent);
+    if (orden === "menor") return a.dataset.precio - b.dataset.precio;
+    if (orden === "mayor") return b.dataset.precio - a.dataset.precio;
+    if (orden === "fechaAntigua") return new Date(a.dataset.fecha) - new Date(b.dataset.fecha);
+    if (orden === "fechaReciente") return new Date(b.dataset.fecha) - new Date(a.dataset.fecha);
   });
-
-  grid.innerHTML = "";
-  visibles.forEach(v=>grid.appendChild(v));
-  contador.textContent = visibles.length + " producto" + (visibles.length !== 1 ? "s" : "");
+  visibles.forEach(p => grid.appendChild(p));
 }
-
 ordenSelect.addEventListener('change', actualizarProductos);
 precioMin.addEventListener('input', actualizarProductos);
 precioMax.addEventListener('input', actualizarProductos);
 resetPrecio.addEventListener('click', e => {
-  e.preventDefault();
-  precioMin.value = "";
-  precioMax.value = "";
-  actualizarProductos();
+  e.preventDefault(); precioMin.value = ""; precioMax.value = ""; actualizarProductos();
 });
-document.getElementById('enExistencia').addEventListener('change', actualizarProductos);
-
 actualizarProductos();
 </script>
 </body>
