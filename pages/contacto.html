@@ -904,30 +904,38 @@ Artículo agregado a tu carrito
     ✅ ¡Gracias por contactarnos! Tu mensaje ha sido enviado correctamente.
 </div>
 
-<form method="post" action="/DeLaVilla/pages/contacto.html#ContactForm" id="ContactForm" accept-charset="UTF-8" class="isolate scroll-trigger animate--slide-in"><form method="post" action="/pages/contacto.html#ContactForm" id="ContactForm" accept-charset="UTF-8" class="isolate scroll-trigger animate--slide-in"><input type="hidden" name="form_type" value="contact"><input type="hidden" name="utf8" value="✓"><div class="contact__fields">
-        <div class="field">
-          <input class="field__input" autocomplete="name" type="text" id="ContactForm-name" name="contact[Nombre]" value="" placeholder="Nombre">
-          <label class="field__label" for="ContactForm-name">Nombre</label>
-        </div>
-        <div class="field field--with-error">
-          <input autocomplete="email" type="email" id="ContactForm-email" class="field__input" name="contact[email]" spellcheck="false" autocapitalize="off" value="" aria-required="true" placeholder="Correo electrónico">
-          <label class="field__label" for="ContactForm-email">Correo electrónico
-            <span aria-hidden="true">*</span></label></div>
-      </div>
-      <div class="field">
-        <input type="tel" id="ContactForm-phone" class="field__input" autocomplete="tel" name="contact[Número de teléfono]" pattern="[0-9\-]*" value="" placeholder="Número de teléfono">
-        <label class="field__label" for="ContactForm-phone">Número de teléfono</label>
-      </div>
-      <div class="field">
-        <textarea rows="10" id="ContactForm-body" class="text-area field__input" name="contact[Comentario]" placeholder="Comentario"></textarea>
-        <label class="form__label field__label" for="ContactForm-body">Comentario</label>
-      </div>
-      <div class="contact__button">
-        <button type="submit" class="button">
-          Enviar
-        </button>
-      </div></form></div>
+<form action="https://formspree.io/f/xjkadbvg" method="POST" id="ContactForm" accept-charset="UTF-8" class="isolate scroll-trigger animate--slide-in">
+  <input type="hidden" name="form_type" value="contact">
+  <input type="hidden" name="utf8" value="✓">
+
+  <div class="contact__fields">
+    <div class="field">
+      <input class="field__input" autocomplete="name" type="text" id="ContactForm-name" name="Nombre" placeholder="Nombre" required>
+      <label class="field__label" for="ContactForm-name">Nombre</label>
+    </div>
+
+    <div class="field field--with-error">
+      <input autocomplete="email" type="email" id="ContactForm-email" class="field__input" name="Email" spellcheck="false" autocapitalize="off" required placeholder="Correo electrónico">
+      <label class="field__label" for="ContactForm-email">Correo electrónico <span aria-hidden="true">*</span></label>
+    </div>
+  </div>
+
+  <div class="field">
+    <input type="tel" id="ContactForm-phone" class="field__input" autocomplete="tel" name="Teléfono" pattern="[0-9\-]*" placeholder="Número de teléfono">
+    <label class="field__label" for="ContactForm-phone">Número de teléfono</label>
+  </div>
+
+  <div class="field">
+    <textarea rows="10" id="ContactForm-body" class="text-area field__input" name="Comentario" placeholder="Comentario"></textarea>
+    <label class="form__label field__label" for="ContactForm-body">Comentario</label>
+  </div>
+
+<div class="contact__button">
+  <button type="submit" class="button">Enviar</button>
 </div>
+    <p id="form-status"></p>
+</form>
+
 
 
 </section>
@@ -1030,6 +1038,29 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+    <script>
+const form = document.getElementById("ContactForm");
+const status = document.getElementById("form-status");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault(); // evita que la página se recargue
+  const data = new FormData(form);
+
+  const response = await fetch(form.action, {
+    method: form.method,
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  });
+
+  if (response.ok) {
+    status.innerHTML = "✅ Tu mensaje fue enviado correctamente.";
+    form.reset();
+  } else {
+    status.innerHTML = "❌ Hubo un error al enviar. Intenta nuevamente.";
+  }
+});
+</script>
+
 </body>
 <script>
 (function(){
