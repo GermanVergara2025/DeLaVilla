@@ -185,39 +185,68 @@ nav a.active {
 }
 
 /* ---------------------- PRODUCTOS DESTACADOS ---------------------- */
+.productos {
+  background-color: #f9f7f2;
+  padding: 80px 60px;
+  color: #1e1200;
+  text-align: left;
+}
+
+.productos h2 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 50px;
+}
+
 .productos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
 }
 
 .producto {
-  display: block;
-  text-align: center;
   background: #fff;
   border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  text-decoration: none;
-  color: #000;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .producto:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
 .producto img {
   width: 100%;
-  border-radius: 10px;
+  height: 220px;
+  object-fit: cover;
+}
+
+.producto h3 {
+  font-size: 1.1rem;
+  margin: 15px 20px 5px;
+  color: #1e1200;
 }
 
 .precio {
-  color: #333;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 20px 20px;
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+  .productos {
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .producto h3,
+  .precio {
+    margin: 10px 0;
+  }
+}
 
 .poetic-hero {
   background-color: #333333; /* gris claro */
@@ -540,29 +569,29 @@ nav a.active {
   </section>
 
   <!-- Productos Destacados -->
-<section class="productos">
-  <h2>Productos Destacados</h2>
+  <section class="productos">
+    <h2>Productos Destacados</h2>
 
-  <div class="productos-grid">
-    <a href="producto.html?item=huevos" class="producto">
-      <img src="https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&width=533" alt="Cubeta de Huevos">
-      <h3>Cubeta de Huevos</h3>
-      <p class="precio">$32.000,00 COP</p>
-    </a>
+    <div class="productos-grid">
+      <div class="producto">
+        <img src="https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&width=533" alt="Cubeta de Huevos">
+        <h3>Cubeta de Huevos</h3>
+        <p class="precio">$32.000,00 COP</p>
+      </div>
 
-    <a href="producto.html?item=miel" class="producto">
-      <img src="https://delavillaa.myshopify.com/cdn/shop/files/propiedades-miel.jpg?v=1758305857&width=533" alt="Miel natural">
-      <h3>Miel natural</h3>
-      <p class="precio">$30.000,00 COP</p>
-    </a>
+      <div class="producto">
+        <img src="https://delavillaa.myshopify.com/cdn/shop/files/propiedades-miel.jpg?v=1758305857&width=533" alt="Miel natural">
+        <h3>Miel natural</h3>
+        <p class="precio">$30.000,00 COP</p>
+      </div>
 
-    <a href="producto.html?item=pollo" class="producto">
-      <img src="https://delavillaa.myshopify.com/cdn/shop/files/22-Nov-cabecera.jpg?v=1758305780&width=533" alt="Pollo de campo">
-      <h3>Pollo de campo</h3>
-      <p class="precio">$22.000,00 COP</p>
-    </a>
-  </div>
-</section>
+      <div class="producto">
+        <img src="https://delavillaa.myshopify.com/cdn/shop/files/22-Nov-cabecera.jpg?v=1758305780&width=533" alt="Pollo de campo">
+        <h3>Pollo de campo</h3>
+        <p class="precio">$22.000,00 COP</p>
+      </div>
+    </div>
+  </section>
 
 <section class="poetic-hero">
   <div class="poetic-hero-content">
