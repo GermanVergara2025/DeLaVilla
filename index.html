@@ -223,6 +223,12 @@ nav a.active {
   object-fit: cover;
 }
 
+.producto a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .producto h3 {
   font-size: 1.1rem;
   margin: 15px 20px 5px;
@@ -525,27 +531,32 @@ nav a.active {
 
     <nav>
       <ul>
-        <li><a href="/DeLaVilla" class="active">Inicio</a></li>
-        <li><a href="/DeLaVilla/pages/productos.html">Catálogo</a></li>
-        <li><a href="/DeLaVilla/pages/galeria.html">Galería</a></li>
-        <li><a href="/DeLaVilla/pages/contacto.html">Contacto</a></li>
+        <li><a href="#" class="active">Inicio</a></li>
+        <li><a href="#">Catálogo</a></li>
+        <li><a href="#">Galería</a></li>
+        <li><a href="#">Contacto</a></li>
       </ul>
     </nav>
   </div>
 
-<div class="icons"
+<div class="icons">
+  <!-- 🔍 Icono de búsqueda -->
   <a href="#" id="search-toggle" title="Buscar">
     <i class="fas fa-search"></i>
   </a>
+
+  <!-- 🧭 Barra de búsqueda oculta -->
   <div class="search-bar" id="search-bar">
     <input type="text" id="search-input" placeholder="Buscar productos..." />
     <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
   </div>
 
+  <!-- 👤 Ícono de usuario -->
   <a href="login.html" title="Mi cuenta">
     <i class="fas fa-user"></i>
   </a>
 
+  <!-- 🛍 Ícono de carrito -->
   <a href="carrito.html" title="Carrito de compras">
     <i class="fas fa-shopping-bag"></i>
   </a>
@@ -562,36 +573,43 @@ nav a.active {
       <h1>Conexión con la Naturaleza</h1>
       <p>Nuestros productos son el resultado de prácticas sostenibles y una dedicación constante por la calidad.</p>
       <div class="hero-buttons">
-        <a href="/pages/productos.html" class="btn primary">Ir a comprar</a>
-        <a href="/DeLaVilla/pages/contacto.html" class="btn secondary">Contáctanos</a>
+        <a href="#" class="btn primary">Ir a comprar</a>
+        <a href="#" class="btn secondary">Contáctanos</a>
       </div>
     </div>
   </section>
 
   <!-- Productos Destacados -->
-  <section class="productos">
-    <h2>Productos Destacados</h2>
+  <!-- Productos Destacados -->
+<section class="productos">
+  <h2>Productos Destacados</h2>
 
-    <div class="productos-grid">
-      <div class="producto">
+  <div class="productos-grid">
+    <div class="producto">
+      <a href="/DeLaVilla/pages/producto-huevos.html">
         <img src="https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&width=533" alt="Cubeta de Huevos">
         <h3>Cubeta de Huevos</h3>
         <p class="precio">$32.000,00 COP</p>
-      </div>
+      </a>
+    </div>
 
-      <div class="producto">
+    <div class="producto">
+      <a href="/DeLaVilla/pages/producto-miel.html">
         <img src="https://delavillaa.myshopify.com/cdn/shop/files/propiedades-miel.jpg?v=1758305857&width=533" alt="Miel natural">
         <h3>Miel natural</h3>
         <p class="precio">$30.000,00 COP</p>
-      </div>
+      </a>
+    </div>
 
-      <div class="producto">
+    <div class="producto">
+      <a href="/DeLaVilla/pages/producto-pollo.html">
         <img src="https://delavillaa.myshopify.com/cdn/shop/files/22-Nov-cabecera.jpg?v=1758305780&width=533" alt="Pollo de campo">
         <h3>Pollo de campo</h3>
         <p class="precio">$22.000,00 COP</p>
-      </div>
+      </a>
     </div>
-  </section>
+  </div>
+</section>
 
 <section class="poetic-hero">
   <div class="poetic-hero-content">
