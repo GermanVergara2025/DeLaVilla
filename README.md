@@ -17,8 +17,7 @@
 Este proyecto está construido con un enfoque en el **Frontend** y el uso de herramientas de *E-commerce* alojado en GitHub Pages.
 
 * **HTML & CSS:** Estructura y diseño base del sitio.
-* **JavaScript (Opcional):** (Si utilizaste JS para la funcionalidad de e-commerce, carritos, o interacciones, menciónalo aquí, ej: Para la interactividad del carrito y la validación de formularios).
-* **Shopify (Base de la estructura):** El diseño y la maqueta sugieren una adaptación o réplica de una plantilla base de Shopify para simular una experiencia de e-commerce.
+* **JavaScript:** Para la interactividad del carrito y la validación de formularios.
 * **GitHub Pages:** Alojamiento del sitio web estático.
 
 ## 🚀 Despliegue y Acceso
