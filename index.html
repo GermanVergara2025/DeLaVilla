@@ -517,7 +517,30 @@ nav a.active {
   background: #222;
 }
 
+#wa-floating-button{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    background-color: #25D366; /* color WhatsApp */
+    text-decoration: none;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+  #wa-floating-button:hover{ transform: translateY(-4px); box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
+  #wa-floating-button svg{ width: 34px; height: 34px; fill: #fff; }
 
+  /* Ajustes en pantallas pequeñas */
+  @media (max-width: 420px){
+    #wa-floating-button{ right: 14px; bottom: 14px; width: 56px; height: 56px; }
+    #wa-floating-button svg{ width:28px; height:28px; }
+  }
 
   </style>
 </head>
@@ -531,10 +554,10 @@ nav a.active {
 
     <nav>
       <ul>
-        <li><a href="#" class="active">Inicio</a></li>
-        <li><a href="#">Catálogo</a></li>
-        <li><a href="#">Galería</a></li>
-        <li><a href="#">Contacto</a></li>
+        <li><a href="/DeLaVilla" class="active">Inicio</a></li>
+        <li><a href="/DeLaVilla/pages/productos.html">Catálogo</a></li>
+        <li><a href="/DeLaVilla/pages/galeria.html">Galería</a></li>
+        <li><a href="/DeLaVilla/pages/contacto.html">Contacto</a></li>
       </ul>
     </nav>
   </div>
@@ -573,8 +596,8 @@ nav a.active {
       <h1>Conexión con la Naturaleza</h1>
       <p>Nuestros productos son el resultado de prácticas sostenibles y una dedicación constante por la calidad.</p>
       <div class="hero-buttons">
-        <a href="#" class="btn primary">Ir a comprar</a>
-        <a href="#" class="btn secondary">Contáctanos</a>
+        <a href="/DeLaVilla/pages/productos.html" class="btn primary">Ir a comprar</a>
+        <a href="/DeLaVilla/pages/contacto.html" class="btn secondary">Contáctanos</a>
       </div>
     </div>
   </section>
@@ -586,7 +609,7 @@ nav a.active {
 
   <div class="productos-grid">
     <div class="producto">
-      <a href="/DeLaVilla/pages/producto-huevos.html">
+      <a href="/DeLaVilla/pages/cubeta-de-huevos.html">
         <img src="https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&width=533" alt="Cubeta de Huevos">
         <h3>Cubeta de Huevos</h3>
         <p class="precio">$32.000,00 COP</p>
@@ -594,7 +617,7 @@ nav a.active {
     </div>
 
     <div class="producto">
-      <a href="/DeLaVilla/pages/producto-miel.html">
+      <a href="/DeLaVilla/pages/miel-natural.html">
         <img src="https://delavillaa.myshopify.com/cdn/shop/files/propiedades-miel.jpg?v=1758305857&width=533" alt="Miel natural">
         <h3>Miel natural</h3>
         <p class="precio">$30.000,00 COP</p>
@@ -602,7 +625,7 @@ nav a.active {
     </div>
 
     <div class="producto">
-      <a href="/DeLaVilla/pages/producto-pollo.html">
+      <a href="/DeLaVilla/pages/pollo-de-campo.html">
         <img src="https://delavillaa.myshopify.com/cdn/shop/files/22-Nov-cabecera.jpg?v=1758305780&width=533" alt="Pollo de campo">
         <h3>Pollo de campo</h3>
         <p class="precio">$22.000,00 COP</p>
@@ -619,7 +642,7 @@ nav a.active {
 <section class="banner-naturaleza">
   <div class="banner-content">
     <h2>Frescura en cada bocado</h2>
-    <a href="#" class="btn-banner">Ir a productos</a>
+    <a href="/DeLaVilla/pages/productos.html" class="btn-banner">Ir a productos</a>
   </div>
 </section>
 <section class="poetic-hero">
@@ -638,7 +661,7 @@ nav a.active {
         Nos dedicamos a ofrecer productos agroecológicos que reflejan la esencia pura de la naturaleza,
         cultivados con amor y respeto por el campo.
       </p>
-      <a href="#contacto" class="btn-conocenos">Conócenos</a>
+      <a href="/DeLaVilla/pages/galeria.html" class="btn-conocenos">Conócenos</a>
     </div>
   </div>
 </section>
@@ -655,11 +678,12 @@ nav a.active {
       <div>© 2025, DeLaVilla</div>
       <div class="social-icons">
         <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
-        <a href="https://tiktok.com/@shopify"><i class="fab fa-tiktok"></i></a>
+        <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
       </div>
     </div>
   </footer>
-
+</body>
+  
 <script>
   // Mostrar / ocultar barra de búsqueda
   document.getElementById("search-toggle").addEventListener("click", function(e) {
@@ -688,7 +712,35 @@ nav a.active {
     }
   });
 </script>
+<script>
+(function(){
+  // CONFIGURA AQUÍ tu número en formato internacional (sin + ni espacios)
+  var waNumber = '573202293640'; // <- reemplázalo por tu número
 
+  // Mensaje predefinido (opcional). Cámbialo o déjalo vacío ''.
+  var prefilledMessage = encodeURIComponent('Hola 👋, quiero información sobre sus productos/servicios.');
 
-</body>
+  // Elegir URL según dispositivo (móvil usa wa.me, escritorio usa web.whatsapp.com)
+  var isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  var hrefBase = isMobile ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
+  var href = hrefBase + waNumber + (prefilledMessage ? (isMobile ? '?text=' + prefilledMessage : '&text=' + prefilledMessage) : '');
+
+  // Crear enlace
+  var a = document.createElement('a');
+  a.href = href;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  a.id = 'wa-floating-button';
+  a.setAttribute('aria-label', 'Contactar por WhatsApp');
+  a.title = 'Contáctanos por WhatsApp';
+
+  // Icono (SVG de WhatsApp)
+  a.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp" style="width:34px; height:34px;">';
+
+  document.addEventListener('DOMContentLoaded', function(){
+    // Añadir al body
+    document.body.appendChild(a);
+  });
+})();
+</script>
 </html>
