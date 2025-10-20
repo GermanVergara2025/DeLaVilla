@@ -505,27 +505,38 @@ const messages = [
 ];
 let currentIndex = 0;
 const bannerText = document.getElementById("banner-text");
-
 function changeMessage(direction) {
   currentIndex = (currentIndex + direction + messages.length) % messages.length;
   bannerText.textContent = messages[currentIndex];
 }
 setInterval(() => { changeMessage(1); }, 5000);
 
-/* -------- FILTROS Y ORDEN -------- */
+/* --- LÓGICA DE FILTROS --- */
+const dropdowns = document.querySelectorAll('.dropdown');
+dropdowns.forEach(d => {
+  d.querySelector('button').addEventListener('click', () => {
+    d.classList.toggle('show');
+    dropdowns.forEach(other => {
+      if (other !== d) other.classList.remove('show');
+    });
+  });
+});
+window.addEventListener('click', e => {
+  if (!e.target.closest('.dropdown')) dropdowns.forEach(d => d.classList.remove('show'));
+});
+
 const grid = document.getElementById('productGrid');
-const productos = Array.from(grid.querySelectorAll('.product'));
 const contador = document.getElementById('contador');
+const ordenSelect = document.getElementById('ordenSelect');
 const precioMin = document.getElementById('precioMin');
 const precioMax = document.getElementById('precioMax');
 const resetPrecio = document.getElementById('resetPrecio');
-const ordenSelect = document.getElementById('ordenSelect');
-const enExistencia = document.getElementById('enExistencia');
 
 function actualizarProductos() {
+  const productos = Array.from(grid.children);
   const min = precioMin.value ? parseInt(precioMin.value) : 0;
   const max = precioMax.value ? parseInt(precioMax.value) : Infinity;
-  const disp = enExistencia.checked;
+  const disp = document.getElementById('enExistencia').checked;
 
   productos.forEach(p => {
     const precio = parseInt(p.dataset.precio);
@@ -548,4 +559,13 @@ function actualizarProductos() {
   });
   visibles.forEach(p => grid.appendChild(p));
 }
-ordenSelect.addEvent
+ordenSelect.addEventListener('change', actualizarProductos);
+precioMin.addEventListener('input', actualizarProductos);
+precioMax.addEventListener('input', actualizarProductos);
+resetPrecio.addEventListener('click', e => {
+  e.preventDefault(); precioMin.value = ""; precioMax.value = ""; actualizarProductos();
+});
+actualizarProductos();
+</script>
+</body>
+</html>
