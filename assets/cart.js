@@ -1,31 +1,44 @@
-// js/cart.js
+// assets/cart.js
 
 document.addEventListener("DOMContentLoaded", () => {
-  const cartContainer = document.getElementById("cart-items");
-  const totalElement = document.getElementById("total");
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  mostrarCarrito();
 
-  if (cart.length === 0) {
-    cartContainer.innerHTML = "<p>Tu carrito está vacío.</p>";
+  const vaciarBtn = document.getElementById("vaciar-carrito");
+  if (vaciarBtn) {
+    vaciarBtn.addEventListener("click", () => {
+      localStorage.removeItem("carrito");
+      mostrarCarrito();
+    });
+  }
+});
+
+function mostrarCarrito() {
+  const contenedor = document.getElementById("cart-items");
+  const totalEl = document.getElementById("cart-total");
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+  if (!contenedor || !totalEl) return;
+
+  if (carrito.length === 0) {
+    contenedor.innerHTML = "<p>Tu carrito está vacío.</p>";
+    totalEl.textContent = "";
     return;
   }
 
-  cartContainer.innerHTML = cart.map(item => `
-    <div class="cart-item">
-      <h3>${item.name}</h3>
-      <p>Precio: $${item.price}</p>
-      <p>Cantidad: ${item.quantity}</p>
-      <button onclick="removeFromCart('${item.id}')">Eliminar</button>
+  contenedor.innerHTML = carrito.map(item => `
+    <div class="item" style="margin-bottom: 1rem;">
+      <p><strong>${item.name}</strong> — $${item.price.toLocaleString()} × ${item.quantity}</p>
+      <button onclick="eliminarItem('${item.id}')">Eliminar</button>
     </div>
   `).join("");
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  totalElement.textContent = `Total: $${total}`;
-});
+  const total = carrito.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  totalEl.textContent = `Total: $${total.toLocaleString()}`;
+}
 
-function removeFromCart(id) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart = cart.filter(item => item.id !== id);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  location.reload(); // recarga la página para actualizar la vista
+function eliminarItem(id) {
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  carrito = carrito.filter(item => item.id !== id);
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  mostrarCarrito();
 }
