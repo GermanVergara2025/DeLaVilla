@@ -13,6 +13,26 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: #1e1200;
   color: white;
+  overflow-x: hidden;
+}
+
+/* ---------------- ANIMACIONES ---------------- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hover-zoom {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-zoom:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* ---------------- HEADER ---------------- */
@@ -70,6 +90,10 @@ header {
 
 .logo img {
   height: 60px;
+  transition: transform 0.3s ease;
+}
+.logo img:hover {
+  transform: scale(1.05);
 }
 
 nav ul {
@@ -180,6 +204,11 @@ footer {
   color: white;
   cursor: pointer;
   font-size: 18px;
+  transition: 0.3s;
+}
+.email-form button:hover {
+  background-color: white;
+  color: #1f1400;
 }
 .email-form button i { pointer-events: none; }
 
@@ -199,6 +228,7 @@ footer {
   margin-left: 65px;
   font-size: 18px;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 .social-icons a:hover {
   color: #aaaaaa;
@@ -225,6 +255,7 @@ footer {
   margin: 40px 0 20px;
   color: #2f3b28;
 }
+
 .filters {
   display: flex;
   justify-content: space-between;
@@ -304,12 +335,17 @@ footer {
   transition: 0.3s;
 }
 .product:hover {
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
 }
 .product img {
   width: 100%;
   height: 230px;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.product:hover img {
+  transform: scale(1.05);
 }
 .product h3 {
   font-size: 17px;
@@ -321,6 +357,7 @@ footer {
   color: #3a3a2a;
   font-weight: 500;
 }
+
 .whatsapp {
   position: fixed;
   bottom: 25px;
@@ -337,9 +374,11 @@ footer {
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   cursor: pointer;
   text-decoration: none;
+  transition: transform 0.3s ease;
 }
 .whatsapp:hover {
   background-color: #20b358;
+  transform: scale(1.1);
 }
 </style>
 </head>
@@ -347,14 +386,14 @@ footer {
 <body>
 
 <!-- 🔸 BANNER -->
-<div class="top-banner">
+<div class="top-banner fade-in">
   <div class="arrow left" onclick="changeMessage(-1)">&#8249;</div>
   <div id="banner-text">VUELVE A LO NATURAL</div>
   <div class="arrow right" onclick="changeMessage(1)">&#8250;</div>
 </div>
 
 <!-- 🔸 HEADER -->
-<header>
+<header class="fade-in">
   <div class="header-left">
     <div class="logo">
       <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
@@ -382,11 +421,11 @@ footer {
 </header>
 
 <!-- 🔸 SECCIÓN PRODUCTOS -->
-<section class="productos-section">
+<section class="productos-section fade-in">
 
 <h1>Productos</h1>
 
-<div class="filters">
+<div class="filters fade-in">
   <div class="filters-left">
     <span style="font-weight:500;">Filtrar:</span>
 
@@ -430,21 +469,21 @@ footer {
 </div>
 
 <div class="product-grid" id="productGrid">
-  <div class="product" data-precio="32000" data-disponible="true" data-fecha="2024-05-01">
+  <div class="product hover-zoom fade-in" data-precio="32000" data-disponible="true" data-fecha="2024-05-01">
     <a href="/DeLaVilla/pages/cubeta-de-huevos.html">
     <img src="https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&amp;width=533" alt="Cubeta de Huevos">
     <h3>Cubeta de Huevos</h3>
     <p>$32.000,00 COP</p>
   </div>
 
-  <div class="product" data-precio="30000" data-disponible="true" data-fecha="2024-07-15">
+  <div class="product hover-zoom fade-in" data-precio="30000" data-disponible="true" data-fecha="2024-07-15">
     <a href="/DeLaVilla/pages/miel-natural.html">
     <img src="https://delavillaa.myshopify.com/cdn/shop/files/propiedades-miel.jpg?v=1758305857&amp;width=533" alt="Miel natural">
     <h3>Miel natural</h3>
     <p>$30.000,00 COP</p>
   </div>
 
-  <div class="product" data-precio="22000" data-disponible="true" data-fecha="2024-03-20">
+  <div class="product hover-zoom fade-in" data-precio="22000" data-disponible="true" data-fecha="2024-03-20">
     <a href="/DeLaVilla/pages/pollo-de-campo.html">
     <img src="https://delavillaa.myshopify.com/cdn/shop/files/22-Nov-cabecera.jpg?v=1758305780&amp;width=533" alt="Pollo de campo">
     <h3>Pollo de campo</h3>
@@ -452,13 +491,13 @@ footer {
   </div>
 </div>
 
-<a href="https://wa.me/573001112233" target="_blank" class="whatsapp">
+<a href="https://wa.me/573001112233" target="_blank" class="whatsapp hover-zoom">
   <i class="fa-brands fa-whatsapp"></i>
 </a>
 </section>
 
 <!-- 🔸 FOOTER -->
-<footer>
+<footer class="fade-in">
   <div class="footer-content">
     <h3>Sé el primero en recibir nuestras noticias</h3>
     <form class="email-form">
@@ -554,6 +593,15 @@ resetPrecio.addEventListener('click', e => {
   e.preventDefault(); precioMin.value = ""; precioMax.value = ""; actualizarProductos();
 });
 actualizarProductos();
+
+/* --- ANIMACIÓN SCROLL FADE-IN --- */
+const fadeElements = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+fadeElements.forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
