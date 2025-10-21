@@ -569,7 +569,7 @@ display: inline-block;
   </a>
 
   <!-- 🛍 Ícono de carrito -->
-  <a href="/DeLaVilla/pages/cart.html" title="Carrito de compras">
+  <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
     <i class="fas fa-shopping-bag"></i>
     <span id="cart-count">0</span>
   </a>
@@ -751,7 +751,7 @@ display: inline-block;
   const btnComprar = document.getElementById('buy-now');
   const cantidadInput = document.getElementById('cantidad');
   const cartCountEl = document.getElementById('cart-count');
-  const cartLink = document.querySelector('a[title="Carrito de compras"], a[href*="cart"], a[href*="cart.html"]') || document.querySelector('a[title="Carrito de compras"]');
+  const cartLink = document.querySelector('a[title="Carrito de compras"], a[href*="cart"], a[href*="carrito.html"]') || document.querySelector('a[title="Carrito de compras"]');
 
   // Si no existe el contador en el header, intenta buscar por otros selectores comunes:
   if (!cartCountEl) {
