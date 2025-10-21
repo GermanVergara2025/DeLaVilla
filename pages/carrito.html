@@ -632,14 +632,7 @@ display: inline-block;
 </header>
 
 <section id="carrito-contenedor" class="producto-container"></section>
-  <h1>Tu carrito está vacío</h1>
-
-  <a href="index.html" class="btn-seguir">Seguir comprando</a>
-
-  <p class="cuenta-texto">
-    ¿Tienes una cuenta?<br>
-    <a href="login.html" class="login-link">Inicia sesión</a> para finalizar tus compras con mayor rapidez.
-  </p>
+ 
 </section>
   <footer>
     <div class="footer-content">
@@ -1010,55 +1003,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <section id="carrito-contenedor"></section>
 <script>
-document.addEventListener('DOMContentLoaded', ()=>{
-  const contenedor = document.getElementById('carrito-contenedor');
+  // Recuperar carrito desde localStorage
   let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-  if(carrito.length === 0){
-    contenedor.innerHTML = `
-      <div class="carrito-vacio">
+  const contenedor = document.getElementById('carrito-contenedor');
+
+  function renderCarrito() {
+    contenedor.innerHTML = ''; // Limpiar contenido
+
+    if (carrito.length === 0) {
+      // Carrito vacío
+      contenedor.innerHTML = `
         <h1>Tu carrito está vacío</h1>
-        <a href="/DeLaVilla/pages/cubeta-de-huevos.html" class="btn-seguir">Seguir comprando</a>
-      </div>
-    `;
-  } else {
-    let html = '<h2>Mi Carrito</h2>';
-    carrito.forEach(item=>{
-      html += `
-        <div class="item-carrito" style="display:flex; align-items:center; margin-bottom:20px;">
-          <img src="${item.imagen}" style="width:100px; margin-right:20px;">
-          <div>
-            <h3>${item.nombre}</h3>
-            <p>Precio: $${item.precio}</p>
-            <p>Cantidad: ${item.cantidad}</p>
-            <p>Subtotal: $${item.precio * item.cantidad}</p>
-          </div>
-        </div>
+        <a href="/DeLaVilla/pages/productos.html" class="btn-seguir">Seguir comprando</a>
       `;
-    });
-    const total = carrito.reduce((acc, p) => acc + p.precio * p.cantidad, 0);
-    html += `<h3>Total: $${total}</h3>`;
-    html += `<button id="vaciar-carrito">Vaciar carrito</button>`;
-    contenedor.innerHTML = html;
+      return;
+    }
 
-    // Vaciar carrito
-    document.getElementById('vaciar-carrito').addEventListener('click', ()=>{
-      localStorage.removeItem('carrito');
-      location.reload();
+    carrito.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'producto-item';
+      div.innerHTML = `
+        <img src="${item.imagen}" alt="${item.nombre}">
+        <div class="producto-info">
+          <h3>${item.nombre}</h3>
+          <p>Precio: $${item.precio}</p>
+          <p>Cantidad: <input type="number" min="1" value="${item.cantidad}" class="cantidad-input" data-index="${index}"></p>
+        </div>
+        <button class="btn-eliminar" data-index="${index}">Eliminar</button>
+      `;
+      contenedor.appendChild(div);
+    });
+
+    // Agregar listeners a inputs de cantidad
+    document.querySelectorAll('.cantidad-input').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const idx = e.target.dataset.index;
+        let val = parseInt(e.target.value);
+        if (val < 1) val = 1;
+        carrito[idx].cantidad = val;
+        guardarCarrito();
+        renderCarrito(); // Volver a renderizar
+      });
+    });
+
+    // Agregar listeners a botones eliminar
+    document.querySelectorAll('.btn-eliminar').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = e.target.dataset.index;
+        carrito.splice(idx, 1);
+        guardarCarrito();
+        renderCarrito();
+      });
     });
   }
 
-  // Actualizar contador del header
-  const cartCountEl = document.getElementById('cart-count');
-  if(cartCountEl){
-    const totalCantidad = carrito.reduce((acc, p) => acc + p.cantidad, 0);
-    cartCountEl.textContent = totalCantidad;
+  function guardarCarrito() {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
   }
-});
+
+  // Inicializar
+  renderCarrito();
 </script>
-
-
-
 
 </body>
 </html>
