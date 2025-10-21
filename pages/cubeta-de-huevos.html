@@ -392,7 +392,7 @@ color: white;
       margin-bottom: 25px;
     }
 
-    .boton {
+    .shopify-payment-button__button {
       padding: 12px;
       border: 1px solid #3D4C38;
       border-radius: 4px;
@@ -403,17 +403,17 @@ color: white;
       transition: all 0.2s ease;
     }
 
-    .boton:hover {
+    .shopify-payment-button__button:hover {
       background-color: #E5E8E1;
     }
 
-    .comprar {
+    .btn-comprar {
       background-color: #3D4C38;
       color: white;
       border: none;
     }
 
-    .comprar:hover {
+    .btn-comprar:hover {
       background-color: #2E3A2B;
     }
 
@@ -443,6 +443,32 @@ color: white;
   body {
     padding-top: 180px; /* más espacio en móvil */
   }
+}
+
+#cart-count {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background-color: #e63946;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+.iconos {
+ position: relative;
+display: inline-block;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.pulse {
+  animation: pulse 0.3s ease;
 }
 
   </style>
@@ -489,6 +515,7 @@ color: white;
   <!-- 🛍 Ícono de carrito -->
   <a href="/DeLaVilla/pages/cart.html" title="Carrito de compras">
     <i class="fas fa-shopping-bag"></i>
+<span id="cart-count">0</span>
   </a>
 </div>
 </header>
@@ -515,8 +542,9 @@ color: white;
       </div>
 
       <div class="botones">
-        <button class="boton">Agregar al carrito</button>
-        <button class="boton comprar">Comprar ahora</button>
+<button name="add" id="agregar-carrito" class="shopify-payment-button__button">Agregar al carrito</button>
+  <button id="buy-now" class="btn-comprar">Comprar ahora</button>
+
       </div>
 
       <div class="descripcion">
@@ -638,6 +666,106 @@ color: white;
       cantidad.value = parseInt(cantidad.value) + 1;
     });
   </script>
+
+<script>
+// === SISTEMA DE CARRITO PERSONALIZADO ===
+
+// Detectar el botón "Agregar al carrito" y el campo de cantidad
+const btnAgregar = document.querySelector('#agregar-carrito') || document.querySelector('[name="add"]');
+const inputCantidad = document.querySelector('input[type="number"], #quantity, .quantity__input');
+const cartCount = document.querySelector('#cart-count, .cart-count, .header__cart-count');
+const cartIcon = document.querySelector('#cart-icon, .header__cart, .cart-link');
+
+// Evitar errores si algún elemento no existe
+if (btnAgregar && inputCantidad && cartCount) {
+  // Leer o crear carrito
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+  // Actualizar número del header
+  function actualizarContador() {
+    const totalProductos = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+    cartCount.textContent = totalProductos;
+  }
+
+  // Evento del botón
+  btnAgregar.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const cantidad = parseInt(inputCantidad.value) || 1;
+    const producto = {
+      id: "cubeta-huevos",
+      nombre: "Cubeta de Huevos",
+      precio: 32000,
+      cantidad: cantidad,
+      imagen: "./img/cubeta-huevos.png"
+    };
+
+    // Verificar si ya está en el carrito
+    const existente = carrito.find(item => item.id === producto.id);
+    if (existente) {
+      existente.cantidad += cantidad;
+    } else {
+      carrito.push(producto);
+    }
+
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    actualizarContador();
+
+    // Animación o feedback visual
+    cartCount.classList.add('pulse');
+    setTimeout(() => cartCount.classList.remove('pulse'), 400);
+  });
+
+  // Cargar el número inicial
+  actualizarContador();
+
+  // Redirección opcional al carrito
+  if (cartIcon) {
+    cartIcon.addEventListener('click', () => {
+      window.location.href = 'carrito.html';
+    });
+  }
+}
+</script>
+
+<script>
+  const addToCartBtn = document.getElementById('add-to-cart');
+  const buyNowBtn = document.getElementById('buy-now');
+  const cartCount = document.getElementById('cart-count');
+  const quantityInput = document.getElementById('quantity');
+
+  // Cargar contador si ya hay algo guardado
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  cartCount.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Función para añadir al carrito
+  function addToCart(product) {
+    const existing = cart.find(item => item.name === product.name);
+    if (existing) {
+      existing.quantity += product.quantity;
+    } else {
+      cart.push(product);
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    cartCount.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+  }
+
+  // Evento: Agregar al carrito
+  addToCartBtn.addEventListener('click', () => {
+    const quantity = parseInt(quantityInput.value);
+    const product = { name: 'Cubeta de Huevos', price: 32000, quantity };
+    addToCart(product);
+  });
+
+  // Evento: Comprar ahora
+  buyNowBtn.addEventListener('click', () => {
+    const quantity = parseInt(quantityInput.value);
+    const product = { name: 'Cubeta de Huevos', price: 32000, quantity };
+    addToCart(product); // Primero lo agrega
+    window.location.href = 'carrito.html'; // Luego redirige
+  });
+</script>
+
 
 </body>
 </html>
