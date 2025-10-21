@@ -3,361 +3,350 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Catálogo - De La Villa</title>
+<title>Productos - De La Villa</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
+/* ----------- ESTILOS GLOBALES (HEADER + FOOTER) ----------- */
 body {
-margin: 0;
-font-family: 'Poppins', sans-serif;
-background-color: #1e1200;
-color: white;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #1e1200;
+  color: white;
 }
 
 /* ---------------- HEADER ---------------- */
 .top-banner {
-background-color: #1f1400;
-color: white;
-font-size: 12px;
-letter-spacing: 1px;
-font-weight: bold;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 50px;
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-z-index: 1100;
+  background-color: #1f1400;
+  color: white;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
 }
 
 .top-banner .arrow {
-position: absolute;
-top: 50%;
-transform: translateY(-50%);
-font-size: 20px;
-color: white;
-cursor: pointer;
-user-select: none;
-padding: 0 15px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  padding: 0 15px;
 }
 .arrow.left { left: 0; }
 .arrow.right { right: 0; }
 
 header {
-position: fixed;
-top: 50px;
-left: 0;
-width: 100%;
-height: 80px;
-background-color: #1e1200;
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 10px 60px;
-z-index: 1000;
-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-box-sizing: border-box;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #1e1200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 60px;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
 }
 
 .header-left {
-display: flex;
-align-items: center;
-gap: 50px;
+  display: flex;
+  align-items: center;
+  gap: 50px;
 }
 
 .logo img {
-height: 60px;
+  height: 60px;
 }
 
 nav ul {
-list-style: none;
-display: flex;
-gap: 30px;
-margin: 0;
-padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
 }
 
 nav a {
-text-decoration: none;
-color: #f0f0f0;
-font-weight: 400;
-transition: color 0.3s ease;
+  text-decoration: none;
+  color: #f0f0f0;
+  font-weight: 400;
+  transition: color 0.3s ease;
 }
 nav a:hover,
 nav a.active {
-color: #ffffff;
-text-decoration: underline;
+  color: #ffffff;
+  text-decoration: underline;
 }
 
 .icons {
-display: flex;
-align-items: center;
-gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 .icons a {
-color: #f0f0f0;
-text-decoration: none;
-transition: transform 0.2s ease;
+  color: #f0f0f0;
+  text-decoration: none;
+  transition: transform 0.2s ease;
 }
 .icons a:hover i {
-transform: scale(1.2);
-color: #ffffff;
+  transform: scale(1.2);
+  color: #ffffff;
 }
 
 .search-bar {
-display: none;
-position: absolute;
-top: 70px;
-right: 60px;
-background: #f9f9f9;
-padding: 8px 12px;
-border-radius: 8px;
-box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-z-index: 100;
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 60px;
+  background: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 100;
 }
 .search-bar input {
-padding: 6px 10px;
-border: 1px solid #ccc;
-border-radius: 6px;
-width: 200px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 200px;
 }
 .search-bar button {
-background: #444;
-color: white;
-border: none;
-padding: 6px 10px;
-border-radius: 6px;
-cursor: pointer;
+  background: #444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 .search-bar button:hover {
-background: #222;
-}
-
-/* ---------------- PRODUCTOS ---------------- */
-.productos-section {
-margin-top: 160px;
-padding: 40px 60px;
-background-color: #fffef8;
-color: #333;
-min-height: 100vh;
-}
-
-.productos-section h1 {
-font-size: 28px;
-margin-bottom: 25px;
-color: #2d2d1f;
-font-weight: 600;
-}
-
-.filters {
-display: flex;
-justify-content: space-between;
-align-items: center;
-flex-wrap: wrap;
-margin-bottom: 20px;
-}
-
-.filters-left, .filters-right {
-display: flex;
-align-items: center;
-gap: 15px;
-flex-wrap: wrap;
-}
-
-.dropdown {
-position: relative;
-display: inline-block;
-}
-.dropdown button {
-background-color: #fff;
-border: 1px solid #ccc;
-padding: 8px 14px;
-border-radius: 6px;
-cursor: pointer;
-font-size: 14px;
-transition: all 0.3s ease;
-}
-.dropdown button:hover {
-background-color: #f1f1f1;
-}
-.dropdown-content {
-display: none;
-position: absolute;
-background-color: #fff;
-min-width: 220px;
-box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-padding: 15px;
-z-index: 5;
-border-radius: 8px;
-color: #333;
-}
-.dropdown:hover .dropdown-content {
-display: block;
-}
-
-.dropdown-content label {
-display: block;
-margin-bottom: 8px;
-font-size: 14px;
-}
-
-.dropdown-content input[type="number"] {
-width: 70px;
-padding: 5px;
-border: 1px solid #ccc;
-border-radius: 4px;
-}
-
-.product-grid {
-display: flex;
-flex-wrap: wrap;
-gap: 25px;
-justify-content: flex-start;
-}
-
-.product {
-width: 28%;
-background-color: #fffdf7;
-border-radius: 8px;
-overflow: hidden;
-text-decoration: none;
-color: inherit;
-transition: all 0.3s ease;
-box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-cursor: pointer;
-position: relative;
-}
-.product:hover {
-transform: translateY(-6px);
-box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-.product img {
-width: 100%;
-height: 230px;
-object-fit: cover;
-transition: transform 0.4s ease;
-}
-.product:hover img {
-transform: scale(1.05);
-}
-.product h3 {
-font-size: 17px;
-margin: 12px 15px 4px;
-color: #3a3a2a;
-transition: color 0.3s ease;
-}
-.product:hover h3 {
-color: #627c4c;
-}
-.product p {
-margin: 0 15px 15px;
-color: #3a3a2a;
-font-weight: 500;
-}
-
-.whatsapp {
-position: fixed;
-bottom: 30px;
-right: 30px;
-background-color: #25D366;
-color: white;
-font-size: 26px;
-padding: 16px;
-border-radius: 50%;
-text-align: center;
-box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-z-index: 2000;
-transition: all 0.3s ease;
-}
-.whatsapp:hover {
-transform: scale(1.1);
-background-color: #1ebe5d;
+  background: #222;
 }
 
 /* ---------------- FOOTER ---------------- */
 footer {
-background-color: #1f1400;
-padding: 50px 20px 30px;
-position: relative;
+  background-color: #1f1400;
+  padding: 50px 20px 30px;
+  position: relative;
 }
 
 .footer-content {
-max-width: 1200px;
-margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .footer-content h3 {
-font-weight: bold;
-font-size: 16px;
-margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 15px;
 }
 
 .email-form {
-display: flex;
-flex-wrap: wrap;
-align-items: center;
-gap: 10px;
-max-width: 400px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  max-width: 400px;
 }
 
 .email-form input[type="email"] {
-flex: 1;
-padding: 12px 16px;
-border: 1px solid white;
-border-radius: 6px;
-background-color: transparent;
-color: white;
-font-size: 16px;
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid white;
+  border-radius: 6px;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
 }
 
 .email-form button {
-padding: 12px 20px;
-background-color: transparent;
-border: 1px solid white;
-border-radius: 6px;
-color: white;
-cursor: pointer;
-font-size: 18px;
+  padding: 12px 20px;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
 }
 .email-form button i { pointer-events: none; }
 
 .footer-bottom {
-border-top: 1px solid #2e1d00;
-margin-top: 50px;
-padding-top: 20px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-font-size: 14px;
-color: #cfcfcf;
-flex-wrap: wrap;
+  border-top: 1px solid #2e1d00;
+  margin-top: 50px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #cfcfcf;
+  flex-wrap: wrap;
 }
 .social-icons a {
-color: white;
-margin-left: 65px;
-font-size: 18px;
-text-decoration: none;
+  color: white;
+  margin-left: 65px;
+  font-size: 18px;
+  text-decoration: none;
 }
 .social-icons a:hover {
-color: #aaaaaa;
+  color: #aaaaaa;
 }
 @media (max-width: 600px) {
-.footer-bottom {
-flex-direction: column;
-align-items: flex-start;
-gap: 10px;
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .social-icons {
+    margin-top: 10px;
+  }
 }
-.social-icons {
-margin-top: 10px;
+
+/* ---------------- SECCIÓN PRODUCTOS ---------------- */
+.productos-section {
+  background-color: #fafaf3;
+  color: #3b3b2f;
+  padding: 160px 60px 100px;
 }
+.productos-section h1 {
+  font-size: 48px;
+  margin: 40px 0 20px;
+  color: #2f3b28;
+}
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+.filters-left, .filters-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.dropdown {
+  position: relative;
+}
+.dropdown button {
+  background: none;
+  border: 1px solid transparent;
+  font-size: 17px;
+  color: #3b3b2f;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+.dropdown button:hover {
+  border-color: #c5c5b6;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 38px;
+  left: 0;
+  background-color: #fffdf6;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  z-index: 10;
+  padding: 15px;
+  min-width: 200px;
+}
+.dropdown.show .dropdown-content {
+  display: block;
+}
+.dropdown-content label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.dropdown-content input[type="number"] {
+  width: 70px;
+  padding: 4px;
+  border: 1px solid #999;
+  border-radius: 4px;
+  margin-left: 5px;
+}
+.dropdown-content select {
+  width: 100%;
+  padding: 8px;
+  font-size: 15px;
+  border-radius: 4px;
+  border: 1px solid #aaa;
+}
+.product-grid {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.product {
+  width: 28%;
+  background-color: #fffdf7;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+.product:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.product img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+}
+.product h3 {
+  font-size: 17px;
+  margin: 12px 15px 4px;
+  color: #3a3a2a;
+}
+.product p {
+  margin: 0 15px 15px;
+  color: #3a3a2a;
+  font-weight: 500;
+}
+.whatsapp {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #25d366;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  cursor: pointer;
+  text-decoration: none;
+}
+.whatsapp:hover {
+  background-color: #20b358;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔸 BANNER SUPERIOR -->
+<!-- 🔸 BANNER -->
 <div class="top-banner">
   <div class="arrow left" onclick="changeMessage(-1)">&#8249;</div>
   <div id="banner-text">VUELVE A LO NATURAL</div>
@@ -383,18 +372,66 @@ margin-top: 10px;
 
   <div class="icons">
     <a href="#" id="search-toggle" title="Buscar"><i class="fas fa-search"></i></a>
-
     <div class="search-bar" id="search-bar">
       <input type="text" id="search-input" placeholder="Buscar productos..." />
       <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
     </div>
-
     <a href="/DeLaVilla/pages/login.html" title="Mi cuenta"><i class="fas fa-user"></i></a>
     <a href="/DeLaVilla/pages/cart.html" title="Carrito de compras"><i class="fas fa-shopping-bag"></i></a>
   </div>
 </header>
 
-<!-- 🔸 PRODUCTOS -->
+<!-- 🔸 SECCIÓN PRODUCTOS -->
+<section class="productos-section">
+
+<h1>Productos</h1>
+
+<div class="filters">
+  <div class="filters-left">
+    <span style="font-weight:500;">Filtrar:</span>
+
+    <div class="dropdown" id="dispDropdown">
+      <button>Disponibilidad ▾</button>
+      <div class="dropdown-content">
+        <label><input type="checkbox" id="enExistencia" checked> En existencia (3)</label>
+        <label style="color:#999;"><input type="checkbox" id="agotado" disabled> Agotado (0)</label>
+      </div>
+    </div>
+
+    <div class="dropdown" id="precioDropdown">
+      <button>Precio ▾</button>
+      <div class="dropdown-content">
+        <p style="font-size:14px; margin-bottom:8px;">El precio más alto es $32.000,00 <a href="#" id="resetPrecio" style="float:right;">Restablecer</a></p>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span>$</span><input type="number" id="precioMin" placeholder="De">
+          <span>$</span><input type="number" id="precioMax" placeholder="Para">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filters-right">
+    <span style="font-weight:500;">Ordenar por:</span>
+    <div class="dropdown" id="ordenDropdown">
+      <button id="ordenBtn">Alfabéticamente, A-Z ▾</button>
+      <div class="dropdown-content">
+        <select id="ordenSelect">
+          <option value="az">Alfabéticamente, A-Z</option>
+          <option value="za">Alfabéticamente, Z-A</option>
+          <option value="menor">Precio, menor a mayor</option>
+          <option value="mayor">Precio, mayor a menor</option>
+          <option value="fechaAntigua">Fecha: antiguo(a) a reciente</option>
+          <option value="fechaReciente">Fecha: reciente a antiguo(a)</option>
+        </select>
+      </div>
+    </div>
+    <span id="contador">3 productos</span>
+  </div>
+</div>
+
+  
+
+<!-- 🔸 SECCIÓN PRODUCTOS -->
 <section class="productos-section">
 
 <h1>Productos</h1>
@@ -444,30 +481,31 @@ margin-top: 10px;
 
 <div class="product-grid" id="productGrid">
 
-  <!-- 🔗 Cambia el href por la URL del producto -->
+  <!-- 🔗 AQUÍ VA EL ENLACE DE CADA PRODUCTO -->
   <a href="/DeLaVilla/pages/cubeta-de-huevos.html">
-    <img src="https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&amp;width=533" alt="Cubeta de Huevos">
-    <h3>Cubeta de Huevos</h3>
-    <p class="precio">$32.000,00 COP</p>
+      <img src="https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&amp;width=533" alt="Cubeta de Huevos">
+      <h3>Cubeta de Huevos</h3>
+      <p class="precio">$32.000,00 COP</p>
   </a>
 
   <a href="/DeLaVilla/pages/miel-natural.html">
-    <img src="https://delavillaa.myshopify.com/cdn/shop/files/propiedades-miel.jpg?v=1758305857&amp;width=533" alt="Miel natural">
-    <h3>Miel natural</h3>
-    <p class="precio">$30.000,00 COP</p>
-  </a>
+        <img src="https://delavillaa.myshopify.com/cdn/shop/files/propiedades-miel.jpg?v=1758305857&amp;width=533" alt="Miel natural">
+        <h3>Miel natural</h3>
+        <p class="precio">$30.000,00 COP</p>
+    </a>
 
   <a href="/DeLaVilla/pages/pollo-de-campo.html">
-    <img src="https://delavillaa.myshopify.com/cdn/shop/files/22-Nov-cabecera.jpg?v=1758305780&amp;width=533" alt="Pollo de campo">
-    <h3>Pollo de campo</h3>
-    <p class="precio">$22.000,00 COP</p>
-  </a>
+        <img src="https://delavillaa.myshopify.com/cdn/shop/files/22-Nov-cabecera.jpg?v=1758305780&amp;width=533" alt="Pollo de campo">
+        <h3>Pollo de campo</h3>
+        <p class="precio">$22.000,00 COP</p>
+    </a>
 </div>
 
 <a href="https://wa.me/573001112233" target="_blank" class="whatsapp">
   <i class="fa-brands fa-whatsapp"></i>
 </a>
 </section>
+
 
 <!-- 🔸 FOOTER -->
 <footer>
