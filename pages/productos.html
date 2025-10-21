@@ -380,6 +380,133 @@ footer {
   background-color: #20b358;
   transform: scale(1.1);
 }
+
+#cart-count {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background-color: #e63946;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+.iconos {
+ position: relative;
+display: inline-block;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.pulse {
+  animation: pulse 0.3s ease;
+}
+
+#mini-cart {
+  display: none;
+  position: absolute;
+  top: 40px; /* justo debajo del icono */
+  right: 0;
+  width: 280px;
+  background-color: #fff;
+  color: #2E3A2B;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  padding: 16px;
+  z-index: 2000;
+}
+
+#mini-cart h4 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+#mini-cart .item-name {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+#mini-cart button {
+  padding: 10px 12px;
+  margin: 4px 0;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#mini-cart .btn-pagar {
+  background-color: #3E4E35;
+  color: #fff;
+}
+
+#mini-cart .btn-seguir {
+  background-color: #f0f0f0;
+  color: #2E3A2B;
+}
+
+#mini-cart .btn-pagar:hover {
+  background-color: #4e6145;
+}
+
+#mini-cart .btn-seguir:hover {
+  background-color: #e0e0e0;
+}
+
+.carrito-contenedor {
+  text-align: center;
+  padding: 100px 20px;
+  font-family: 'Georgia', serif;
+  color: #2E3A2B;
+}
+
+.carrito-contenedor h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+
+.btn-seguir {
+  display: inline-block;
+  background-color: #3E4E35;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-seguir:hover {
+  background-color: #4e6145;
+}
+
+.cuenta-texto {
+  margin-top: 40px;
+  color: #3a3a3a;
+  font-size: 1rem;
+}
+
+.login-link {
+  color: #3E4E35;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.login-link:hover {
+  text-decoration: none;
+}
+
+
 </style>
 </head>
 
@@ -416,7 +543,18 @@ footer {
       <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
     </div>
     <a href="/DeLaVilla/pages/login.html" title="Mi cuenta"><i class="fas fa-user"></i></a>
-    <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras"><i class="fas fa-shopping-bag"></i></a>
+  <!-- 🛍 Ícono de carrito -->
+  <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
+    <i class="fas fa-shopping-bag"></i>
+    <span id="cart-count">0</span>
+  </a>
+
+  <div id="mini-cart">
+    <h4>Artículo agregado a tu carrito</h4>
+    <div class="item-name" id="mini-cart-item">Producto</div>
+    <button class="btn-pagar" id="btn-pagar">Pagar pedido (0)</button>
+    <button class="btn-seguir" id="btn-seguir">Seguir comprando</button>
+  </div>
   </div>
 </header>
 
@@ -630,5 +768,77 @@ fadeElements.forEach(el => observer.observe(el));
     contenedor.innerHTML = "<p style='color:red;'>❌ No se encontraron productos para tu búsqueda.</p>";
   }
 </script>
+<script>
+(function(){
+  // Selectores (coinciden con tu HTML)
+  const btnAgregar = document.getElementById('agregar-carrito');
+  const btnComprar = document.getElementById('buy-now');
+  const cantidadInput = document.getElementById('cantidad');
+  const cartCountEl = document.getElementById('cart-count');
+  const cartLink = document.querySelector('a[title="Carrito de compras"], a[href*="cart"], a[href*="carrito.html"]') || document.querySelector('a[title="Carrito de compras"]');
+
+  // Si no existe el contador en el header, intenta buscar por otros selectores comunes:
+  if (!cartCountEl) {
+    // crea el span dentro del enlace del carrito si no existe
+    if (cartLink) {
+      const span = document.createElement('span');
+      span.id = 'cart-count';
+      span.textContent = '0';
+      span.style.position = 'absolute';
+      span.style.top = '8px';
+      span.style.right = '10px';
+      span.style.backgroundColor = '#e63946';
+      span.style.color = 'white';
+      span.style.fontSize = '12px';
+      span.style.fontWeight = '700';
+      span.style.borderRadius = '50%';
+      span.style.padding = '2px 6px';
+      cartLink.style.position = 'relative';
+      cartLink.appendChild(span);
+    }
+  }
+   // Un único carrito en localStorage
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+  // Actualiza el contador mostrado
+  function actualizarContadorVisual() {
+    const total = carrito.reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
+    const el = document.getElementById('cart-count');
+    if (el) el.textContent = total;
+  }
+
+  // Guarda carrito en localStorage
+  function guardarCarrito() {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    actualizarContadorVisual();
+  }
+
+
+  <script>
+  // Función para mostrar mini-cart
+  function mostrarMiniCart(nombreProducto) {
+    const miniCart = document.getElementById('mini-cart');
+    const itemName = document.getElementById('mini-cart-item');
+    const btnPagar = document.getElementById('btn-pagar');
+
+    itemName.textContent = nombreProducto;
+
+    // Contador de productos
+    let cantidad = parseInt(localStorage.getItem('cartCount') || '0') + 1;
+    localStorage.setItem('cartCount', cantidad);
+    document.getElementById('cart-count').textContent = cantidad;
+
+    btnPagar.textContent = `Pagar pedido (${cantidad})`;
+
+    // Mostrar mini-cart
+    miniCart.style.display = 'block';
+
+    // Ocultar automáticamente después de 4 segundos
+    clearTimeout(miniCart.timeout);
+    miniCart.timeout = setTimeout(() => {
+      miniCart.style.display = 'none';
+    }, 4000);
+  }
+
 </body>
 </html>
