@@ -603,5 +603,32 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 fadeElements.forEach(el => observer.observe(el));
 </script>
+  <script>
+  // Lista de productos disponibles (puedes reemplazar con tus cards reales)
+  const productos = [
+    { nombre: "Pollo", imagen: "images/pollo.png" },
+    { nombre: "Miel", imagen: "images/miel.png" },
+    { nombre: "Cubeta de huevos", imagen: "images/huevos.png" }
+  ];
+
+  // Obtener parámetro de búsqueda de la URL
+  const params = new URLSearchParams(window.location.search);
+  const keyword = params.get("search")?.toLowerCase() || "";
+
+  const contenedor = document.getElementById("productos");
+
+  const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(keyword));
+
+  if (filtrados.length > 0) {
+    contenedor.innerHTML = filtrados.map(p => `
+      <div class="producto">
+        <img src="${p.imagen}" alt="${p.nombre}">
+        <h3>${p.nombre}</h3>
+      </div>
+    `).join("");
+  } else {
+    contenedor.innerHTML = "<p style='color:red;'>❌ No se encontraron productos para tu búsqueda.</p>";
+  }
+</script>
 </body>
 </html>
