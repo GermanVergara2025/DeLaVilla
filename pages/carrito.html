@@ -1066,5 +1066,99 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCarrito();
 </script>
 
+<script>
+  // Recuperar carrito desde localStorage
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+  const contenedor = document.getElementById('carrito-contenedor');
+
+  function calcularTotal() {
+    return carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+  }
+
+  function renderCarrito() {
+    contenedor.innerHTML = ''; // Limpiar contenido
+
+    if (carrito.length === 0) {
+      // Carrito vacío
+      contenedor.innerHTML = `
+        <h1>Tu carrito está vacío</h1>
+        <a href="/DeLaVilla/pages/productos.html" class="btn-seguir">Seguir comprando</a>
+      `;
+      return;
+    }
+
+    carrito.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'producto-item';
+      div.innerHTML = `
+        <img src="${item.imagen}" alt="${item.nombre}">
+        <div class="producto-info">
+          <h3>${item.nombre}</h3>
+          <p>Precio: $${item.precio}</p>
+          <p>Cantidad: <input type="number" min="1" value="${item.cantidad}" class="cantidad-input" data-index="${index}"></p>
+        </div>
+        <button class="btn-eliminar" data-index="${index}">Eliminar</button>
+      `;
+      contenedor.appendChild(div);
+    });
+
+    // Contenedor de total y botón pagar
+    const totalDiv = document.createElement('div');
+    totalDiv.style.display = 'flex';
+    totalDiv.style.justifyContent = 'space-between';
+    totalDiv.style.alignItems = 'center';
+    totalDiv.style.marginTop = '20px';
+    totalDiv.style.paddingTop = '10px';
+    totalDiv.style.borderTop = '1px solid #ccc';
+
+    totalDiv.innerHTML = `
+      <h3>Total: $${calcularTotal()}</h3>
+      <button id="btn-pagar-carrito" class="btn-seguir">Pagar pedido</button>
+    `;
+
+    contenedor.appendChild(totalDiv);
+
+    // Listeners para inputs de cantidad
+    document.querySelectorAll('.cantidad-input').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const idx = e.target.dataset.index;
+        let val = parseInt(e.target.value);
+        if (val < 1) val = 1;
+        carrito[idx].cantidad = val;
+        guardarCarrito();
+        renderCarrito(); // Re-renderiza para actualizar total
+      });
+    });
+
+    // Listeners para botones eliminar
+    document.querySelectorAll('.btn-eliminar').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = e.target.dataset.index;
+        carrito.splice(idx, 1);
+        guardarCarrito();
+        renderCarrito();
+      });
+    });
+
+    // Listener para pagar
+    const btnPagar = document.getElementById('btn-pagar-carrito');
+    if (btnPagar) {
+      btnPagar.addEventListener('click', () => {
+        if (carrito.length === 0) return alert("Tu carrito está vacío");
+        // Aquí podrías redirigir a la pasarela de pago real
+        alert(`Total a pagar: $${calcularTotal()}\nRedirigiendo al pago...`);
+        // Por ejemplo: window.location.href = '/DeLaVilla/pages/pago.html';
+      });
+    }
+  }
+
+  function guardarCarrito() {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+  }
+
+  // Inicializar
+  renderCarrito();
+</script>
 </body>
 </html>
