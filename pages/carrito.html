@@ -7,12 +7,21 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     /* Estilos generales */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
     body {
+ display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* asegura que ocupe toda la pantalla */
   background-color: #FAFAF4;
   font-family: 'Inter', sans-serif;
   color: #2E3A2B;
-  margin: 0;
-  padding-top: 130px; /* 👈 Ajuste para que no se tape el contenido */
+  padding-top: 130px; /* tu header */
     }
 
     /* -------------------- ANIMACIONES -------------------- */
@@ -116,10 +125,12 @@ position: relative;
     }
 
     footer {
-      background-color: #1f1400;
-      padding: 50px 20px 30px;
-      position: relative;
-color: white;
+  width: 100%;          /* ocupa todo el ancho */
+  background-color: #1f1400;
+  padding: 50px 20px 30px;
+  color: white;
+  margin-top: auto;      /* empuja hacia abajo con Flexbox */
+  box-sizing: border-box; /* asegura que el padding no haga overflow */
     }
 
     .footer-content {
@@ -631,8 +642,10 @@ display: inline-block;
 </div>
 </header>
 
+<main style="flex: 1;">
 <section id="carrito-contenedor" class="producto-container"></section>
- 
+ </main>
+
 </section>
   <footer>
     <div class="footer-content">
