@@ -625,7 +625,7 @@ display: inline-block;
   </a>
 
   <!-- 🛍 Ícono de carrito -->
-  <a href="/DeLaVilla/pages/cart.html" title="Carrito de compras">
+  <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
     <i class="fas fa-shopping-bag"></i>
     <span id="cart-count">0</span>
   </a>
@@ -762,16 +762,7 @@ display: inline-block;
   </script>
 
 <script>
-/* ----------------------------
-  Carrito centralizado (UN SOLO SCRIPT)
-   - Usa key "carrito" en localStorage
-   - Selecciones acorde a tu HTML actual:
-     boton agregar: id="agregar-carrito"
-     boton comprar ahora: id="buy-now"
-     input cantidad: id="cantidad"
-     contador header: id="cart-count" (existe en tu header)
-     enlace carrito (anchor) ya apunta a /pages/cart.html en tu header
----------------------------- */
+
 
 (function(){
   // Selectores (coinciden con tu HTML)
@@ -779,7 +770,7 @@ display: inline-block;
   const btnComprar = document.getElementById('buy-now');
   const cantidadInput = document.getElementById('cantidad');
   const cartCountEl = document.getElementById('cart-count');
-  const cartLink = document.querySelector('a[title="Carrito de compras"], a[href*="cart"], a[href*="cart.html"]') || document.querySelector('a[title="Carrito de compras"]');
+  const cartLink = document.querySelector('a[title="Carrito de compras"], a[href*="cart"], a[href*="carrito.html"]') || document.querySelector('a[title="Carrito de compras"]');
 
   // Si no existe el contador en el header, intenta buscar por otros selectores comunes:
   if (!cartCountEl) {
