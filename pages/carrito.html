@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Header De La Villa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Estilos generales */
+    body {
+  background-color: #FAFAF4;
+  font-family: 'Inter', sans-serif;
+  color: #2E3A2B;
+  margin: 0;
+  padding-top: 130px; /* 👈 Ajuste para que no se tape el contenido */
+    }
+
+    /* -------------------- ANIMACIONES -------------------- */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Efecto hover general */
+    .hover-zoom:hover {
+      transform: scale(1.03);
+      transition: transform 0.3s ease;
+    }
+
+    /* Header */
+header {
+ position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #1e1200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* íconos a la derecha */
+  padding: 10px 60px;
+  z-index: 1000;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 50px; /* espacio entre logo y menú */
+}
+
+    /* Logo */
+    .logo img {
+      height: 60px;
+    }
+
+    /* Menú de navegación */
+    nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: #f0f0f0;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+nav a:hover,
+nav a.active {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Iconos (siguen a la derecha) */
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+position: relative;
+}
+
+.icons a {
+  color: #f0f0f0;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.icons a:hover i {
+  transform: scale(1.2);
+  color: #ffffff;
+}
+
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+      }
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    footer {
+      background-color: #1f1400;
+      padding: 50px 20px 30px;
+      position: relative;
+color: white;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-content h3 {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .email-form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      max-width: 400px;
+    }
+
+    .email-form input[type="email"] {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid white;
+      border-radius: 6px;
+      background-color: transparent;
+      color: white;
+      font-size: 16px;
+    }
+
+    .email-form button {
+      padding: 12px 20px;
+      background-color: transparent;
+      border: 1px solid white;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .email-form button i {
+      pointer-events: none;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #2e1d00;
+      margin-top: 50px;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #cfcfcf;
+      flex-wrap: wrap;
+    }
+
+    .social-icons a {
+      color: white;
+      margin-left: 65px;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    .social-icons a:hover {
+      color: #aaaaaa;
+    }
+
+    @media (max-width: 600px) {
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .social-icons {
+        margin-top: 10px;
+      }
+    }
+
+.search-bar {
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 60px;
+  background: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+.search-bar input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 200px;
+}
+
+.search-bar button {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background: #222;
+}
+
+#wa-floating-button{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    background-color: #25D366; /* color WhatsApp */
+    text-decoration: none;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+  #wa-floating-button:hover{ transform: translateY(-4px); box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
+  #wa-floating-button svg{ width: 34px; height: 34px; fill: #fff; }
+
+  /* Ajustes en pantallas pequeñas */
+  @media (max-width: 420px){
+    #wa-floating-button{ right: 14px; bottom: 14px; width: 56px; height: 56px; }
+    #wa-floating-button svg{ width:28px; height:28px; }
+  }
+.top-banner {
+  background-color: #1f1400;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  position: fixed; /* 🔹 cambia de relative a fixed */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100; /* 🔹 superior al header */
+    }
+
+    .top-banner .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      padding: 0 15px;
+    }
+
+    .arrow.left {
+      left: 0;
+    }
+
+    .arrow.right {
+      right: 0;
+    }
+
+
+    .producto-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      max-width: 1200px;
+      margin: 60px auto;
+      gap: 60px;
+      padding: 0 20px;
+    }
+
+    /* ------------------ IMAGEN ------------------ */
+    .producto-imagen {
+      flex: 1 1 550px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .producto-imagen img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    /* ------------------ INFO ------------------ */
+    .producto-info {
+      flex: 1 1 350px;
+      min-width: 320px;
+    }
+
+    .producto-info h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 28px;
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .marca {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 5px;
+    }
+
+    .precio {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 12px;
+      margin-bottom: 20px;
+    }
+
+    /* ------------------ CANTIDAD ------------------ */
+    .cantidad {
+      margin-bottom: 20px;
+    }
+
+    .cantidad label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .cantidad-controles {
+      display: flex;
+      align-items: center;
+      border: 1px solid #A4A89C;
+      border-radius: 4px;
+      width: fit-content;
+    }
+
+    .cantidad-controles button {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: #2E3A2B;
+    }
+
+    .cantidad-controles input {
+      width: 50px;
+      border: none;
+      text-align: center;
+      font-size: 16px;
+      color: #2E3A2B;
+      background-color: transparent;
+    }
+
+    /* ------------------ BOTONES ------------------ */
+    .botones {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .shopify-payment-button__button {
+      padding: 12px;
+      border: 1px solid #3D4C38;
+      border-radius: 4px;
+      background-color: transparent;
+      cursor: pointer;
+      font-size: 15px;
+      color: #2E3A2B;
+      transition: all 0.2s ease;
+    }
+
+    .shopify-payment-button__button:hover {
+      background-color: #E5E8E1;
+    }
+
+    .btn-comprar {
+      background-color: #3D4C38;
+      color: white;
+      border: none;
+    }
+
+    .btn-comprar:hover {
+      background-color: #2E3A2B;
+    }
+
+    /* ------------------ DESCRIPCIÓN ------------------ */
+    .descripcion {
+      color: #555;
+      font-size: 15px;
+    }
+
+    /* ------------------ RESPONSIVE ------------------ */
+    @media (max-width: 900px) {
+      .producto-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .producto-info {
+        text-align: center;
+      }
+
+      .botones {
+        align-items: center;
+      }
+    }
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 180px; /* más espacio en móvil */
+  }
+}
+
+#cart-count {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background-color: #e63946;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+.iconos {
+ position: relative;
+display: inline-block;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.pulse {
+  animation: pulse 0.3s ease;
+}
+
+#mini-cart {
+  display: none;
+  position: absolute;
+  top: 40px; /* justo debajo del icono */
+  right: 0;
+  width: 280px;
+  background-color: #fff;
+  color: #2E3A2B;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  padding: 16px;
+  z-index: 2000;
+}
+
+#mini-cart h4 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+#mini-cart .item-name {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+#mini-cart button {
+  padding: 10px 12px;
+  margin: 4px 0;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#mini-cart .btn-pagar {
+  background-color: #3E4E35;
+  color: #fff;
+}
+
+#mini-cart .btn-seguir {
+  background-color: #f0f0f0;
+  color: #2E3A2B;
+}
+
+#mini-cart .btn-pagar:hover {
+  background-color: #4e6145;
+}
+
+#mini-cart .btn-seguir:hover {
+  background-color: #e0e0e0;
+}
+
+.carrito-vacio {
+  text-align: center;
+  padding: 100px 20px;
+  font-family: 'Georgia', serif;
+  color: #2E3A2B;
+}
+
+.carrito-vacio h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+
+.btn-seguir {
+  display: inline-block;
+  background-color: #3E4E35;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-seguir:hover {
+  background-color: #4e6145;
+}
+
+.cuenta-texto {
+  margin-top: 40px;
+  color: #3a3a3a;
+  font-size: 1rem;
+}
+
+.login-link {
+  color: #3E4E35;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.login-link:hover {
+  text-decoration: none;
+}
+
+
+  </style>
+</head>
+<body>
+<div class="top-banner">
+    <div class="arrow left" onclick="changeMessage(-1)">&#8249;</div>
+    <div id="banner-text">VUELVE A LO NATURAL</div>
+    <div class="arrow right" onclick="changeMessage(1)">&#8250;</div>
+  </div>
+<header>
+  <div class="header-left">
+    <div class="logo">
+      <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="/DeLaVilla" class="active">Inicio</a></li>
+        <li><a href="/DeLaVilla/pages/productos.html">Catálogo</a></li>
+        <li><a href="/DeLaVilla/pages/galeria.html">Galería</a></li>
+        <li><a href="/DeLaVilla/pages/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+
+<div class="icons">
+  <!-- 🔍 Icono de búsqueda -->
+  <a href="#" id="search-toggle" title="Buscar">
+    <i class="fas fa-search"></i>
+  </a>
+
+  <!-- 🧭 Barra de búsqueda oculta -->
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="search-input" placeholder="Buscar productos..." />
+    <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
+  </div>
+
+  <!-- 👤 Ícono de usuario -->
+  <a href="/DeLaVilla/pages/login.html" title="Mi cuenta">
+    <i class="fas fa-user"></i>
+  </a>
+
+  <!-- 🛍 Ícono de carrito -->
+  <a href="/DeLaVilla/pages/cart.html" title="Carrito de compras">
+    <i class="fas fa-shopping-bag"></i>
+    <span id="cart-count">0</span>
+  </a>
+
+  <div id="mini-cart">
+    <h4>Artículo agregado a tu carrito</h4>
+    <div class="item-name" id="mini-cart-item">Producto</div>
+    <button class="btn-pagar" id="btn-pagar">Pagar pedido (0)</button>
+    <button class="btn-seguir" id="btn-seguir">Seguir comprando</button>
+  </div>
+</div>
+
+
+</div>
+</header>
+
+<section class="carrito-vacio">
+  <h1>Tu carrito está vacío</h1>
+
+  <a href="index.html" class="btn-seguir">Seguir comprando</a>
+
+  <p class="cuenta-texto">
+    ¿Tienes una cuenta?<br>
+    <a href="login.html" class="login-link">Inicia sesión</a> para finalizar tus compras con mayor rapidez.
+  </p>
+</section>
+  <footer>
+    <div class="footer-content">
+      <h3>Se el primero en recibir nuestras noticias</h3>
+      <form class="email-form">
+        <input type="email" placeholder="Correo electrónico" required>
+        <button type="submit"><i class="fas fa-arrow-right"></i></button>
+      </form>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2025, DeLaVilla</div>
+      <div class="social-icons">
+        <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
+      </div>
+    </div>
+  </footer>
+    
+<script>
+  // Mostrar / ocultar barra de búsqueda
+  document.getElementById("search-toggle").addEventListener("click", function(e) {
+    e.preventDefault();
+    const bar = document.getElementById("search-bar");
+    bar.style.display = (bar.style.display === "block") ? "none" : "block";
+    document.getElementById("search-input").focus();
+  });
+
+  // Productos disponibles
+  const productos = ["pollo", "miel", "huevos", "cubeta de huevos"];
+
+  // Evento al hacer clic en buscar
+  document.getElementById("search-btn").addEventListener("click", function() {
+    const keyword = document.getElementById("search-input").value.trim().toLowerCase();
+    if (!keyword) return;
+
+    // Verificar si el producto existe
+    const encontrado = productos.find(p => keyword.includes(p) || p.includes(keyword));
+
+    if (encontrado) {
+      // Redirigir con parámetro de búsqueda
+      window.location.href = `productos.html?search=${encodeURIComponent(keyword)}`;
+    } else {
+      alert("❌ Producto no encontrado. Intenta con: pollo, miel o huevos.");
+    }
+  });
+</script>
+<script>
+(function(){
+  // CONFIGURA AQUÍ tu número en formato internacional (sin + ni espacios)
+  var waNumber = '573202293640'; // <- reemplázalo por tu número
+
+  // Mensaje predefinido (opcional). Cámbialo o déjalo vacío ''.
+  var prefilledMessage = encodeURIComponent('Hola 👋, quiero información sobre sus productos/servicios.');
+
+  // Elegir URL según dispositivo (móvil usa wa.me, escritorio usa web.whatsapp.com)
+  var isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  var hrefBase = isMobile ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
+  var href = hrefBase + waNumber + (prefilledMessage ? (isMobile ? '?text=' + prefilledMessage : '&text=' + prefilledMessage) : '');
+
+  // Crear enlace
+  var a = document.createElement('a');
+  a.href = href;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  a.id = 'wa-floating-button';
+  a.setAttribute('aria-label', 'Contactar por WhatsApp');
+  a.title = 'Contáctanos por WhatsApp';
+
+  // Icono (SVG de WhatsApp)
+  a.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp" style="width:34px; height:34px;">';
+
+  document.addEventListener('DOMContentLoaded', function(){
+    // Añadir al body
+    document.body.appendChild(a);
+  });
+})();
+</script>
+    <script>
+    const messages = [
+      "VUELVE A LO NATURAL",
+      "ALIMENTACIÓN AGROECOLÓGICA",
+      "CONSUMO RESPONSABLE",
+      "PRODUCTOS LOCALES Y ARTESANALES"
+    ];
+
+    let currentIndex = 0;
+    const bannerText = document.getElementById("banner-text");
+
+    function changeMessage(direction) {
+      currentIndex = (currentIndex + direction + messages.length) % messages.length;
+      bannerText.textContent = messages[currentIndex];
+    }
+
+    // 🔄 Cambio automático cada 5 segundos
+    setInterval(() => {
+      changeMessage(1);
+    }, 5000);
+  </script>
+
+  <script>
+    const menos = document.getElementById('menos');
+    const mas = document.getElementById('mas');
+    const cantidad = document.getElementById('cantidad');
+
+    menos.addEventListener('click', () => {
+      let val = parseInt(cantidad.value);
+      if (val > 1) cantidad.value = val - 1;
+    });
+
+    mas.addEventListener('click', () => {
+      cantidad.value = parseInt(cantidad.value) + 1;
+    });
+  </script>
+
+<script>
+/* ----------------------------
+  Carrito centralizado (UN SOLO SCRIPT)
+   - Usa key "carrito" en localStorage
+   - Selecciones acorde a tu HTML actual:
+     boton agregar: id="agregar-carrito"
+     boton comprar ahora: id="buy-now"
+     input cantidad: id="cantidad"
+     contador header: id="cart-count" (existe en tu header)
+     enlace carrito (anchor) ya apunta a /pages/cart.html en tu header
+---------------------------- */
+
+(function(){
+  // Selectores (coinciden con tu HTML)
+  const btnAgregar = document.getElementById('agregar-carrito');
+  const btnComprar = document.getElementById('buy-now');
+  const cantidadInput = document.getElementById('cantidad');
+  const cartCountEl = document.getElementById('cart-count');
+  const cartLink = document.querySelector('a[title="Carrito de compras"], a[href*="cart"], a[href*="cart.html"]') || document.querySelector('a[title="Carrito de compras"]');
+
+  // Si no existe el contador en el header, intenta buscar por otros selectores comunes:
+  if (!cartCountEl) {
+    // crea el span dentro del enlace del carrito si no existe
+    if (cartLink) {
+      const span = document.createElement('span');
+      span.id = 'cart-count';
+      span.textContent = '0';
+      span.style.position = 'absolute';
+      span.style.top = '8px';
+      span.style.right = '10px';
+      span.style.backgroundColor = '#e63946';
+      span.style.color = 'white';
+      span.style.fontSize = '12px';
+      span.style.fontWeight = '700';
+      span.style.borderRadius = '50%';
+      span.style.padding = '2px 6px';
+      cartLink.style.position = 'relative';
+      cartLink.appendChild(span);
+    }
+  }
+
+  // Un único carrito en localStorage
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+  // Actualiza el contador mostrado
+  function actualizarContadorVisual() {
+    const total = carrito.reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
+    const el = document.getElementById('cart-count');
+    if (el) el.textContent = total;
+  }
+
+  // Guarda carrito en localStorage
+  function guardarCarrito() {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    actualizarContadorVisual();
+  }
+
+  // Añadir producto (evita duplicados por id)
+  function añadirProducto(producto) {
+    const existente = carrito.find(p => p.id === producto.id);
+    if (existente) {
+      existente.cantidad = Number(existente.cantidad) + Number(producto.cantidad);
+    } else {
+      carrito.push(producto);
+    }
+    guardarCarrito();
+  }
+
+  // Inicializa contador visual al cargar
+  actualizarContadorVisual();
+
+  // Evento: agregar al carrito
+  if (btnAgregar) {
+    btnAgregar.addEventListener('click', function(e){
+      // Si el botón es un submit dentro de un form, prevenir submit
+      if (e) e.preventDefault();
+
+      const qty = cantidadInput ? Math.max(1, parseInt(cantidadInput.value) || 1) : 1;
+
+      const producto = {
+        id: 'cubeta-huevos',            // id único por producto
+        nombre: 'Cubeta de Huevos',
+        precio: 32000,
+        cantidad: qty,
+        imagen: 'https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&width=990'
+      };
+
+      añadirProducto(producto);
+
+      // Feedback visual
+      const el = document.getElementById('cart-count');
+      if (el) {
+        el.classList.add('pulse');
+        setTimeout(() => el.classList.remove('pulse'), 350);
+      }
+
+      // Opcional: pequeño mensaje al usuario
+      // alert(`${producto.nombre} agregado (${qty})`);
+    });
+  }
+
+  // Evento: comprar ahora -> añade (si hace falta) y redirige al carrito
+  if (btnComprar) {
+    btnComprar.addEventListener('click', function(e){
+      if (e) e.preventDefault();
+      const qty = cantidadInput ? Math.max(1, parseInt(cantidadInput.value) || 1) : 1;
+      const producto = {
+        id: 'cubeta-huevos',
+        nombre: 'Cubeta de Huevos',
+        precio: 32000,
+        cantidad: qty,
+        imagen: 'https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&width=990'
+      };
+
+      añadirProducto(producto);
+
+      // Redirigir al carrito real (ajusta la URL si es otra)
+      window.location.href = '/DeLaVilla/pages/carrito.html';
+    });
+  }
+
+  // Hacer clic en el icono del header también redirige (asegura que exista)
+  if (cartLink && !cartLink.dataset.hasCartHandler) {
+    cartLink.addEventListener('click', function(e){
+      // Dejar que el enlace haga su navegación normal (o forzar a tu ruta)
+      // Si quieres forzar:
+      // e.preventDefault();
+      // window.location.href = '/DeLaVilla/pages/carrito.html';
+    });
+    cartLink.dataset.hasCartHandler = '1';
+  }
+
+})();
+</script>
+
+<script>
+  // Función para mostrar mini-cart
+  function mostrarMiniCart(nombreProducto) {
+    const miniCart = document.getElementById('mini-cart');
+    const itemName = document.getElementById('mini-cart-item');
+    const btnPagar = document.getElementById('btn-pagar');
+
+    itemName.textContent = nombreProducto;
+
+    // Contador de productos
+    let cantidad = parseInt(localStorage.getItem('cartCount') || '0') + 1;
+    localStorage.setItem('cartCount', cantidad);
+    document.getElementById('cart-count').textContent = cantidad;
+
+    btnPagar.textContent = `Pagar pedido (${cantidad})`;
+
+    // Mostrar mini-cart
+    miniCart.style.display = 'block';
+
+    // Ocultar automáticamente después de 4 segundos
+    clearTimeout(miniCart.timeout);
+    miniCart.timeout = setTimeout(() => {
+      miniCart.style.display = 'none';
+    }, 4000);
+  }
+
+  // Listener para el botón "Agregar al carrito"
+  const btnAgregar = document.getElementById('agregar-carrito');
+  if (btnAgregar) {
+    btnAgregar.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const cantidadInput = document.getElementById('cantidad');
+      const qty = cantidadInput ? Math.max(1, parseInt(cantidadInput.value) || 1) : 1;
+
+      const producto = {
+        id: 'cubeta-huevos',
+        nombre: 'Cubeta de Huevos',
+        precio: 32000,
+        cantidad: qty
+      };
+
+      // Aquí llamamos a la función que muestra el mini-cart
+      mostrarMiniCart(producto.nombre);
+    });
+  }
+
+  // Botón seguir comprando
+  const btnSeguir = document.getElementById('btn-seguir');
+  if (btnSeguir) {
+    btnSeguir.addEventListener('click', () => {
+      document.getElementById('mini-cart').style.display = 'none';
+    });
+  }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btnAgregar = document.getElementById('agregar-carrito');
+  const cantidadInput = document.getElementById('cantidad');
+  const cartCountEl = document.getElementById('cart-count');
+  const miniCart = document.getElementById('mini-cart');
+  const miniCartItem = document.getElementById('mini-cart-item');
+  const btnSeguir = document.getElementById('btn-seguir');
+  const btnPagar = document.getElementById('btn-pagar');
+  const cartIconLink = document.querySelector('.icons a[href*="cart"]');
+
+  let cartCount = 0;
+  let hoverTimeout;
+
+  function actualizarMiniCart(nombreProducto) {
+    cartCountEl.textContent = cartCount;
+    miniCartItem.textContent = nombreProducto;
+    btnPagar.textContent = `Pagar pedido (${cartCount})`;
+  }
+
+  function mostrarMiniCart(nombreProducto) {
+    actualizarMiniCart(nombreProducto);
+    miniCart.style.display = 'block';
+    clearTimeout(hoverTimeout);
+  }
+
+  function ocultarMiniCart() {
+    hoverTimeout = setTimeout(() => {
+      miniCart.style.display = 'none';
+    }, 300); // pequeño retraso para evitar cierres accidentales
+  }
+
+  if (cartIconLink) {
+    // Hover sobre icono
+    cartIconLink.addEventListener('mouseenter', () => mostrarMiniCart('Cubeta de Huevos'));
+    cartIconLink.addEventListener('mouseleave', ocultarMiniCart);
+
+    // Hover sobre mini-cart
+    miniCart.addEventListener('mouseenter', () => mostrarMiniCart('Cubeta de Huevos'));
+    miniCart.addEventListener('mouseleave', ocultarMiniCart);
+  }
+
+  // Click en agregar al carrito
+  if (btnAgregar) {
+    btnAgregar.addEventListener('click', e => {
+      e.preventDefault();
+      const cantidad = cantidadInput ? Math.max(1, parseInt(cantidadInput.value)) : 1;
+      cartCount += cantidad;
+      mostrarMiniCart('Cubeta de Huevos');
+
+      // Animación del contador
+      cartCountEl.classList.add('pulse');
+      setTimeout(() => cartCountEl.classList.remove('pulse'), 350);
+    });
+  }
+
+  // Botón seguir comprando
+  if (btnSeguir) {
+    btnSeguir.addEventListener('click', () => miniCart.style.display = 'none');
+  }
+});
+</script>
+
+<section id="carrito-contenedor"></section>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  const contenedor = document.getElementById('carrito-contenedor');
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+  if(carrito.length === 0){
+    contenedor.innerHTML = `
+      <div class="carrito-vacio">
+        <h1>Tu carrito está vacío</h1>
+        <a href="/DeLaVilla/pages/cubeta-de-huevos.html" class="btn-seguir">Seguir comprando</a>
+      </div>
+    `;
+  } else {
+    let html = '<h2>Mi Carrito</h2>';
+    carrito.forEach(item=>{
+      html += `
+        <div class="item-carrito" style="display:flex; align-items:center; margin-bottom:20px;">
+          <img src="${item.imagen}" style="width:100px; margin-right:20px;">
+          <div>
+            <h3>${item.nombre}</h3>
+            <p>Precio: $${item.precio}</p>
+            <p>Cantidad: ${item.cantidad}</p>
+            <p>Subtotal: $${item.precio * item.cantidad}</p>
+          </div>
+        </div>
+      `;
+    });
+    const total = carrito.reduce((acc, p) => acc + p.precio * p.cantidad, 0);
+    html += `<h3>Total: $${total}</h3>`;
+    html += `<button id="vaciar-carrito">Vaciar carrito</button>`;
+    contenedor.innerHTML = html;
+
+    // Vaciar carrito
+    document.getElementById('vaciar-carrito').addEventListener('click', ()=>{
+      localStorage.removeItem('carrito');
+      location.reload();
+    });
+  }
+
+  // Actualizar contador del header
+  const cartCountEl = document.getElementById('cart-count');
+  if(cartCountEl){
+    const totalCantidad = carrito.reduce((acc, p) => acc + p.cantidad, 0);
+    cartCountEl.textContent = totalCantidad;
+  }
+});
+</script>
+
+
+
+
+</body>
+</html>
