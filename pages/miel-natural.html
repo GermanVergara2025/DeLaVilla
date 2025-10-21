@@ -813,7 +813,7 @@ display: inline-block;
       const qty = cantidadInput ? Math.max(1, parseInt(cantidadInput.value) || 1) : 1;
 
       const producto = {
-        id: 'miel-natural',            // id único por producto
+        id: 'miel',            // id único por producto
         nombre: 'Miel natural',
         precio: 30000,
         cantidad: qty,
@@ -840,11 +840,11 @@ display: inline-block;
       if (e) e.preventDefault();
       const qty = cantidadInput ? Math.max(1, parseInt(cantidadInput.value) || 1) : 1;
       const producto = {
-        id: 'miel-natural',
+        id: 'miel',
         nombre: 'Miel Natural',
         precio: 30000,
         cantidad: qty,
-        imagen: 'https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&width=990'
+        imagen: 'https://delavillaa.myshopify.com/cdn/shop/files/propiedades-miel.jpg?v=1758305857&width=990'
       };
 
       añadirProducto(producto);
