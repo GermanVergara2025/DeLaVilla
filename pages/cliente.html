@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Área del Cliente</title>
+</head>
+<body>
+  <h1>Bienvenido Cliente</h1>
+  <button id="logoutBtn">Cerrar sesión</button>
+
+  <script type="module">
+    import { protectPage, logout } from "./js/auth.js";
+    protectPage("cliente");
+
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+  </script>
+</body>
+</html>
