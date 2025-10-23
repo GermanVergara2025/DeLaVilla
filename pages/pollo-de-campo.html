@@ -630,22 +630,65 @@ display: inline-block;
   </section>
 </main>  
   <footer>
-    <div class="footer-content">
-      <h3>Se el primero en recibir nuestras noticias</h3>
-      <form class="email-form">
-        <input type="email" placeholder="Correo electrónico" required>
-        <button type="submit"><i class="fas fa-arrow-right"></i></button>
-      </form>
-    </div>
+  <div class="footer-content">
+    <h3>Se el primero en recibir nuestras noticias</h3>
+    <form class="email-form" id="subscribeForm" action="https://formspree.io/f/xnngyapn" method="POST">
+      <input type="email" name="email" placeholder="Correo electrónico" required>
+      <button type="submit"><i class="fas fa-arrow-right"></i></button>
+    </form>
+    <p id="subscribeMessage" class="subscribe-message" style="display:none;"></p>
+  </div>
 
-    <div class="footer-bottom">
-      <div>© 2025, DeLaVilla</div>
-      <div class="social-icons">
-        <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
-        <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
-      </div>
+  <div class="footer-bottom">
+    <div>© 2025, DeLaVilla</div>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
+      <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
     </div>
-  </footer>
+  </div>
+</footer>
+
+<!-- === SCRIPT para integración con Formspree === -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("subscribeForm");
+  const message = document.getElementById("subscribeMessage");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        message.textContent = "✨ ¡Gracias por suscribirte! Te mantendremos al tanto de nuestras novedades ☕";
+        message.style.color = "#d4a373";
+        message.style.display = "block";
+        form.reset();
+      } else {
+        message.textContent = "❌ Ocurrió un error al enviar tu suscripción. Inténtalo nuevamente.";
+        message.style.color = "#ffbaba";
+        message.style.display = "block";
+      }
+
+      // Oculta el mensaje suavemente después de 5 segundos
+      setTimeout(() => {
+        message.style.opacity = "0";
+      }, 5000);
+
+    } catch (error) {
+      message.textContent = "⚠️ Error de conexión. Por favor, revisa tu red.";
+      message.style.color = "#ffbaba";
+      message.style.display = "block";
+    }
+  });
+});
+</script>
     
 <script>
   // Mostrar / ocultar barra de búsqueda
