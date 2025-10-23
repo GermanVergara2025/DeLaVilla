@@ -821,6 +821,7 @@ display: inline-block;
   <!-- 👤 Ícono de usuario -->
   <a href="/DeLaVilla/pages/login.html" title="Mi cuenta">
     <i class="fas fa-user"></i>
+    
   </a>
 
   <!-- 🛍 Ícono de carrito -->
@@ -1089,6 +1090,33 @@ display: inline-block;
     }, 4000);
   }
  </script>
+<script type="module">
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { logout } from "/DeLaVilla/js/auth.js";
+
+  const firebaseConfig = {
+    apiKey: "TU_API_KEY",
+    authDomain: "TU_PROYECTO.firebaseapp.com",
+    projectId: "TU_PROYECTO"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    const userIcon = document.querySelector('.fa-user').parentElement;
+    if (user) {
+      userIcon.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
+      userIcon.title = "Cerrar sesión";
+      userIcon.addEventListener("click", (e) => {
+        e.preventDefault();
+        logout();
+      });
+    } else {
+      userIcon.setAttribute("href", "/DeLaVilla/pages/login.html");
+    }
+  });
+</script>
 
 </body>
 </html>
