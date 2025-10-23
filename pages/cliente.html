@@ -583,6 +583,27 @@ display: inline-block;
 }
 
 
+    .cliente-box {
+      background: #fff;
+      padding: 60px 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .cliente-box h1 {
+      font-size: 1.8rem;
+      color: #3E4E35;
+      margin-bottom: 20px;
+    }
+
+    .cliente-box p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 35px;
+    }
+    
   </style>
 </head>
 <body>
@@ -641,10 +662,20 @@ display: inline-block;
 
 </div>
 </header>
-  <main style="flex: 1;">
-  <h1>Bienvenido Cliente</h1>
-  <button id="logoutBtn">Cerrar sesión</button>
-    </main>
+  <main>
+    <div class="cliente-box">
+      <h1>Bienvenido a tu cuenta, Cliente</h1>
+      <p>Aquí puedes acceder a nuestro catálogo y seguir tus compras.</p>
+      <div class="botones">
+        <button class="btn btn-productos" onclick="window.location.href='/DeLaVilla/pages/productos.html'">
+          <i class="fas fa-store"></i> Ver productos
+        </button>
+        <button id="logoutBtn" class="btn btn-logout">
+          <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </main>
 
     <footer>
     <div class="footer-content">
