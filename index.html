@@ -821,6 +821,8 @@ display: inline-block;
   <!-- 👤 Ícono de usuario -->
   <a href="/DeLaVilla/pages/login.html" title="Mi cuenta">
     <i class="fas fa-user"></i>
+    <span id="nombreUsuario"></span>
+
     
   </a>
 
@@ -1116,6 +1118,20 @@ display: inline-block;
       userIcon.setAttribute("href", "/DeLaVilla/pages/login.html");
     }
   });
+
+  onAuthStateChanged(auth, (user) => {
+  const nombre = document.getElementById("nombreUsuario");
+  if (user) {
+    nombre.textContent = user.email;
+  } else {
+    nombre.textContent = "";
+  }
+});
+
+</script>
+<script type="module">
+  import { updateUserIcon } from "/DeLaVilla/js/auth.js";
+  updateUserIcon();
 </script>
 
 </body>
