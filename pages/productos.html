@@ -547,6 +547,7 @@ display: inline-block;
   <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
     <i class="fas fa-shopping-bag"></i>
     <span id="cart-count">0</span>
+        <span id="nombreUsuario"></span>
   </a>
 
   <div id="mini-cart">
@@ -867,6 +868,46 @@ fadeElements.forEach(el => observer.observe(el));
     }
   });
 </script>
+<script type="module">
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { logout } from "/DeLaVilla/js/auth.js";
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKWj1As-nnkcX8aZ7B0AbtzZoQ-56qTjc",
+    authDomain: "delavilla-43a2a.firebaseapp.com",
+    projectId: "delavilla-43a2a",
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    const userIcon = document.querySelector('.fa-user').parentElement;
+    if (user) {
+      userIcon.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
+      userIcon.title = "Cerrar sesión";
+      userIcon.addEventListener("click", (e) => {
+        e.preventDefault();
+        logout();
+      });
+    } else {
+      userIcon.setAttribute("href", "/DeLaVilla/pages/login.html");
+    }
+  });
+
+  onAuthStateChanged(auth, (user) => {
+  const nombre = document.getElementById("nombreUsuario");
+  if (user) {
+    nombre.textContent = user.email;
+  } else {
+    nombre.textContent = "";
+  }
+});
+
+</script>
+<script type="module">
+  import { updateUserIcon } from "/DeLaVilla/js/auth.js";
+  updateUserIcon();
+</script>
 </body>
 </html>
