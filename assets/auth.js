@@ -42,3 +42,28 @@ export function protectPage(role = "any") {
     }
   });
 }
+
+// --- NUEVO: Función para actualizar el ícono de usuario del header ---
+export function updateUserIcon() {
+  const auth = getAuth(app);
+  const userLink = document.querySelector('.fa-user')?.parentElement;
+  if (!userLink) return; // Si no hay ícono, no hace nada
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Mostrar el ícono de cerrar sesión
+      userLink.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
+      userLink.title = "Cerrar sesión";
+      userLink.href = "#";
+      userLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        logout();
+      });
+    } else {
+      // Si no hay usuario logueado, mostrar el ícono normal
+      userLink.innerHTML = '<i class="fas fa-user"></i>';
+      userLink.title = "Iniciar sesión";
+      userLink.href = "/DeLaVilla/pages/login.html";
+    }
+  });
+}
