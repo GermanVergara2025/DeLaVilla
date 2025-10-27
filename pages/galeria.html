@@ -1,9 +1,292 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Galería - De la Villa</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plantilla Base - De La Villa</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+  /* ----------- ESTILOS GLOBALES ----------- */
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #1e1200;
+    color: white;
+    overflow-x: hidden;
+  }
+
+  /* ----------- ANIMACIONES ----------- */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hover-zoom {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-zoom:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ----------- BANNER SUPERIOR ----------- */
+  .top-banner {
+    background-color: #1f1400;
+    color: white;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1100;
+  }
+
+  .top-banner .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    padding: 0 15px;
+  }
+  .arrow.left { left: 0; }
+  .arrow.right { right: 0; }
+
+  /* ----------- HEADER ----------- */
+  header {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: #1e1200;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 60px;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+  }
+
+  .logo img {
+    height: 60px;
+    transition: transform 0.3s ease;
+  }
+  .logo img:hover {
+    transform: scale(1.05);
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: #f0f0f0;
+    font-weight: 400;
+    transition: color 0.3s ease;
+  }
+  nav a:hover,
+  nav a.active {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  .icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .icons a {
+    color: #f0f0f0;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+  .icons a:hover i {
+    transform: scale(1.2);
+    color: #ffffff;
+  }
+
+  .search-bar {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 60px;
+    background: #f9f9f9;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 100;
+  }
+  .search-bar input {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 200px;
+  }
+  .search-bar button {
+    background: #444;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .search-bar button:hover {
+    background: #222;
+  }
+
+  /* ----------- FOOTER ----------- */
+  footer {
+    background-color: #1f1400;
+    padding: 50px 20px 30px;
+    position: relative;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-content h3 {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .email-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    max-width: 400px;
+  }
+
+  .email-form input[type="email"] {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid white;
+    border-radius: 6px;
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+  }
+
+  .email-form button {
+    padding: 12px 20px;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s;
+  }
+  .email-form button:hover {
+    background-color: white;
+    color: #1f1400;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid #2e1d00;
+    margin-top: 50px;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #cfcfcf;
+    flex-wrap: wrap;
+  }
+
+  .social-icons a {
+    color: white;
+    margin-left: 65px;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .social-icons a:hover {
+    color: #aaaaaa;
+  }
+
+  @media (max-width: 600px) {
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .social-icons {
+      margin-top: 10px;
+    }
+  }
+  </style>
+</head>
+
+<body>
+
+  <!-- 🔸 BANNER -->
+  <div class="top-banner fade-in">
+    <div class="arrow left" onclick="changeMessage(-1)">&#8249;</div>
+    <div id="banner-text">VUELVE A LO NATURAL</div>
+    <div class="arrow right" onclick="changeMessage(1)">&#8250;</div>
+  </div>
+
+  <!-- 🔸 HEADER -->
+  <header class="fade-in">
+    <div class="header-left">
+      <div class="logo">
+        <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="/DeLaVilla" class="active">Inicio</a></li>
+          <li><a href="/DeLaVilla/pages/productos.html">Catálogo</a></li>
+          <li><a href="/DeLaVilla/pages/galeria.html">Galería</a></li>
+          <li><a href="/DeLaVilla/pages/contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="icons">
+      <a href="#" id="search-toggle" title="Buscar"><i class="fas fa-search"></i></a>
+      <div class="search-bar" id="search-bar">
+        <input type="text" id="search-input" placeholder="Buscar productos..." />
+        <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
+      </div>
+      <a href="/DeLaVilla/pages/login.html" title="Mi cuenta"><i class="fas fa-user"></i></a>
+      <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
+        <i class="fas fa-shopping-bag"></i>
+        <span id="cart-count">0</span>
+      </a>
+    </div>
+  </header>
 
 <!-- Fuente y estilos -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -297,6 +580,65 @@ const observer = new IntersectionObserver(entries => {
 },{ threshold: 0.2 });
 elements.forEach(el => observer.observe(el));
 </script>
+
+</body>
+</html>
+
+
+  <!-- 🔸 FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <h3>Se el primero en recibir nuestras noticias</h3>
+      <form class="email-form" id="subscribeForm" action="https://formspree.io/f/xnngyapn" method="POST">
+        <input type="email" name="email" placeholder="Correo electrónico" required>
+        <button type="submit"><i class="fas fa-arrow-right"></i></button>
+      </form>
+      <p id="subscribeMessage" class="subscribe-message" style="display:none;"></p>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2025, DeLaVilla</div>
+      <div class="social-icons">
+        <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 🔸 SCRIPTS -->
+  <script>
+  // Cambiar mensajes del banner
+  const messages = [
+    "VUELVE A LO NATURAL",
+    "ALIMENTACIÓN AGROECOLÓGICA",
+    "CONSUMO RESPONSABLE",
+    "PRODUCTOS LOCALES Y ARTESANALES"
+  ];
+  let currentIndex = 0;
+  const bannerText = document.getElementById("banner-text");
+  function changeMessage(direction) {
+    currentIndex = (currentIndex + direction + messages.length) % messages.length;
+    bannerText.textContent = messages[currentIndex];
+  }
+  setInterval(() => { changeMessage(1); }, 5000);
+
+  // Toggle barra de búsqueda
+  document.getElementById("search-toggle").addEventListener("click", function(e) {
+    e.preventDefault();
+    const bar = document.getElementById("search-bar");
+    bar.style.display = (bar.style.display === "block") ? "none" : "block";
+    document.getElementById("search-input").focus();
+  });
+
+  // Fade-in scroll
+  const fadeElements = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  fadeElements.forEach(el => observer.observe(el));
+  </script>
 
 </body>
 </html>
