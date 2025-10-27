@@ -1,868 +1,247 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel administrador - DeLaVilla</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard DeLaVilla</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    
-    /* Estilos generales */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
     body {
- display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #FAFAF4;
-  font-family: 'Inter', sans-serif;
-  color: #2E3A2B;
-  padding-top: 130px;
-    }
-
-
-    .fade-up {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Efecto hover general */
-    .hover-zoom:hover {
-      transform: scale(1.03);
-      transition: transform 0.3s ease;
-    }
-
-    /* Header */
-header {
- position: fixed;
-  top: 50px;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background-color: #1e1200;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 60px;
-  z-index: 1000;
-  box-sizing: border-box;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 50px; /* espacio entre logo y menú */
-}
-
-    /* Logo */
-    .logo img {
-      height: 60px;
-    }
-
-    /* Menú de navegación */
-    nav ul {
-  list-style: none;
-  display: flex;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-}
-
-nav a {
-  text-decoration: none;
-  color: #f0f0f0;
-  font-weight: 400;
-  transition: color 0.3s ease;
-}
-
-nav a:hover,
-nav a.active {
-  color: #ffffff;
-  text-decoration: underline;
-}
-
-/* Iconos la derecha */
-.icons {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-position: relative;
-}
-
-.icons a {
-  color: #f0f0f0;
-  text-decoration: none;
-  transition: transform 0.2s ease;
-}
-
-.icons a:hover i {
-  transform: scale(1.2);
-  color: #ffffff;
-}
-
-
-
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        height: auto;
-        padding: 20px;
-      }
-      nav ul {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-
-    footer {
-  width: 100%;
-  background-color: #1f1400;
-  padding: 50px 20px 30px;
-  color: white;
-  margin-top: auto;
-  box-sizing: border-box;
-    }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .footer-content h3 {
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 15px;
-    }
-
-    .email-form {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      max-width: 400px;
+      min-height: 100vh;
+      background-color: #f7f7f7;
     }
 
-    .email-form input[type="email"] {
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background-color: #004d26;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 15px;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: white;
+      display: block;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #007a3d;
+    }
+
+    .sidebar .footer {
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    /* Contenido principal */
+    .main {
       flex: 1;
-      padding: 12px 16px;
-      border: 1px solid white;
-      border-radius: 6px;
-      background-color: transparent;
-      color: white;
-      font-size: 16px;
+      padding: 30px;
+      overflow-y: auto;
     }
 
-    .email-form button {
-      padding: 12px 20px;
-      background-color: transparent;
-      border: 1px solid white;
-      border-radius: 6px;
-      color: white;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    .email-form button i {
-      pointer-events: none;
-    }
-
-    .footer-bottom {
-      border-top: 1px solid #2e1d00;
-      margin-top: 50px;
-      padding-top: 20px;
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 14px;
-      color: #cfcfcf;
-      flex-wrap: wrap;
+      margin-bottom: 30px;
     }
 
-    .social-icons a {
-      color: white;
-      margin-left: 65px;
-      font-size: 18px;
-      text-decoration: none;
+    .header h1 {
+      font-size: 26px;
+      color: #333;
     }
 
-    .social-icons a:hover {
-      color: #aaaaaa;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
     }
 
-    @media (max-width: 600px) {
-      .footer-bottom {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .social-icons {
-        margin-top: 10px;
-      }
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
-.search-bar {
-  display: none;
-  position: absolute;
-  top: 70px;
-  right: 60px;
-  background: #f9f9f9;
-  padding: 8px 12px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  z-index: 100;
-}
-
-.search-bar input {
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 200px;
-}
-
-.search-bar button {
-  background: #444;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.search-bar button:hover {
-  background: #222;
-}
-
-#wa-floating-button{
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    background-color: #25D366; 
-    text-decoration: none;
-    transition: transform 150ms ease, box-shadow 150ms ease;
-  }
-  #wa-floating-button:hover{ transform: translateY(-4px); box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
-  #wa-floating-button svg{ width: 34px; height: 34px; fill: #fff; }
-
-  /* Ajustes en pantallas pequeñas */
-  @media (max-width: 420px){
-    #wa-floating-button{ right: 14px; bottom: 14px; width: 56px; height: 56px; }
-    #wa-floating-button svg{ width:28px; height:28px; }
-  }
-.top-banner {
-  background-color: #1f1400;
-  color: white;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  letter-spacing: 1px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px;
-  position: fixed; 
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1100; 
-    }
-
-    .top-banner .arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 20px;
-      color: white;
-      cursor: pointer;
-      user-select: none;
-      padding: 0 15px;
-    }
-
-    .arrow.left {
-      left: 0;
-    }
-
-    .arrow.right {
-      right: 0;
-    }
-
-
-    .producto-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: flex-start;
-      max-width: 1200px;
-      margin: 60px auto;
-      gap: 60px;
-      padding: 0 20px;
-    }
-
-
-    .producto-imagen {
-      flex: 1 1 550px;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .producto-imagen img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-
-
-    .producto-info {
-      flex: 1 1 350px;
-      min-width: 320px;
-    }
-
-    .producto-info h2 {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 28px;
-      margin: 0;
-      font-weight: 500;
-    }
-
-    .marca {
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 12px;
-      color: #777;
-      margin-bottom: 5px;
-    }
-
-    .precio {
-      font-size: 20px;
-      font-weight: 600;
-      margin-top: 12px;
-      margin-bottom: 20px;
-    }
-
-
-    .cantidad {
-      margin-bottom: 20px;
-    }
-
-    .cantidad label {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 6px;
-    }
-
-    .cantidad-controles {
-      display: flex;
-      align-items: center;
-      border: 1px solid #A4A89C;
-      border-radius: 4px;
-      width: fit-content;
-    }
-
-    .cantidad-controles button {
-      width: 32px;
-      height: 32px;
-      border: none;
-      background: none;
-      font-size: 18px;
-      cursor: pointer;
-      color: #2E3A2B;
-    }
-
-    .cantidad-controles input {
-      width: 50px;
-      border: none;
-      text-align: center;
+    .card h3 {
       font-size: 16px;
-      color: #2E3A2B;
-      background-color: transparent;
+      color: #666;
+      margin-bottom: 8px;
     }
 
-
-    .botones {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 25px;
+    .card p {
+      font-size: 22px;
+      font-weight: bold;
+      color: #004d26;
     }
 
-    .shopify-payment-button__button {
-      padding: 12px;
-      border: 1px solid #3D4C38;
-      border-radius: 4px;
-      background-color: transparent;
-      cursor: pointer;
-      font-size: 15px;
-      color: #2E3A2B;
-      transition: all 0.2s ease;
+    /* Gráficos */
+    .charts {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
     }
 
-    .shopify-payment-button__button:hover {
-      background-color: #E5E8E1;
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
     }
 
-    .btn-comprar {
-      background-color: #3D4C38;
-      color: white;
-      border: none;
+    .chart-container {
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: relative;
+      height: 350px; /* Tamaño fijo para evitar expansión */
     }
-
-    .btn-comprar:hover {
-      background-color: #2E3A2B;
-    }
-
-
-    .descripcion {
-      color: #555;
-      font-size: 15px;
-    }
-
 
     @media (max-width: 900px) {
-      .producto-container {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .producto-info {
-        text-align: center;
-      }
-
-      .botones {
-        align-items: center;
+      .charts {
+        grid-template-columns: 1fr;
       }
     }
-
-@media (max-width: 768px) {
-  body {
-    padding-top: 180px;
-  }
-}
-
-#cart-count {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  background-color: #e63946;
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  border-radius: 50%;
-  padding: 2px 6px;
-}
-
-.iconos {
- position: relative;
-display: inline-block;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
-}
-.pulse {
-  animation: pulse 0.3s ease;
-}
-
-#mini-cart {
-  display: none;
-  position: absolute;
-  top: 40px;
-  right: 0;
-  width: 280px;
-  background-color: #fff;
-  color: #2E3A2B;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  padding: 16px;
-  z-index: 2000;
-}
-
-#mini-cart h4 {
-  margin: 0 0 10px 0;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-#mini-cart .item-name {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 12px;
-}
-
-#mini-cart button {
-  padding: 10px 12px;
-  margin: 4px 0;
-  width: 100%;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-#mini-cart .btn-pagar {
-  background-color: #3E4E35;
-  color: #fff;
-}
-
-#mini-cart .btn-seguir {
-  background-color: #f0f0f0;
-  color: #2E3A2B;
-}
-
-#mini-cart .btn-pagar:hover {
-  background-color: #4e6145;
-}
-
-#mini-cart .btn-seguir:hover {
-  background-color: #e0e0e0;
-}
-
-.carrito-contenedor {
-  text-align: center;
-  padding: 100px 20px;
-  font-family: 'Georgia', serif;
-  color: #2E3A2B;
-}
-
-.carrito-contenedor h1 {
-  font-size: 2rem;
-  font-weight: 500;
-  margin-bottom: 40px;
-}
-
-.btn-seguir {
-  display: inline-block;
-  background-color: #3E4E35;
-  color: #fff;
-  padding: 12px 28px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-
-.btn-seguir:hover {
-  background-color: #4e6145;
-}
-
-.cuenta-texto {
-  margin-top: 40px;
-  color: #3a3a3a;
-  font-size: 1rem;
-}
-
-.login-link {
-  color: #3E4E35;
-  text-decoration: underline;
-  font-weight: 500;
-}
-
-.login-link:hover {
-  text-decoration: none;
-}
-
-
-    .cliente-box {
-      background: #fff;
-      padding: 60px 40px;
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .cliente-box h1 {
-      font-size: 1.8rem;
-      color: #3E4E35;
-      margin-bottom: 20px;
-    }
-
-    .cliente-box p {
-      font-size: 1rem;
-      color: #555;
-      margin-bottom: 35px;
-    }
-    
   </style>
 </head>
 <body>
-  <div class="top-banner">
-    <div class="arrow left" onclick="changeMessage(-1)">&#8249;</div>
-    <div id="banner-text">VUELVE A LO NATURAL</div>
-    <div class="arrow right" onclick="changeMessage(1)">&#8250;</div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <h2>DeLaVilla</h2>
+      <a href="#">📊 Dashboard</a>
+      <a href="#">🛒 Ventas</a>
+      <a href="#">🥚 Productos</a>
+      <a href="#">🚚 Distribución</a>
+      <a href="#">👥 Clientes</a>
+    </div>
+    <div class="footer">
+      © 2025 DeLaVilla
+    </div>
   </div>
-<header>
-  <div class="header-left">
-    <div class="logo">
-      <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
+
+  <!-- Main -->
+  <div class="main">
+    <div class="header">
+      <h1>Panel de Control</h1>
+      <span>👤 Administrador</span>
     </div>
 
-    <nav>
-      <ul>
-        <li><a href="/DeLaVilla" class="active">Inicio</a></li>
-        <li><a href="/DeLaVilla/pages/productos.html">Catálogo</a></li>
-        <li><a href="/DeLaVilla/pages/galeria.html">Galería</a></li>
-        <li><a href="/DeLaVilla/pages/contacto.html">Contacto</a></li>
-      </ul>
-    </nav>
-  </div>
-
-<div class="icons">
-  <!-- Icono de búsqueda -->
-  <a href="#" id="search-toggle" title="Buscar">
-    <i class="fas fa-search"></i>
-  </a>
-
-  <!-- Barra de búsqueda oculta -->
-  <div class="search-bar" id="search-bar">
-    <input type="text" id="search-input" placeholder="Buscar productos..." />
-    <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
-  </div>
-
-  <!-- Ícono de usuario -->
-  <a href="/DeLaVilla/pages/login.html" title="Mi cuenta">
-    <i class="fas fa-user"></i>
-        <span id="nombreUsuario"></span>
-  </a>
-
-  <!-- Ícono de carrito -->
-  <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
-    <i class="fas fa-shopping-bag"></i>
-    <span id="cart-count">0</span>
-  </a>
-
-  <div id="mini-cart">
-    <h4>Artículo agregado a tu carrito</h4>
-    <div class="item-name" id="mini-cart-item">Producto</div>
-    <button class="btn-pagar" id="btn-pagar">Pagar pedido (0)</button>
-    <button class="btn-seguir" id="btn-seguir">Seguir comprando</button>
-  </div>
-</div>
-
-
-</div>
-</header>
-  <main>
-    <div class="cliente-box">
-      <h1>Bienvenido Administrador</h1>
-      <p>Aqui puedes gestionar las publicaciones y los pedidos.</p>
-      <div class="botones">
-        <button class="btn btn-pedidos" onclick="window.location.href='/DeLaVilla/pages/gestion.html'">
-          <i class="fas fa-store"></i> Ver pedidos
-        </button>
-             <button class="btn btn-productos" onclick="window.location.href='/DeLaVilla/pages/productos.html'">
-          <i class="fas fa-store"></i> Ver productos
-        </button>
-        <button id="logoutBtn" class="btn btn-logout">
-          <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-        </button>
+    <div class="stats">
+      <div class="card">
+        <h3>Ventas del Día</h3>
+        <p>$350.000</p>
+      </div>
+      <div class="card">
+        <h3>Pedidos Pendientes</h3>
+        <p>8</p>
+      </div>
+      <div class="card">
+        <h3>Clientes Nuevos</h3>
+        <p>5</p>
+      </div>
+      <div class="card">
+        <h3>Stock Disponible</h3>
+        <p>82%</p>
       </div>
     </div>
-  </main>
-  
-   <footer>
-  <div class="footer-content">
-    <h3>Se el primero en recibir nuestras noticias</h3>
-    <form class="email-form" id="subscribeForm" action="https://formspree.io/f/xnngyapn" method="POST">
-      <input type="email" name="email" placeholder="Correo electrónico" required>
-      <button type="submit"><i class="fas fa-arrow-right"></i></button>
-    </form>
-    <p id="subscribeMessage" class="subscribe-message" style="display:none;"></p>
-  </div>
 
-  <div class="footer-bottom">
-    <div>© 2025, DeLaVilla</div>
-    <div class="social-icons">
-      <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
-      <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
+    <div class="charts">
+      <div class="chart-container">
+        <h3>Ventas Semanales</h3>
+        <canvas id="lineChart"></canvas>
+      </div>
+
+      <div class="chart-container">
+        <h3>Distribución de Productos</h3>
+        <canvas id="pieChart"></canvas>
+      </div>
     </div>
   </div>
-</footer>
 
-<!-- === SCRIPT para integración con Formspree === -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("subscribeForm");
-  const message = document.getElementById("subscribeMessage");
+  <script>
+    // Configuración general para evitar expansión infinita
+    Chart.defaults.maintainAspectRatio = false;
+    Chart.defaults.responsive = true;
 
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    try {
-      const response = await fetch(form.action, {
-        method: form.method,
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (response.ok) {
-        message.textContent = "✨ ¡Gracias por suscribirte! Te mantendremos al tanto de nuestras novedades ☕";
-        message.style.color = "#d4a373";
-        message.style.display = "block";
-        form.reset();
-      } else {
-        message.textContent = "❌ Ocurrió un error al enviar tu suscripción. Inténtalo nuevamente.";
-        message.style.color = "#ffbaba";
-        message.style.display = "block";
+    // === Gráfico de líneas ===
+    const ctxLine = document.getElementById('lineChart').getContext('2d');
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+        datasets: [{
+          label: 'Ventas ($)',
+          data: [200, 300, 250, 400, 350, 500, 450],
+          borderColor: '#007a3d',
+          backgroundColor: 'rgba(0,122,61,0.15)',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 4,
+          pointBackgroundColor: '#004d26'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
       }
+    });
 
-      // Oculta el mensaje suavemente después de 5 segundos
-      setTimeout(() => {
-        message.style.opacity = "0";
-      }, 5000);
-
-    } catch (error) {
-      message.textContent = "⚠️ Error de conexión. Por favor, revisa tu red.";
-      message.style.color = "#ffbaba";
-      message.style.display = "block";
-    }
-  });
-});
-</script>
-
-  
-  <script type="module">
-    import { protectPage, logout } from "./js/auth.js";
-    protectPage("admin");
-
-    document.getElementById("logoutBtn").addEventListener("click", logout);
+    // === Gráfico circular ===
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctxPie, {
+      type: 'doughnut',
+      data: {
+        labels: ['Pollos', 'Huevos', 'Miel'],
+        datasets: [{
+          data: [45, 35, 20],
+          backgroundColor: ['#007a3d', '#ffcc00', '#ff9933'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
   </script>
-
-  <script>
-(function(){
-  // Selectores (coinciden con tu HTML)
-  const btnAgregar = document.getElementById('agregar-carrito');
-  const btnComprar = document.getElementById('buy-now');
-  const cantidadInput = document.getElementById('cantidad');
-  const cartCountEl = document.getElementById('cart-count');
-  const cartLink = document.querySelector('a[title="Carrito de compras"], a[href*="cart"], a[href*="carrito.html"]') || document.querySelector('a[title="Carrito de compras"]');
-
-  // Si no existe el contador en el header, intenta buscar por otros selectores comunes:
-  if (!cartCountEl) {
-    // crea el span dentro del enlace del carrito si no existe
-    if (cartLink) {
-      const span = document.createElement('span');
-      span.id = 'cart-count';
-      span.textContent = '0';
-      span.style.position = 'absolute';
-      span.style.top = '8px';
-      span.style.right = '10px';
-      span.style.backgroundColor = '#e63946';
-      span.style.color = 'white';
-      span.style.fontSize = '12px';
-      span.style.fontWeight = '700';
-      span.style.borderRadius = '50%';
-      span.style.padding = '2px 6px';
-      cartLink.style.position = 'relative';
-      cartLink.appendChild(span);
-    }
-  }
-   // Un único carrito en localStorage
-  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-
-  // Actualiza el contador mostrado
-  function actualizarContadorVisual() {
-    const total = carrito.reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
-    const el = document.getElementById('cart-count');
-    if (el) el.textContent = total;
-  }
-
-  // Guarda carrito en localStorage
-  function guardarCarrito() {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-    actualizarContadorVisual();
-  }
-
-
-  <script>
-  // Función para mostrar mini-cart
-  function mostrarMiniCart(nombreProducto) {
-    const miniCart = document.getElementById('mini-cart');
-    const itemName = document.getElementById('mini-cart-item');
-    const btnPagar = document.getElementById('btn-pagar');
-
-    itemName.textContent = nombreProducto;
-
-    // Contador de productos
-    let cantidad = parseInt(localStorage.getItem('cartCount') || '0') + 1;
-    localStorage.setItem('cartCount', cantidad);
-    document.getElementById('cart-count').textContent = cantidad;
-
-    btnPagar.textContent = `Pagar pedido (${cantidad})`;
-
-    // Mostrar mini-cart
-    miniCart.style.display = 'block';
-
-    // Ocultar automáticamente después de 4 segundos
-    clearTimeout(miniCart.timeout);
-    miniCart.timeout = setTimeout(() => {
-      miniCart.style.display = 'none';
-    }, 4000);
-  }
- </script>
-<script type="module">
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-  import { logout } from "/DeLaVilla/js/auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKWj1As-nnkcX8aZ7B0AbtzZoQ-56qTjc",
-    authDomain: "delavilla-43a2a.firebaseapp.com",
-    projectId: "delavilla-43a2a",
-  };
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  onAuthStateChanged(auth, (user) => {
-    const userIcon = document.querySelector('.fa-user').parentElement;
-    if (user) {
-      userIcon.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
-      userIcon.title = "Cerrar sesión";
-      userIcon.addEventListener("click", (e) => {
-        e.preventDefault();
-        logout();
-      });
-    } else {
-      userIcon.setAttribute("href", "/DeLaVilla/pages/login.html");
-    }
-  });
-
-  onAuthStateChanged(auth, (user) => {
-  const nombre = document.getElementById("nombreUsuario");
-  if (user) {
-    nombre.textContent = user.email;
-  } else {
-    nombre.textContent = "";
-  }
-});
-
-</script>
-<script type="module">
-  import { updateUserIcon } from "/DeLaVilla/js/auth.js";
-  updateUserIcon();
-</script>
-
 </body>
 </html>
