@@ -6,7 +6,7 @@
   <title>DeLaVilla</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    /* Estilos generales */
+
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
@@ -14,7 +14,7 @@
       color: white;
     }
 
-    /* -------------------- ANIMACIONES -------------------- */
+
     .fade-up {
       opacity: 0;
       transform: translateY(40px);
@@ -25,13 +25,13 @@
       transform: translateY(0);
     }
 
-    /* Efecto hover general */
+  
     .hover-zoom:hover {
       transform: scale(1.03);
       transition: transform 0.3s ease;
     }
 
-    /* Header */
+
 header {
  position: fixed;
   top: 50px;
@@ -41,7 +41,7 @@ header {
   background-color: #1e1200;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* íconos a la derecha */
+  justify-content: space-between;
   padding: 10px 60px;
   z-index: 1000;
   box-sizing: border-box;
@@ -51,15 +51,15 @@ header {
 .header-left {
   display: flex;
   align-items: center;
-  gap: 50px; /* espacio entre logo y menú */
+  gap: 50px;
 }
 
-    /* Logo */
+
     .logo img {
       height: 60px;
     }
 
-    /* Menú de navegación */
+
     nav ul {
   list-style: none;
   display: flex;
@@ -81,7 +81,7 @@ nav a.active {
   text-decoration: underline;
 }
 
-/* Iconos (siguen a la derecha) */
+
 .icons {
   display: flex;
   align-items: center;
@@ -101,7 +101,6 @@ position: relative;
 }
 
 
-    /* Responsive */
     @media (max-width: 768px) {
       header {
         flex-direction: column;
@@ -150,9 +149,9 @@ position: relative;
       color: #2E3A2B;
       background-color: transparent;
     }
-/* ---------------------- HERO SECTION ---------------------- */
+
 .hero {
-  margin-top: 100px; /* un poco más que la altura del header para asegurar visibilidad */
+  margin-top: 100px;
   position: relative;
   height: calc(100vh - 100px);
   background-image: url('https://delavillaa.myshopify.com/cdn/shop/files/ChatGPT_Image_19_sept_2025_13_10_30.png?v=1758305452&width=2000');
@@ -167,7 +166,7 @@ position: relative;
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45); /* oscurece la imagen para mejorar el contraste */
+  background: rgba(0, 0, 0, 0.45);
 }
 
 .hero-content {
@@ -221,7 +220,7 @@ position: relative;
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .hero {
     text-align: center;
@@ -238,7 +237,7 @@ position: relative;
   }
 }
 
-/* ---------------------- PRODUCTOS DESTACADOS ---------------------- */
+
 .productos {
   background-color: #f9f7f2;
   padding: 80px 60px;
@@ -295,7 +294,7 @@ position: relative;
   margin: 0 20px 20px;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .productos {
     padding: 60px 20px;
@@ -309,8 +308,8 @@ position: relative;
 }
 
 .poetic-hero {
-  background-color: #333333; /* gris claro */
-  height: 25vh; /* franja delgada */
+  background-color: #333333;
+  height: 25vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -323,7 +322,7 @@ position: relative;
   font-weight: 400;
   font-size: 2rem;
   line-height: 1.5;
-  color: #000000; /* 🔹 texto negro sólido */
+  color: #000000;
   max-width: 800px;
   margin: 0;
 }
@@ -378,7 +377,7 @@ position: relative;
   transform: translateY(-3px);
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .banner-naturaleza {
     padding: 40px 30px;
@@ -583,14 +582,14 @@ position: relative;
     height: 60px;
     border-radius: 50%;
     box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    background-color: #25D366; /* color WhatsApp */
+    background-color: #25D366;
     text-decoration: none;
     transition: transform 150ms ease, box-shadow 150ms ease;
   }
   #wa-floating-button:hover{ transform: translateY(-4px); box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
   #wa-floating-button svg{ width: 34px; height: 34px; fill: #fff; }
 
-  /* Ajustes en pantallas pequeñas */
+
   @media (max-width: 420px){
     #wa-floating-button{ right: 14px; bottom: 14px; width: 56px; height: 56px; }
     #wa-floating-button svg{ width:28px; height:28px; }
@@ -606,11 +605,11 @@ position: relative;
   justify-content: center;
   align-items: center;
   height: 50px;
-  position: fixed; /* 🔹 cambia de relative a fixed */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1100; /* 🔹 superior al header */
+  z-index: 1100;
     }
 
     .top-banner .arrow {
@@ -650,7 +649,7 @@ position: relative;
 
 @media (max-width: 768px) {
   body {
-    padding-top: 180px; /* más espacio en móvil */
+    padding-top: 180px;
   }
 }
 
@@ -683,7 +682,7 @@ display: inline-block;
 #mini-cart {
   display: none;
   position: absolute;
-  top: 40px; /* justo debajo del icono */
+  top: 40px;
   right: 0;
   width: 280px;
   background-color: #fff;
@@ -807,18 +806,18 @@ display: inline-block;
   </div>
 
 <div class="icons">
-  <!-- 🔍 Icono de búsqueda -->
+
   <a href="#" id="search-toggle" title="Buscar">
     <i class="fas fa-search"></i>
   </a>
 
-  <!-- 🧭 Barra de búsqueda oculta -->
+
   <div class="search-bar" id="search-bar">
     <input type="text" id="search-input" placeholder="Buscar productos..." />
     <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
   </div>
 
-  <!-- 👤 Ícono de usuario -->
+
   <a href="/DeLaVilla/pages/login.html" title="Mi cuenta">
     <i class="fas fa-user"></i>
     <span id="nombreUsuario"></span>
@@ -826,7 +825,7 @@ display: inline-block;
     
   </a>
 
-  <!-- 🛍 Ícono de carrito -->
+
   <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
     <i class="fas fa-shopping-bag"></i>
     <span id="cart-count">0</span>
@@ -845,7 +844,7 @@ display: inline-block;
 </header>
 
 
-  <!-- Sección principal (Hero) -->
+
   <section class="hero">
     <div class="hero-content">
       <h1>Conexión con la Naturaleza</h1>
@@ -857,8 +856,7 @@ display: inline-block;
     </div>
   </section>
 
-  <!-- Productos Destacados -->
-  <!-- Productos Destacados -->
+
 <section class="productos">
   <h2>Productos Destacados</h2>
 
@@ -939,7 +937,7 @@ display: inline-block;
   </div>
 </footer>
 
-<!-- === SCRIPT para integración con Formspree === -->
+<!-- SCRIPT para integración con Formspree -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("subscribeForm");
@@ -967,7 +965,6 @@ document.addEventListener("DOMContentLoaded", function () {
         message.style.display = "block";
       }
 
-      // Oculta el mensaje suavemente después de 5 segundos
       setTimeout(() => {
         message.style.opacity = "0";
       }, 5000);
@@ -1011,7 +1008,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 <script>
 (function(){
-  // CONFIGURA AQUÍ tu número en formato internacional (sin + ni espacios)
   var waNumber = '573202293640'; // <- reemplázalo por tu número
 
   // Mensaje predefinido (opcional). Cámbialo o déjalo vacío ''.
@@ -1022,7 +1018,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var hrefBase = isMobile ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
   var href = hrefBase + waNumber + (prefilledMessage ? (isMobile ? '?text=' + prefilledMessage : '&text=' + prefilledMessage) : '');
 
-  // Crear enlace
+
   var a = document.createElement('a');
   a.href = href;
   a.target = '_blank';
@@ -1031,11 +1027,10 @@ document.addEventListener("DOMContentLoaded", function () {
   a.setAttribute('aria-label', 'Contactar por WhatsApp');
   a.title = 'Contáctanos por WhatsApp';
 
-  // Icono (SVG de WhatsApp)
+
   a.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp" style="width:34px; height:34px;">';
 
   document.addEventListener('DOMContentLoaded', function(){
-    // Añadir al body
     document.body.appendChild(a);
   });
 })();
@@ -1056,7 +1051,6 @@ document.addEventListener("DOMContentLoaded", function () {
       bannerText.textContent = messages[currentIndex];
     }
 
-    // 🔄 Cambio automático cada 5 segundos
     setInterval(() => {
       changeMessage(1);
     }, 5000);
@@ -1065,16 +1059,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <script>
 (function(){
-  // Selectores (coinciden con tu HTML)
+  // Selectores
   const btnAgregar = document.getElementById('agregar-carrito');
   const btnComprar = document.getElementById('buy-now');
   const cantidadInput = document.getElementById('cantidad');
   const cartCountEl = document.getElementById('cart-count');
   const cartLink = document.querySelector('a[title="Carrito de compras"], a[href*="cart"], a[href*="carrito.html"]') || document.querySelector('a[title="Carrito de compras"]');
 
-  // Si no existe el contador en el header, intenta buscar por otros selectores comunes:
   if (!cartCountEl) {
-    // crea el span dentro del enlace del carrito si no existe
     if (cartLink) {
       const span = document.createElement('span');
       span.id = 'cart-count';
