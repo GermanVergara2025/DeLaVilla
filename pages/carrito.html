@@ -1041,24 +1041,51 @@ document.addEventListener('DOMContentLoaded', () => {
 <section id="carrito-contenedor"></section>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  // Leer carrito de localStorage de forma segura
+  let carrito;
+  try {
+    carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+    if (!Array.isArray(carrito)) carrito = [];
+  } catch (e) {
+    carrito = [];
+  }
+
   const contenedor = document.getElementById('carrito-contenedor');
+  if (!contenedor) return; // si no existe el contenedor, salimos
 
   function guardarCarrito() {
     localStorage.setItem('carrito', JSON.stringify(carrito));
   }
 
   function calcularTotal() {
-    return carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+    return carrito.reduce((acc, item) => {
+      const precio = Number(item.precio) || 0;
+      const cant = Number(item.cantidad) || 0;
+      return acc + precio * cant;
+    }, 0);
   }
 
   function renderCarrito() {
     contenedor.innerHTML = '';
 
-    if (carrito.length === 0) {
+    if (!carrito || carrito.length === 0) {
       contenedor.innerHTML = `
-        <h1>Tu carrito está vacío</h1>
-        <a href="/DeLaVilla/pages/productos.html" class="btn-seguir">Seguir comprando</a>
+        <div style="max-width:900px;margin:40px auto;text-align:center;">
+          <h1 style="margin-bottom:20px;font-size:28px;color:#3a2a20;">Tu carrito está vacío</h1>
+          <a href="/DeLaVilla/pages/productos.html"
+             class="btn-seguir"
+             style="
+               display:inline-block;
+               padding:10px 20px;
+               background:#7a4b27;
+               color:#fff;
+               text-decoration:none;
+               border-radius:6px;
+               font-weight:500;
+             ">
+            Seguir comprando
+          </a>
+        </div>
       `;
       return;
     }
@@ -1066,28 +1093,76 @@ document.addEventListener('DOMContentLoaded', () => {
     carrito.forEach((item, index) => {
       const div = document.createElement('div');
       div.className = 'producto-item';
+      div.style.maxWidth = '900px';
+      div.style.margin = '20px auto';
+      div.style.padding = '16px';
+      div.style.background = '#fff';
+      div.style.borderRadius = '8px';
+      div.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
+
       div.innerHTML = `
-        <img src="${item.imagen}" alt="${item.nombre}" style="width:150px; height:auto; margin-right:20px;">
-        <div class="producto-info">
-          <h3>${item.nombre}</h3>
-          <p>Precio: $${item.precio}</p>
-          <p>Cantidad: <input type="number" min="1" value="${item.cantidad}" class="cantidad-input" data-index="${index}"></p>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">
+          <div>
+            <h2 style="margin:0 0 6px 0;font-size:20px;color:#3a2a20;">${item.nombre}</h2>
+            <p style="margin:0 0 4px 0;color:#555;">Precio: $${Number(item.precio).toLocaleString('es-CO')}</p>
+            <p style="margin:0;color:#555;">
+              Cantidad:
+              <input type="number"
+                     min="1"
+                     value="${item.cantidad}"
+                     class="cantidad-input"
+                     data-index="${index}"
+                     style="width:70px;padding:4px;border-radius:4px;border:1px solid #ccc;">
+            </p>
+          </div>
+          <div style="text-align:right;">
+            <p style="margin:0 0 8px 0;font-weight:600;color:#3a2a20;">
+              Subtotal: $${(Number(item.precio) * Number(item.cantidad)).toLocaleString('es-CO')}
+            </p>
+            <button class="btn-eliminar"
+                    data-index="${index}"
+                    style="
+                      padding:6px 12px;
+                      background:#b3261e;
+                      color:#fff;
+                      border:none;
+                      border-radius:4px;
+                      cursor:pointer;
+                    ">
+              Eliminar
+            </button>
+          </div>
         </div>
-        <button class="btn-eliminar" data-index="${index}">Eliminar</button>
-        <hr>
       `;
       contenedor.appendChild(div);
     });
 
     // Total y botón Pagar
     const totalDiv = document.createElement('div');
+    totalDiv.style.maxWidth = '900px';
+    totalDiv.style.margin = '20px auto 40px auto';
     totalDiv.style.display = 'flex';
     totalDiv.style.justifyContent = 'space-between';
     totalDiv.style.alignItems = 'center';
-    totalDiv.style.marginTop = '20px';
+    totalDiv.style.gap = '16px';
+
     totalDiv.innerHTML = `
-      <h3>Total: $${calcularTotal()}</h3>
-      <button id="btn-pagar-carrito" class="btn-seguir">Pagar pedido</button>
+      <h2 style="margin:0;font-size:22px;color:#3a2a20;">
+        Total: $${calcularTotal().toLocaleString('es-CO')}
+      </h2>
+      <button id="btn-pagar-carrito"
+              style="
+                padding:10px 24px;
+                background:#006b3c;
+                color:#fff;
+                border:none;
+                border-radius:6px;
+                font-size:16px;
+                font-weight:600;
+                cursor:pointer;
+              ">
+        Pagar pedido
+      </button>
     `;
     contenedor.appendChild(totalDiv);
 
@@ -1096,7 +1171,7 @@ document.addEventListener('DOMContentLoaded', () => {
       input.addEventListener('change', (e) => {
         const idx = e.target.dataset.index;
         let val = parseInt(e.target.value);
-        if (val < 1) val = 1;
+        if (isNaN(val) || val < 1) val = 1;
         carrito[idx].cantidad = val;
         guardarCarrito();
         renderCarrito();
@@ -1113,54 +1188,63 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-// Botón pagar
-const btnPagar = document.getElementById('btn-pagar-carrito');
-if (btnPagar) {
-  btnPagar.addEventListener('click', () => {
-    if (carrito.length === 0) {
-      alert("Tu carrito está vacío");
-      return;
+    // Botón pagar con registro de venta
+    const btnPagar = document.getElementById('btn-pagar-carrito');
+    if (btnPagar) {
+      btnPagar.addEventListener('click', () => {
+        if (!carrito || carrito.length === 0) {
+          alert("Tu carrito está vacío");
+          return;
+        }
+
+        const nombre = prompt("Ingresa tu nombre completo:");
+        if (!nombre) return;
+
+        const direccion = prompt("Ingresa tu dirección:");
+        if (!direccion) return;
+
+        const telefono = prompt("Ingresa tu teléfono:");
+        if (!telefono) return;
+
+        const total = calcularTotal();
+
+        const venta = {
+          id: Date.now(),
+          fecha: new Date().toISOString(),
+          nombre,
+          direccion,
+          telefono,
+          total,
+          items: carrito
+        };
+
+        // Guardar ventas en localStorage
+        let ventas;
+        try {
+          ventas = JSON.parse(localStorage.getItem('ventas') || '[]');
+          if (!Array.isArray(ventas)) ventas = [];
+        } catch (e) {
+          ventas = [];
+        }
+        ventas.push(venta);
+        localStorage.setItem('ventas', JSON.stringify(ventas));
+
+        // Vaciar carrito
+        carrito = [];
+        guardarCarrito();
+
+        alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${total.toLocaleString('es-CO')}`);
+
+        // Redirigir a inicio (opcional)
+        window.location.href = "/DeLaVilla";
+      });
     }
+  }
 
-    // Pedir datos del cliente
-    const nombre = prompt("Ingresa tu nombre completo:");
-    if (!nombre) return;
-
-    const direccion = prompt("Ingresa tu dirección:");
-    if (!direccion) return;
-
-    const telefono = prompt("Ingresa tu teléfono:");
-    if (!telefono) return;
-
-    const total = calcularTotal();
-
-    // Crear objeto venta
-    const venta = {
-      id: Date.now(),
-      fecha: new Date().toISOString(),
-      nombre,
-      direccion,
-      telefono,
-      total,
-      items: carrito
-    };
-
-    // Guardar en localStorage en el listado de ventas
-    const ventasGuardadas = JSON.parse(localStorage.getItem('ventas')) || [];
-    ventasGuardadas.push(venta);
-    localStorage.setItem('ventas', JSON.stringify(ventasGuardadas));
-
-    // Vaciar carrito
-    carrito = [];
-    guardarCarrito(); // ya actualiza localStorage y el contador
-
-    // Mensaje de agradecimiento
-    alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${total}`);
-
-    // Opcional: redirigir a inicio o página de gracias
-    window.location.href = '/DeLaVilla';
-  });
-}
+  // Primera renderización
+  renderCarrito();
+});
+</script>
 
 
   renderCarrito();
