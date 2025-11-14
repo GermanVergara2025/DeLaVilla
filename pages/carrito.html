@@ -1113,16 +1113,55 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Botón pagar
-    const btnPagar = document.getElementById('btn-pagar-carrito');
-    if (btnPagar) {
-      btnPagar.addEventListener('click', () => {
-        if (carrito.length === 0) return alert("Tu carrito está vacío");
-        alert(`Total a pagar: $${calcularTotal()}\nRedirigiendo al pago...`);
-        // window.location.href = '/DeLaVilla/pages/pago.html';
-      });
+// Botón pagar
+const btnPagar = document.getElementById('btn-pagar-carrito');
+if (btnPagar) {
+  btnPagar.addEventListener('click', () => {
+    if (carrito.length === 0) {
+      alert("Tu carrito está vacío");
+      return;
     }
-  }
+
+    // Pedir datos del cliente
+    const nombre = prompt("Ingresa tu nombre completo:");
+    if (!nombre) return;
+
+    const direccion = prompt("Ingresa tu dirección:");
+    if (!direccion) return;
+
+    const telefono = prompt("Ingresa tu teléfono:");
+    if (!telefono) return;
+
+    const total = calcularTotal();
+
+    // Crear objeto venta
+    const venta = {
+      id: Date.now(),
+      fecha: new Date().toISOString(),
+      nombre,
+      direccion,
+      telefono,
+      total,
+      items: carrito
+    };
+
+    // Guardar en localStorage en el listado de ventas
+    const ventasGuardadas = JSON.parse(localStorage.getItem('ventas')) || [];
+    ventasGuardadas.push(venta);
+    localStorage.setItem('ventas', JSON.stringify(ventasGuardadas));
+
+    // Vaciar carrito
+    carrito = [];
+    guardarCarrito(); // ya actualiza localStorage y el contador
+
+    // Mensaje de agradecimiento
+    alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${total}`);
+
+    // Opcional: redirigir a inicio o página de gracias
+    window.location.href = '/DeLaVilla';
+  });
+}
+
 
   renderCarrito();
 });
