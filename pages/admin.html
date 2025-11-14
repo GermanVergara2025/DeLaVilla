@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard DeLaVilla</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -14,234 +14,173 @@
     }
 
     body {
-      display: flex;
       min-height: 100vh;
-      background-color: #f7f7f7;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 220px;
-      background-color: #004d26;
-      color: white;
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 20px 15px;
+      justify-content: center;
+      align-items: flex-start;
+      background: linear-gradient(135deg, #f0f5f3, #f7f7f7);
+      color: #333;
     }
 
-    .sidebar h2 {
-      text-align: center;
-      margin-bottom: 40px;
-      font-size: 22px;
-      font-weight: bold;
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      padding: 24px 32px 40px;
     }
 
-    .sidebar a {
-      text-decoration: none;
-      color: white;
-      display: block;
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-
-    .sidebar a:hover {
-      background-color: #007a3d;
-    }
-
-    .sidebar .footer {
-      text-align: center;
-      font-size: 12px;
-      opacity: 0.7;
-    }
-
-    /* Contenido principal */
-    .main {
-      flex: 1;
-      padding: 30px;
-      overflow-y: auto;
-    }
-
+    /* Header */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding-bottom: 16px;
     }
 
-    .header h1 {
+    .header-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .header-title h1 {
       font-size: 26px;
-      color: #333;
+      font-weight: 600;
+      color: #1f2933;
     }
 
+    .header-title span {
+      font-size: 13px;
+      color: #7b8794;
+    }
+
+    .user-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      font-size: 13px;
+      color: #4b5563;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .user-pill-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: #4c1d95;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    /* Cards resumen */
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      margin-top: 16px;
     }
 
     .card {
-      background-color: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      background-color: #ffffff;
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    .card h3 {
-      font-size: 16px;
-      color: #666;
-      margin-bottom: 8px;
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+      border-color: rgba(16, 185, 129, 0.65);
     }
 
-    .card p {
-      font-size: 22px;
-      font-weight: bold;
-      color: #004d26;
+    .card-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
     }
 
-    /* Gráficos */
-    .charts {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
+    .card-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #064e3b;
     }
 
-    canvas {
-      width: 100% !important;
-      height: 100% !important;
+    .card-chip {
+      margin-top: 2px;
+      align-self: flex-start;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #ecfdf3;
+      color: #16a34a;
+      font-weight: 500;
     }
 
-    .chart-container {
-      background-color: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      position: relative;
-      height: 350px; /* Tamaño fijo para evitar expansión */
-    }
+    @media (max-width: 640px) {
+      .container {
+        padding: 20px 16px 32px;
+      }
 
-    @media (max-width: 900px) {
-      .charts {
-        grid-template-columns: 1fr;
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
       }
     }
   </style>
 </head>
+
 <body>
-
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div>
-      <h2>DeLaVilla</h2>
-      <a href="#">📊 Dashboard</a>
-      <a href="#">🛒 Ventas</a>
-      <a href="#">🥚 Productos</a>
-      <a href="#">🚚 Distribución</a>
-      <a href="#">👥 Clientes</a>
-    </div>
-    <div class="footer">
-      © 2025 DeLaVilla
-    </div>
-  </div>
-
-  <!-- Main -->
-  <div class="main">
+  <div class="container">
     <div class="header">
-      <h1>Panel de Control</h1>
-      <span>👤 Administrador</span>
+      <div class="header-title">
+        <h1>Panel de Control</h1>
+        <span>Resumen general de tu negocio DeLaVilla</span>
+      </div>
+
+      <div class="user-pill">
+        <div class="user-pill-icon">👤</div>
+        <span>Administrador</span>
+      </div>
     </div>
 
     <div class="stats">
       <div class="card">
-        <h3>Ventas del Día</h3>
-        <p>$350.000</p>
-      </div>
-      <div class="card">
-        <h3>Pedidos Pendientes</h3>
-        <p>8</p>
-      </div>
-      <div class="card">
-        <h3>Clientes Nuevos</h3>
-        <p>5</p>
-      </div>
-      <div class="card">
-        <h3>Stock Disponible</h3>
-        <p>82%</p>
-      </div>
-    </div>
-
-    <div class="charts">
-      <div class="chart-container">
-        <h3>Ventas Semanales</h3>
-        <canvas id="lineChart"></canvas>
+        <span class="card-label">Ventas del Día</span>
+        <span class="card-value">$350.000</span>
+        <span class="card-chip">Hoy</span>
       </div>
 
-      <div class="chart-container">
-        <h3>Distribución de Productos</h3>
-        <canvas id="pieChart"></canvas>
+      <div class="card">
+        <span class="card-label">Pedidos Pendientes</span>
+        <span class="card-value">8</span>
+        <span class="card-chip">Por despachar</span>
+      </div>
+
+      <div class="card">
+        <span class="card-label">Clientes Nuevos</span>
+        <span class="card-value">5</span>
+        <span class="card-chip">Últimas 24h</span>
+      </div>
+
+      <div class="card">
+        <span class="card-label">Stock Disponible</span>
+        <span class="card-value">82%</span>
+        <span class="card-chip">Inventario sano</span>
       </div>
     </div>
   </div>
-
-  <script>
-    // Configuración general para evitar expansión infinita
-    Chart.defaults.maintainAspectRatio = false;
-    Chart.defaults.responsive = true;
-
-    // === Gráfico de líneas ===
-    const ctxLine = document.getElementById('lineChart').getContext('2d');
-    new Chart(ctxLine, {
-      type: 'line',
-      data: {
-        labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-        datasets: [{
-          label: 'Ventas ($)',
-          data: [200, 300, 250, 400, 350, 500, 450],
-          borderColor: '#007a3d',
-          backgroundColor: 'rgba(0,122,61,0.15)',
-          fill: true,
-          tension: 0.4,
-          pointRadius: 4,
-          pointBackgroundColor: '#004d26'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          y: { beginAtZero: true }
-        }
-      }
-    });
-
-    // === Gráfico circular ===
-    const ctxPie = document.getElementById('pieChart').getContext('2d');
-    new Chart(ctxPie, {
-      type: 'doughnut',
-      data: {
-        labels: ['Pollos', 'Huevos', 'Miel'],
-        datasets: [{
-          data: [45, 35, 20],
-          backgroundColor: ['#007a3d', '#ffcc00', '#ff9933'],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }
-    });
-  </script>
 </body>
 </html>
