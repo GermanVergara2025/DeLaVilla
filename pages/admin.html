@@ -371,45 +371,51 @@
         renderTabla(ventasFiltradas);
       }
 
-      function exportarCSV() {
-        if (!ventasFiltradas.length) {
-          alert('No hay ventas para exportar');
-          return;
-        }
+     function exportarCSV() {
+  if (!ventasFiltradas.length) {
+    alert('No hay ventas para exportar');
+    return;
+  }
 
-        const encabezados = ['Fecha','Cliente','Dirección','Teléfono','Total','Productos'];
-        const filas = ventasFiltradas.map(v => {
-          const fechaTexto = formatearFecha(v.fecha || v.id).replace(/,/g, '');
-          const itemsTexto = (v.items || [])
-            .map(i => `${i.nombre} x${i.cantidad}`)
-            .join(' | ')
-            .replace(/,/g, ' ');
+  const SEP = ';'; // separador para Excel en español
 
-          return [
-            fechaTexto,
-            (v.nombre || '').replace(/,/g, ' '),
-            (v.direccion || '').replace(/,/g, ' '),
-            (v.telefono || '').replace(/,/g, ' '),
-            Number(v.total || 0),
-            itemsTexto
-          ];
-        });
+  const encabezados = ['Fecha','Cliente','Dirección','Teléfono','Total','Productos'];
 
-        let csv = encabezados.join(',') + '\n';
-        filas.forEach(fila => {
-          csv += fila.join(',') + '\n';
-        });
+  const filas = ventasFiltradas.map(v => {
+    const fechaTexto = formatearFecha(v.fecha || v.id).replace(/;/g, ' ');
+    const itemsTexto = (v.items || [])
+      .map(i => `${i.nombre} x${i.cantidad}`)
+      .join(' | ')
+      .replace(/;/g, ' ');
 
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'ventas-delavilla.csv';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }
+    return [
+      fechaTexto,
+      (v.nombre || '').replace(/;/g, ' '),
+      (v.direccion || '').replace(/;/g, ' '),
+      (v.telefono || '').replace(/;/g, ' '),
+      Number(v.total || 0),
+      itemsTexto
+    ];
+  });
+
+  let csv = encabezados.join(SEP) + '\n';
+  filas.forEach(fila => {
+    csv += fila.join(SEP) + '\n';
+  });
+
+  // BOM para que Excel reconozca UTF-8 y muestre bien tildes y ñ
+  const csvConBOM = '\uFEFF' + csv;
+
+  const blob = new Blob([csvConBOM], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'ventas-delavilla.csv';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
 
       if (btnFiltrar) btnFiltrar.addEventListener('click', aplicarFiltros);
       if (btnLimpiar) btnLimpiar.addEventListener('click', limpiarFiltros);
