@@ -140,42 +140,74 @@
       }
     }
 
-    .ventas-panel {
-      margin-top: 40px;
-      background-color: #ffffff;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    }
+ /* === Ventas registradas === */
+.ventas-section {
+  margin-top: 40px;
+}
 
-    .ventas-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 15px;
-    }
+.ventas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
 
-    .ventas-header h2 {
-      font-size: 20px;
-      margin: 0;
-      color: #333;
-    }
+.ventas-header h2 {
+  font-size: 20px;
+  color: #333;
+}
 
-    .ventas-filtros {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: flex-end;
-    }
+.filtros-ventas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
-    .campo-filtro {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 13px;
-   
+.filtros-ventas input,
+.filtros-ventas button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+}
+
+.filtros-ventas button {
+  background-color: #004d26;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.filtros-ventas button:hover {
+  background-color: #007a3d;
+}
+
+.ventas-section table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.ventas-section th,
+.ventas-section td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.ventas-section th {
+  background-color: #f3f3f3;
+  text-align: left;
+}
+
+.ventas-section tbody tr:hover {
+  background-color: #fafafa;
+}
+
 
     
   </style>
@@ -220,102 +252,173 @@
         <span class="card-chip">Inventario sano</span>
       </div>
     </div>
-       <!-- === NUEVA SECCIÓN: VENTAS === -->
-    <section class="ventas-panel">
+     <div class="ventas-section">
       <div class="ventas-header">
         <h2>Ventas registradas</h2>
-
-        <div class="ventas-filtros">
-          <div class="campo-filtro">
-            <label for="filtro-fecha-desde">Desde</label>
-            <input type="date" id="filtro-fecha-desde">
-          </div>
-          <div class="campo-filtro">
-            <label for="filtro-fecha-hasta">Hasta</label>
-            <input type="date" id="filtro-fecha-hasta">
-          </div>
-          <div class="campo-filtro">
-            <label for="filtro-cliente">Cliente</label>
-            <input type="text" id="filtro-cliente" placeholder="Nombre del cliente">
-          </div>
-
-          <button id="btn-filtrar-ventas" class="btn-ventas">Filtrar</button>
-          <button id="btn-limpiar-filtros" class="btn-ventas btn-secundario">Limpiar</button>
-          <button id="btn-exportar-ventas" class="btn-ventas btn-exportar">Exportar a Excel</button>
+        <div class="filtros-ventas">
+          <input type="date" id="filtro-desde" />
+          <input type="date" id="filtro-hasta" />
+          <input type="text" id="filtro-cliente" placeholder="Nombre del cliente" />
+          <button id="btn-filtrar">Filtrar</button>
+          <button id="btn-limpiar">Limpiar</button>
+          <button id="btn-exportar">Exportar a Excel</button>
         </div>
       </div>
 
-      <div class="tabla-wrapper">
-        <table id="tabla-ventas">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Cliente</th>
-              <th>Dirección</th>
-              <th>Teléfono</th>
-              <th>Total</th>
-              <th>Productos</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Filas generadas por JS -->
-          </tbody>
-        </table>
-      </div>
-    </section>
+      <table id="tabla-ventas">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Total</th>
+            <th>Productos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Se llena con JS -->
+        </tbody>
+      </table>
+    </div>
 
     
   </div>
 </body>
   <script>
-        // === Cargar ventas desde localStorage y mostrarlas en la tabla ===
-    function cargarVentasEnTabla() {
-      const ventas = JSON.parse(localStorage.getItem('ventas')) || [];
-      const tbody = document.querySelector('#tabla-ventas tbody');
+    document.addEventListener('DOMContentLoaded', () => {
+      const tablaBody = document.querySelector('#tabla-ventas tbody');
       const ventasDiaEl = document.getElementById('ventas-dia');
+      const inputDesde = document.getElementById('filtro-desde');
+      const inputHasta = document.getElementById('filtro-hasta');
+      const inputCliente = document.getElementById('filtro-cliente');
+      const btnFiltrar = document.getElementById('btn-filtrar');
+      const btnLimpiar = document.getElementById('btn-limpiar');
+      const btnExportar = document.getElementById('btn-exportar');
 
-      if (!tbody) return;
+      let ventas = JSON.parse(localStorage.getItem('ventas')) || [];
+      let ventasFiltradas = [...ventas];
 
-      tbody.innerHTML = '';
+      function formatearFecha(fechaValor) {
+        const fecha = fechaValor ? new Date(fechaValor) : new Date();
+        return fecha.toLocaleString('es-CO');
+      }
 
-      let totalDia = 0;
-      const hoyISO = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+      function renderTabla(lista) {
+        if (!tablaBody) return;
+        tablaBody.innerHTML = '';
 
-      ventas.forEach(v => {
-        const tr = document.createElement('tr');
+        lista.forEach(v => {
+          const fechaTexto = formatearFecha(v.fecha || v.id);
+          const itemsTexto = (v.items || [])
+            .map(item => `${item.nombre} x${item.cantidad}`)
+            .join(', ');
 
-        const fecha = v.fecha ? new Date(v.fecha) : new Date(v.id);
-        const fechaLocal = fecha.toLocaleString('es-CO');
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${fechaTexto}</td>
+            <td>${v.nombre || ''}</td>
+            <td>${v.direccion || ''}</td>
+            <td>${v.telefono || ''}</td>
+            <td>$${Number(v.total || 0).toLocaleString('es-CO')}</td>
+            <td>${itemsTexto}</td>
+          `;
+          tablaBody.appendChild(tr);
+        });
+      }
 
-        const itemsTexto = (v.items || [])
-          .map(item => `${item.nombre} x${item.cantidad}`)
-          .join(', ');
+      function actualizarVentasDia() {
+        if (!ventasDiaEl) return;
+        const hoyISO = new Date().toISOString().slice(0, 10);
+        let total = 0;
 
-        // Acumular ventas del día actual
-        const fechaISO = fecha.toISOString().slice(0, 10);
-        if (fechaISO === hoyISO) {
-          totalDia += Number(v.total || 0);
+        ventas.forEach(v => {
+          const f = v.fecha ? new Date(v.fecha) : new Date(v.id);
+          const iso = f.toISOString().slice(0, 10);
+          if (iso === hoyISO) {
+            total += Number(v.total || 0);
+          }
+        });
+
+        ventasDiaEl.textContent = `$${total.toLocaleString('es-CO')}`;
+      }
+
+      function aplicarFiltros() {
+        const cli = (inputCliente.value || '').toLowerCase();
+        const desde = inputDesde.value; // YYYY-MM-DD
+        const hasta = inputHasta.value; // YYYY-MM-DD
+
+        ventasFiltradas = ventas.filter(v => {
+          const f = v.fecha ? new Date(v.fecha) : new Date(v.id);
+          const iso = f.toISOString().slice(0, 10);
+
+          if (desde && iso < desde) return false;
+          if (hasta && iso > hasta) return false;
+
+          if (cli && !(v.nombre || '').toLowerCase().includes(cli)) return false;
+
+          return true;
+        });
+
+        renderTabla(ventasFiltradas);
+      }
+
+      function limpiarFiltros() {
+        inputDesde.value = '';
+        inputHasta.value = '';
+        inputCliente.value = '';
+        ventasFiltradas = [...ventas];
+        renderTabla(ventasFiltradas);
+      }
+
+      function exportarCSV() {
+        if (!ventasFiltradas.length) {
+          alert('No hay ventas para exportar');
+          return;
         }
 
-        tr.innerHTML = `
-          <td>${fechaLocal}</td>
-          <td>${v.nombre}</td>
-          <td>${v.direccion}</td>
-          <td>${v.telefono}</td>
-          <td>$${Number(v.total || 0).toLocaleString('es-CO')}</td>
-          <td>${itemsTexto}</td>
-        `;
-        tbody.appendChild(tr);
-      });
+        const encabezados = ['Fecha','Cliente','Dirección','Teléfono','Total','Productos'];
+        const filas = ventasFiltradas.map(v => {
+          const fechaTexto = formatearFecha(v.fecha || v.id).replace(/,/g, '');
+          const itemsTexto = (v.items || [])
+            .map(i => `${i.nombre} x${i.cantidad}`)
+            .join(' | ')
+            .replace(/,/g, ' ');
 
-      // Actualizar tarjeta "Ventas del Día"
-      if (ventasDiaEl) {
-        ventasDiaEl.textContent = `$${totalDia.toLocaleString('es-CO')}`;
+          return [
+            fechaTexto,
+            (v.nombre || '').replace(/,/g, ' '),
+            (v.direccion || '').replace(/,/g, ' '),
+            (v.telefono || '').replace(/,/g, ' '),
+            Number(v.total || 0),
+            itemsTexto
+          ];
+        });
+
+        let csv = encabezados.join(',') + '\n';
+        filas.forEach(fila => {
+          csv += fila.join(',') + '\n';
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'ventas-delavilla.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
       }
-    }
 
-    // Ejecutar al cargar el dashboard
-    cargarVentasEnTabla();
+      if (btnFiltrar) btnFiltrar.addEventListener('click', aplicarFiltros);
+      if (btnLimpiar) btnLimpiar.addEventListener('click', limpiarFiltros);
+      if (btnExportar) btnExportar.addEventListener('click', exportarCSV);
 
+      // Inicial
+      renderTabla(ventasFiltradas);
+      actualizarVentasDia();
+    });
   </script>
+
 </html>
