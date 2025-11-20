@@ -506,42 +506,45 @@ position: relative;
 </div>
 </header>
 
-    <div class="main-content">
-        <div class="perfil-cliente">
-           <h1 id="tituloPerfil">Bienvenido(a) a tu Perfil</h1>
+   <div class="main-content">
+    <div class="perfil-cliente">
+      <h1 id="tituloPerfil">Bienvenido(a) a tu Perfil</h1>
 
-     <div class="info-cliente">
-  <h2>Datos de la Cuenta</h2>
-  <p><strong>Nombre:</strong> <span id="clienteNombre"></span></p>
-  <p><strong>Correo:</strong> <span id="clienteCorreo"></span></p>
-  <p><strong>Teléfono:</strong> <span id="clienteTelefono"></span></p>
-</div>
+      <div class="info-cliente">
+        <h2>Datos de la Cuenta</h2>
+        <p><strong>Nombre:</strong> <span id="clienteNombre"></span></p>
+        <p><strong>Correo:</strong> <span id="clienteCorreo"></span></p>
+        <p><strong>Teléfono:</strong> <span id="clienteTelefono"></span></p>
+      </div>
 
-<div class="pedidos-realizados">
-  <h2>📦 Tu Historial de Pedidos</h2>
-  <ul class="lista-pedidos" id="listaPedidos">
+      <div class="pedidos-realizados">
+        <h2>📦 Tu Historial de Pedidos</h2>
+        <ul class="lista-pedidos" id="listaPedidos">
 
-  </ul>
-</div>
-        </body>
-            <footer>
-  <div class="footer-content">
-    <h3>Se el primero en recibir nuestras noticias</h3>
-    <form class="email-form" id="subscribeForm" action="https://formspree.io/f/xnngyapn" method="POST">
-      <input type="email" name="email" placeholder="Correo electrónico" required>
-      <button type="submit"><i class="fas fa-arrow-right"></i></button>
-    </form>
-    <p id="subscribeMessage" class="subscribe-message" style="display:none;"></p>
+        </ul>
+      </div>
+    </div> 
   </div>
 
-  <div class="footer-bottom">
-    <div>© 2025, DeLaVilla</div>
-    <div class="social-icons">
-      <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
-      <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
+  <footer>
+    <div class="footer-content">
+      <h3>Se el primero en recibir nuestras noticias</h3>
+      <form class="email-form" id="subscribeForm" action="https://formspree.io/f/xnngyapn" method="POST">
+        <input type="email" name="email" placeholder="Correo electrónico" required>
+        <button type="submit"><i class="fas fa-arrow-right"></i></button>
+      </form>
+      <p id="subscribeMessage" class="subscribe-message" style="display:none;"></p>
     </div>
-  </div>
-</footer>
+
+    <div class="footer-bottom">
+      <div>© 2025, DeLaVilla</div>
+      <div class="social-icons">
+        <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
+      </div>
+    </div>
+  </footer>
+  
 <!-- === SCRIPT para integración con Formspree === -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -653,30 +656,58 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 5000);
   </script>
 
-          <script type="module">
-  import { protectPage, updateUserIcon } from "/DeLaVilla/assets/auth.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
-  protectPage("cliente");
-  updateUserIcon();
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKWj1As-nnkcX8aZ7B0AbtzZoQ-56qTjc",
+    authDomain: "delavilla-43a2a.firebaseapp.com",
+    projectId: "delavilla-43a2a",
+    storageBucket: "delavilla-43a2a.firebasestorage.app",
+    messagingSenderId: "567143397487",
+    appId: "1:567143397487:web:19d7c005bf966d475f759a",
+    measurementId: "G-XB6BTBJGND"
+  };
 
-  const auth = getAuth();
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  function obtenerDatosExtra(uid) {
+    try {
+      const raw = localStorage.getItem(`userExtra_${uid}`);
+      if (!raw) return {};
+      const data = JSON.parse(raw);
+      return data && typeof data === "object" ? data : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  const formatear = (n) => Number(n || 0).toLocaleString("es-CO");
 
   onAuthStateChanged(auth, (user) => {
-    if (!user) return;
-
-    const titulo = document.getElementById("tituloPerfil");
-    const spanNombre = document.getElementById("clienteNombre");
-    const spanCorreo = document.getElementById("clienteCorreo");
-    const spanTelefono = document.getElementById("clienteTelefono");
-    const listaPedidos = document.getElementById("listaPedidos");
-
-    if (titulo) {
-      titulo.textContent = `Bienvenido(a) a tu Perfil, ${user.email}`;
+    if (!user) {
+      window.location.href = "/DeLaVilla/pages/login.html";
+      return;
     }
-    if (spanCorreo) spanCorreo.textContent = user.email;
-    if (spanNombre) spanNombre.textContent = user.displayName || "(sin nombre configurado)";
-    if (spanTelefono) spanTelefono.textContent = "(sin teléfono registrado)";
+
+    const tituloPerfil   = document.getElementById("tituloPerfil");
+    const spanNombre     = document.getElementById("clienteNombre");
+    const spanCorreo     = document.getElementById("clienteCorreo");
+    const spanTelefono   = document.getElementById("clienteTelefono");
+    const listaPedidos   = document.getElementById("listaPedidos");
+
+    // Nombre y correo
+    const nombreMostrar = user.displayName || "(sin nombre configurado)";
+    const correoMostrar = user.email || "(sin correo)";
+
+    if (tituloPerfil)  tituloPerfil.textContent  = `Bienvenido(a) a tu Perfil, ${nombreMostrar}`;
+    if (spanNombre)    spanNombre.textContent    = nombreMostrar;
+    if (spanCorreo)    spanCorreo.textContent    = correoMostrar;
+
+    const extra = obtenerDatosExtra(user.uid);
+    if (spanTelefono)  spanTelefono.textContent  = extra.telefono || "(sin teléfono registrado)";
 
     let ventas = [];
     try {
@@ -689,10 +720,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const ventasUsuario = ventas.filter(v => v.userEmail === user.email);
 
     if (!listaPedidos) return;
-
     listaPedidos.innerHTML = "";
 
-    if (ventasUsuario.length === 0) {
+    if (!ventasUsuario.length) {
       const li = document.createElement("li");
       li.textContent = "Aún no tienes compras registradas.";
       listaPedidos.appendChild(li);
@@ -709,7 +739,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       li.innerHTML = `
         <span class="pedido-numero">#${venta.id}</span>
-        <span>Total: $${Number(venta.total).toLocaleString('es-CO')} COP</span>
+        <span>Total: $${formatear(venta.total)} COP</span>
         <span>Fecha: ${fechaStr}</span>
         <span class="pedido-estado estado-entregado">Registrado</span>
       `;
@@ -718,4 +748,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 </script>
+
+  </body>
 </html>
