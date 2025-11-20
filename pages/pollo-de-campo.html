@@ -107,19 +107,6 @@ position: relative;
   color: #ffffff;
 }
 
-
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        height: auto;
-        padding: 20px;
-      }
-      nav ul {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-
     footer {
         width: 100%;
   background-color: #1f1400;
@@ -453,7 +440,7 @@ position: relative;
 
 @media (max-width: 768px) {
   body {
-    padding-top: 180px;
+
   }
 }
 
@@ -538,6 +525,84 @@ display: inline-block;
   background-color: #e0e0e0;
 }
 
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #f0f0f0;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+
+  header {
+    padding: 10px 16px;
+  }
+
+  .header-left {
+    gap: 12px;
+  }
+
+  .logo img {
+    height: 46px;
+  }
+
+
+  .menu-toggle {
+    display: block;
+  }
+
+
+  header nav {
+    position: absolute;
+    top: 80px; 
+    left: 0;
+    width: 100%;
+  }
+
+  header nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #1e1200;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    transition: max-height 0.25s ease-out, padding 0.25s ease-out;
+  }
+
+  header nav ul li {
+    width: 100%;
+  }
+
+  header nav ul li a {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+  }
+
+  header nav.open ul {
+    padding: 8px 0 12px;
+    max-height: 260px;
+  }
+
+  .icons {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    height: 70px;
+  }
+
+  header nav {
+    top: 70px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -551,7 +616,9 @@ display: inline-block;
     <div class="logo">
       <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
     </div>
-
+  <button class="menu-toggle" aria-label="Abrir menú">
+      <i class="fas fa-bars"></i>
+    </button>
     <nav>
       <ul>
         <li><a href="/DeLaVilla" class="active">Inicio</a></li>
@@ -989,6 +1056,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   onAuthStateChanged(auth, (user) => {
     console.log("Usuario en esta página:", user?.email);
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('header nav');
+    const icon = menuToggle ? menuToggle.querySelector('i') : null;
+
+    if (menuToggle && nav) {
+      menuToggle.addEventListener('click', () => {
+        nav.classList.toggle('open');
+
+        // Cambiar icono de barras a X
+        if (icon) {
+          icon.classList.toggle('fa-bars');
+          icon.classList.toggle('fa-xmark');
+        }
+      });
+    }
   });
 </script>
 
