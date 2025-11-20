@@ -106,18 +106,6 @@ position: relative;
 
 
 
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        height: auto;
-        padding: 20px;
-      }
-      nav ul {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-
     footer {
   width: 100%;
   background-color: #1f1400;
@@ -238,10 +226,10 @@ position: relative;
 }
 
 
-        /* --- Estilos del Contenido Principal (Perfil del Cliente) --- */
+
         .main-content {
             padding: 40px 20px;
-            min-height: 50vh; /* Altura mínima para que el footer quede abajo */
+            min-height: 50vh;
         }
         
         .perfil-cliente {
@@ -275,7 +263,7 @@ position: relative;
 
         .info-cliente p strong {
             display: inline-block;
-            width: 120px; /* Alineación de las etiquetas */
+            width: 120px;
             color: #555;
             font-weight: 500;
         }
@@ -448,7 +436,127 @@ position: relative;
 #mini-cart .btn-seguir:hover {
   background-color: #e0e0e0;
 }
-      
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+
+
+@media (max-width: 900px) {
+
+  header {
+    padding: 10px 12px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  nav {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+  }
+
+  nav ul {
+    flex-direction: column;
+    background-color: #1e1200;
+    margin: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .25s ease-out;
+  }
+
+  nav.open ul {
+    max-height: 300px;
+    padding-bottom: 10px;
+  }
+
+  nav ul li a {
+    display: block;
+    padding: 14px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+
+
+  .main-content {
+    padding: 24px 16px 32px;
+  }
+
+
+  .perfil-cliente {
+    padding: 20px 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  }
+
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  .pedidos-realizados h2 {
+    font-size: 1.1rem;
+  }
+
+
+  .info-cliente {
+    padding: 12px;
+  }
+
+  .info-cliente p {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 6px 0 10px;
+  }
+
+  .info-cliente p strong {
+    width: auto;
+    margin-bottom: 2px;
+  }
+
+
+  .lista-pedidos li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 0.9rem;
+  }
+
+  .pedido-estado {
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 20px 12px 28px;
+  }
+
+  .perfil-cliente {
+    padding: 18px 12px;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  .pedidos-realizados h2 {
+    font-size: 1.05rem;
+  }
+}
+
     </style>
 
 </head>
@@ -464,7 +572,9 @@ position: relative;
     <div class="logo">
       <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
     </div>
-
+<button class="menu-toggle" aria-label="Abrir menú">
+  <i class="fas fa-bars"></i>
+</button>
     <nav>
       <ul>
         <li><a href="/DeLaVilla" class="active">Inicio</a></li>
@@ -760,5 +870,19 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Usuario en esta página:", user?.email);
   });
 </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const toggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector("header nav");
+  const icon = toggle.querySelector("i");
+
+  toggle.addEventListener("click", () => {
+    nav.classList.toggle("open");
+    icon.classList.toggle("fa-bars");
+    icon.classList.toggle("fa-xmark");
+  });
+});
+</script>
+
   </body>
 </html>
