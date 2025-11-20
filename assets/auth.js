@@ -30,9 +30,9 @@ export function protectPage(role = "any") {
     if (!user) {
       window.location.href = "/DeLaVilla/pages/login.html";
     } else {
-      if (role === "admin" && user.email !== "admin@tusitio.com") {
+      if (role === "admin" && user.email !== "admin@delavilla.com") {
         window.location.href = "/DeLaVilla/pages/productos.html";
-      } else if (role === "cliente" && user.email === "admin@tusitio.com") {
+      } else if (role === "cliente" && user.email === "admin@delavilla.com") {
         window.location.href = "/DeLaVilla/pages/admin.html";
       }
     }
