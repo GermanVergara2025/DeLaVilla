@@ -35,7 +35,7 @@ export function protectPage(role = "any") {
     } else {
       // Control por rol
       if (role === "admin" && user.email !== "admin@tusitio.com") {
-        window.location.href = "/DeLaVilla/pages/cliente.html";
+        window.location.href = "/DeLaVilla/pages/productos.html";
       } else if (role === "cliente" && user.email === "admin@tusitio.com") {
         window.location.href = "/DeLaVilla/pages/admin.html";
       }
