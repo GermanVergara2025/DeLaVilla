@@ -230,6 +230,39 @@ footer {
   color: #aaaaaa;
 }
 @media (max-width: 600px) {
+  .productos-section {
+    padding: 130px 16px 60px;
+  }
+
+  .product-grid {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .product {
+    width: 100%;
+  }
+
+  .filters {
+    align-items: stretch;
+  }
+
+  .filters-left,
+  .filters-right {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+
+  .dropdown button {
+    width: 100%;
+    justify-content: space-between;
+  }
+
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
@@ -240,11 +273,13 @@ footer {
   }
 }
 
+
 .productos-section {
   background-color: #fafaf3;
   color: #3b3b2f;
-  padding: 160px 60px 100px;
+  padding: 140px 60px 100px;
 }
+
 .productos-section h1 {
   font-size: 48px;
   margin: 40px 0 20px;
@@ -502,6 +537,162 @@ display: inline-block;
   text-decoration: none;
 }
 
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #f0f0f0;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+  /* ====== VERSIÓN TABLET / MÓVIL ====== */
+@media (max-width: 900px) {
+
+  header {
+    padding: 10px 16px;
+  }
+
+  .header-left {
+    gap: 12px;
+  }
+
+  .logo img {
+    height: 46px;
+  }
+
+
+  .menu-toggle {
+    display: block;
+  }
+
+
+  header nav {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+  }
+
+  header nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #1e1200;
+    margin: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    transition: max-height 0.25s ease-out, padding 0.25s ease-out;
+  }
+
+  header nav ul li {
+    width: 100%;
+  }
+
+  header nav ul li a {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+  }
+
+  header nav.open ul {
+    padding: 8px 0 12px;
+    max-height: 260px;
+  }
+
+  .productos-section {
+    padding: 140px 24px 80px;
+  }
+
+  .product {
+    width: 45%;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .filters-right {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .productos-section {
+    padding: 140px 24px 80px;
+  }
+
+  .product-grid {
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .product {
+    width: 45%;
+  }
+}
+
+@media (max-width: 600px) {
+  .productos-section {
+    padding: 130px 16px 60px;
+  }
+
+  .product-grid {
+    flex-direction: column; 
+    align-items: center;
+    gap: 20px;
+  }
+
+  .product {
+    width: 100%;
+    max-width: 360px;
+  }
+
+
+  .productos-section h1 {
+    font-size: 32px;
+    text-align: left;
+  }
+
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .filters-left,
+  .filters-right {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+
+  .dropdown button {
+    width: 100%;
+    justify-content: space-between;
+    font-size: 15px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .social-icons {
+    margin-top: 10px;
+  }
+}
+
+
 
 </style>
 </head>
@@ -521,7 +712,9 @@ display: inline-block;
     <div class="logo">
       <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
     </div>
-
+    <button class="menu-toggle" aria-label="Abrir menú">
+      <i class="fas fa-bars"></i>
+    </button>
     <nav>
       <ul>
         <li><a href="/DeLaVilla" class="active">Inicio</a></li>
@@ -941,5 +1134,24 @@ fadeElements.forEach(el => observer.observe(el));
   import { updateUserIcon } from "/DeLaVilla/js/auth.js";
   updateUserIcon();
 </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const toggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector("header nav");
+  const icon = toggle ? toggle.querySelector("i") : null;
+
+  if (toggle && nav) {
+    toggle.addEventListener("click", () => {
+      nav.classList.toggle("open");
+
+      if (icon) {
+        icon.classList.toggle("fa-bars");
+        icon.classList.toggle("fa-xmark");
+      }
+    });
+  }
+});
+</script>
+
 </body>
 </html>
