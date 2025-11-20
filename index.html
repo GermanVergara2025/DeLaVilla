@@ -979,7 +979,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
     
 <script>
-  // Mostrar / ocultar barra de búsqueda
   document.getElementById("search-toggle").addEventListener("click", function(e) {
     e.preventDefault();
     const bar = document.getElementById("search-bar");
@@ -987,19 +986,15 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("search-input").focus();
   });
 
-  // Productos disponibles
   const productos = ["pollo", "miel", "huevos", "cubeta de huevos"];
 
-  // Evento al hacer clic en buscar
   document.getElementById("search-btn").addEventListener("click", function() {
     const keyword = document.getElementById("search-input").value.trim().toLowerCase();
     if (!keyword) return;
 
-    // Verificar si el producto existe
     const encontrado = productos.find(p => keyword.includes(p) || p.includes(keyword));
 
     if (encontrado) {
-      // Redirigir con parámetro de búsqueda
       window.location.href = `/DeLaVilla/pages/productos.html?search=${encodeURIComponent(keyword)}`;
     } else {
       alert("❌ Producto no encontrado. Intenta con: pollo, miel o huevos.");
@@ -1008,12 +1003,10 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 <script>
 (function(){
-  var waNumber = '573202293640'; // <- reemplázalo por tu número
+  var waNumber = '573202293640';
 
-  // Mensaje predefinido (opcional). Cámbialo o déjalo vacío ''.
   var prefilledMessage = encodeURIComponent('Hola 👋, quiero información sobre sus productos/servicios.');
 
-  // Elegir URL según dispositivo (móvil usa wa.me, escritorio usa web.whatsapp.com)
   var isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   var hrefBase = isMobile ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
   var href = hrefBase + waNumber + (prefilledMessage ? (isMobile ? '?text=' + prefilledMessage : '&text=' + prefilledMessage) : '');
@@ -1059,7 +1052,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <script>
 (function(){
-  // Selectores
   const btnAgregar = document.getElementById('agregar-carrito');
   const btnComprar = document.getElementById('buy-now');
   const cantidadInput = document.getElementById('cantidad');
@@ -1084,17 +1076,14 @@ document.addEventListener("DOMContentLoaded", function () {
       cartLink.appendChild(span);
     }
   }
-   // Un único carrito en localStorage
   let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-  // Actualiza el contador mostrado
   function actualizarContadorVisual() {
     const total = carrito.reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
     const el = document.getElementById('cart-count');
     if (el) el.textContent = total;
   }
 
-  // Guarda carrito en localStorage
   function guardarCarrito() {
     localStorage.setItem('carrito', JSON.stringify(carrito));
     actualizarContadorVisual();
@@ -1102,7 +1091,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   <script>
-  // Función para mostrar mini-cart
   function mostrarMiniCart(nombreProducto) {
     const miniCart = document.getElementById('mini-cart');
     const itemName = document.getElementById('mini-cart-item');
@@ -1110,60 +1098,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     itemName.textContent = nombreProducto;
 
-    // Contador de productos
     let cantidad = parseInt(localStorage.getItem('cartCount') || '0') + 1;
     localStorage.setItem('cartCount', cantidad);
     document.getElementById('cart-count').textContent = cantidad;
 
     btnPagar.textContent = `Pagar pedido (${cantidad})`;
 
-    // Mostrar mini-cart
     miniCart.style.display = 'block';
 
-    // Ocultar automáticamente después de 4 segundos
     clearTimeout(miniCart.timeout);
     miniCart.timeout = setTimeout(() => {
       miniCart.style.display = 'none';
     }, 4000);
   }
  </script>
-<script type="module">
+
+  <script type="module">
+  import { updateUserIcon, protectPage } from "/DeLaVilla/assets/auth.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-  import { logout } from "/DeLaVilla/js/auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKWj1As-nnkcX8aZ7B0AbtzZoQ-56qTjc",
-    authDomain: "delavilla-43a2a.firebaseapp.com",
-    projectId: "delavilla-43a2a",
-  };
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  updateUserIcon();
+
+  const auth = getAuth();
 
   onAuthStateChanged(auth, (user) => {
-    const userIcon = document.querySelector('.fa-user').parentElement;
-    if (user) {
-      userIcon.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
-      userIcon.title = "Cerrar sesión";
-      userIcon.addEventListener("click", (e) => {
-        e.preventDefault();
-        logout();
-      });
-    } else {
-      userIcon.setAttribute("href", "/DeLaVilla/pages/login.html");
-    }
+    console.log("Usuario en esta página:", user?.email);
   });
-
-  onAuthStateChanged(auth, (user) => {
-  const nombre = document.getElementById("nombreUsuario");
-  if (user) {
-    nombre.textContent = user.email;
-  } else {
-    nombre.textContent = "";
-  }
-});
-
 </script>
+
 <script type="module">
   import { updateUserIcon } from "/DeLaVilla/js/auth.js";
   updateUserIcon();
