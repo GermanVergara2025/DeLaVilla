@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     
-    /* Estilos generales */
 html, body {
   margin: 0;
   padding: 0;
@@ -35,13 +34,11 @@ html, body {
       transform: translateY(0);
     }
 
-    /* Efecto hover general */
     .hover-zoom:hover {
       transform: scale(1.03);
       transition: transform 0.3s ease;
     }
 
-    /* Header */
 header {
  position: fixed;
   top: 50px;
@@ -61,15 +58,13 @@ header {
 .header-left {
   display: flex;
   align-items: center;
-  gap: 50px; /* espacio entre logo y menú */
+  gap: 50px;
 }
 
-    /* Logo */
     .logo img {
       height: 60px;
     }
 
-    /* Menú de navegación */
     nav ul {
   list-style: none;
   display: flex;
@@ -91,7 +86,6 @@ nav a.active {
   text-decoration: underline;
 }
 
-/* Iconos la derecha */
 .icons {
   display: flex;
   align-items: center;
@@ -608,23 +602,19 @@ display: inline-block;
   </div>
 
 <div class="icons">
-  <!-- Icono de búsqueda -->
   <a href="#" id="search-toggle" title="Buscar">
     <i class="fas fa-search"></i>
   </a>
 
-  <!-- Barra de búsqueda oculta -->
   <div class="search-bar" id="search-bar">
     <input type="text" id="search-input" placeholder="Buscar productos..." />
     <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
   </div>
 
-  <!-- Ícono de usuario -->
   <a href="/DeLaVilla/pages/login.html" title="Mi cuenta">
     <i class="fas fa-user"></i>
   </a>
 
-  <!-- Ícono de carrito -->
   <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
     <i class="fas fa-shopping-bag"></i>
     <span id="cart-count">0</span>
@@ -694,7 +684,6 @@ document.addEventListener("DOMContentLoaded", function () {
         message.style.display = "block";
       }
 
-      // Oculta el mensaje suavemente después de 5 segundos
       setTimeout(() => {
         message.style.opacity = "0";
       }, 5000);
@@ -709,7 +698,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
     
 <script>
-  // Mostrar / ocultar barra de búsqueda
   document.getElementById("search-toggle").addEventListener("click", function(e) {
     e.preventDefault();
     const bar = document.getElementById("search-bar");
@@ -717,19 +705,15 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("search-input").focus();
   });
 
-  // Productos disponibles
   const productos = ["pollo", "miel", "huevos", "cubeta de huevos"];
 
-  // Evento al hacer clic en buscar
   document.getElementById("search-btn").addEventListener("click", function() {
     const keyword = document.getElementById("search-input").value.trim().toLowerCase();
     if (!keyword) return;
 
-    // Verificar si el producto existe
     const encontrado = productos.find(p => keyword.includes(p) || p.includes(keyword));
 
     if (encontrado) {
-      // Redirigir con parámetro de búsqueda
       window.location.href = `productos.html?search=${encodeURIComponent(keyword)}`;
     } else {
       alert("❌ Producto no encontrado. Intenta con: pollo, miel o huevos.");
@@ -739,16 +723,14 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
 (function(){
 
-  var waNumber = '573202293640'; // <- reemplázalo por tu número
+  var waNumber = '573202293640';
 
   var prefilledMessage = encodeURIComponent('Hola 👋, quiero información sobre sus productos/servicios.');
 
-  // Elegir URL según dispositivo
   var isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   var hrefBase = isMobile ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
   var href = hrefBase + waNumber + (prefilledMessage ? (isMobile ? '?text=' + prefilledMessage : '&text=' + prefilledMessage) : '');
 
-  // Crear enlace
   var a = document.createElement('a');
   a.href = href;
   a.target = '_blank';
@@ -757,11 +739,9 @@ document.addEventListener("DOMContentLoaded", function () {
   a.setAttribute('aria-label', 'Contactar por WhatsApp');
   a.title = 'Contáctanos por WhatsApp';
 
-  // Icono (SVG de WhatsApp)
   a.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp" style="width:34px; height:34px;">';
 
   document.addEventListener('DOMContentLoaded', function(){
-    // Añadir al body
     document.body.appendChild(a);
   });
 })();
@@ -782,7 +762,6 @@ document.addEventListener("DOMContentLoaded", function () {
       bannerText.textContent = messages[currentIndex];
     }
 
-    // Cambio automático cada 5 segundos
     setInterval(() => {
       changeMessage(1);
     }, 5000);
@@ -835,23 +814,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Un único carrito en localStorage
   let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-  // Actualiza el contador mostrado
   function actualizarContadorVisual() {
     const total = carrito.reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
     const el = document.getElementById('cart-count');
     if (el) el.textContent = total;
   }
 
-  // Guarda carrito en localStorage
   function guardarCarrito() {
     localStorage.setItem('carrito', JSON.stringify(carrito));
     actualizarContadorVisual();
   }
 
-  // Añadir producto (evita duplicados por id)
   function añadirProducto(producto) {
     const existente = carrito.find(p => p.id === producto.id);
     if (existente) {
@@ -862,7 +837,6 @@ document.addEventListener("DOMContentLoaded", function () {
     guardarCarrito();
   }
 
-  // Inicializa contador visual al cargar
   actualizarContadorVisual();
 
   if (btnAgregar) {
@@ -882,7 +856,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       añadirProducto(producto);
 
-      // Feedback visual
       const el = document.getElementById('cart-count');
       if (el) {
         el.classList.add('pulse');
@@ -892,7 +865,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Evento: comprar ahora -> añade (si hace falta) y redirige al carrito
   if (btnComprar) {
     btnComprar.addEventListener('click', function(e){
       if (e) e.preventDefault();
@@ -921,7 +893,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <script>
-  // Función para mostrar mini-cart
   function mostrarMiniCart(nombreProducto) {
     const miniCart = document.getElementById('mini-cart');
     const itemName = document.getElementById('mini-cart-item');
@@ -929,24 +900,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     itemName.textContent = nombreProducto;
 
-    // Contador de productos
     let cantidad = parseInt(localStorage.getItem('cartCount') || '0') + 1;
     localStorage.setItem('cartCount', cantidad);
     document.getElementById('cart-count').textContent = cantidad;
 
     btnPagar.textContent = `Pagar pedido (${cantidad})`;
 
-    // Mostrar mini-cart
     miniCart.style.display = 'block';
 
-    // Ocultar automáticamente después de 4 segundos
     clearTimeout(miniCart.timeout);
     miniCart.timeout = setTimeout(() => {
       miniCart.style.display = 'none';
     }, 4000);
   }
 
-  // Listener para el botón "Agregar al carrito"
   const btnAgregar = document.getElementById('agregar-carrito');
   if (btnAgregar) {
     btnAgregar.addEventListener('click', function(e) {
@@ -962,12 +929,10 @@ document.addEventListener("DOMContentLoaded", function () {
         cantidad: qty
       };
 
-      // Aquí llamamos a la función que muestra el mini-cart
       mostrarMiniCart(producto.nombre);
     });
   }
 
-  // Botón seguir comprando
   const btnSeguir = document.getElementById('btn-seguir');
   if (btnSeguir) {
     btnSeguir.addEventListener('click', () => {
@@ -1008,16 +973,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (cartIconLink) {
-    // Hover sobre icono
     cartIconLink.addEventListener('mouseenter', () => mostrarMiniCart('Cubeta de Huevos'));
     cartIconLink.addEventListener('mouseleave', ocultarMiniCart);
 
-    // Hover sobre mini-cart
     miniCart.addEventListener('mouseenter', () => mostrarMiniCart('Cubeta de Huevos'));
     miniCart.addEventListener('mouseleave', ocultarMiniCart);
   }
 
-  // Click en agregar al carrito
   if (btnAgregar) {
     btnAgregar.addEventListener('click', e => {
       e.preventDefault();
@@ -1025,13 +987,11 @@ document.addEventListener('DOMContentLoaded', () => {
       cartCount += cantidad;
       mostrarMiniCart('Cubeta de Huevos');
 
-      // Animación del contador
       cartCountEl.classList.add('pulse');
       setTimeout(() => cartCountEl.classList.remove('pulse'), 350);
     });
   }
 
-  // Botón seguir comprando
   if (btnSeguir) {
     btnSeguir.addEventListener('click', () => miniCart.style.display = 'none');
   }
@@ -1041,7 +1001,6 @@ document.addEventListener('DOMContentLoaded', () => {
 <section id="carrito-contenedor"></section>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Leer carrito de localStorage de forma segura
   let carrito;
   try {
     carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
@@ -1051,7 +1010,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const contenedor = document.getElementById('carrito-contenedor');
-  if (!contenedor) return; // si no existe el contenedor, salimos
+  if (!contenedor) return;
 
   function guardarCarrito() {
     localStorage.setItem('carrito', JSON.stringify(carrito));
@@ -1137,7 +1096,6 @@ document.addEventListener('DOMContentLoaded', () => {
       contenedor.appendChild(div);
     });
 
-    // Total y botón Pagar
     const totalDiv = document.createElement('div');
     totalDiv.style.maxWidth = '900px';
     totalDiv.style.margin = '20px auto 40px auto';
@@ -1166,7 +1124,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     contenedor.appendChild(totalDiv);
 
-    // Inputs de cantidad
     document.querySelectorAll('.cantidad-input').forEach(input => {
       input.addEventListener('change', (e) => {
         const idx = e.target.dataset.index;
@@ -1178,7 +1135,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Botones eliminar
     document.querySelectorAll('.btn-eliminar').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const idx = e.target.dataset.index;
@@ -1188,7 +1144,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Botón pagar con registro de venta
     const btnPagar = document.getElementById('btn-pagar-carrito');
     if (btnPagar) {
       btnPagar.addEventListener('click', () => {
@@ -1216,9 +1171,9 @@ document.addEventListener('DOMContentLoaded', () => {
           telefono,
           total,
           items: carrito
+          userEmail: window.currentUserEmail || null
         };
 
-        // Guardar ventas en localStorage
         let ventas;
         try {
           ventas = JSON.parse(localStorage.getItem('ventas') || '[]');
@@ -1229,19 +1184,16 @@ document.addEventListener('DOMContentLoaded', () => {
         ventas.push(venta);
         localStorage.setItem('ventas', JSON.stringify(ventas));
 
-        // Vaciar carrito
         carrito = [];
         guardarCarrito();
 
         alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${total.toLocaleString('es-CO')}`);
 
-        // Redirigir a inicio (opcional)
         window.location.href = "/DeLaVilla";
       });
     }
   }
 
-  // Primera renderización
   renderCarrito();
 });
 </script>
@@ -1251,35 +1203,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <script type="module">
+  import { protectPage, updateUserIcon } from "/DeLaVilla/assets/auth.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-  import { logout } from "/DeLaVilla/js/auth.js";
+  protectPage("cliente");
+  updateUserIcon();
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKWj1As-nnkcX8aZ7B0AbtzZoQ-56qTjc",
-    authDomain: "delavilla-43a2a.firebaseapp.com",
-    projectId: "delavilla-43a2a",
-  };
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
+  const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
-    const userIcon = document.querySelector('.fa-user').parentElement;
-    if (user) {
-      userIcon.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
-      userIcon.title = "Cerrar sesión";
-      userIcon.addEventListener("click", (e) => {
-        e.preventDefault();
-        logout();
-      });
-    } else {
-      userIcon.setAttribute("href", "/DeLaVilla/pages/login.html");
-    }
+    window.currentUserEmail = user ? user.email : null;
   });
-</script>
-  <script type="module">
-  import { protectPage } from "/DeLaVilla/js/auth.js";
-  protectPage(); // requiere login, sin importar el rol
 </script>
 
 </body>
