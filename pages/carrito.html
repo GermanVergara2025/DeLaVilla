@@ -633,8 +633,9 @@ display: inline-block;
 </header>
 
 <main style="flex: 1;">
-<section id="carrito-contenedor" class="producto-container"></section>
- </main>
+  <section id="carrito-contenedor" class="producto-container"></section>
+</main>
+
 
 </section>
   <footer>
@@ -1001,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <section id="carrito-contenedor"></section>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  let carrito;
+  let carrito = [];
   try {
     carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
     if (!Array.isArray(carrito)) carrito = [];
@@ -1012,44 +1013,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const contenedor = document.getElementById('carrito-contenedor');
   if (!contenedor) return;
 
-  function guardarCarrito() {
+  const formatear = (n) => Number(n || 0).toLocaleString('es-CO');
+
+  const guardarCarrito = () => {
     localStorage.setItem('carrito', JSON.stringify(carrito));
-  }
+  };
 
-  function calcularTotal() {
-    return carrito.reduce((acc, item) => {
-      const precio = Number(item.precio) || 0;
-      const cant = Number(item.cantidad) || 0;
-      return acc + precio * cant;
-    }, 0);
-  }
+  const calcularTotal = () =>
+    carrito.reduce(
+      (acc, item) => acc + Number(item.precio || 0) * Number(item.cantidad || 0),
+      0
+    );
 
-  function renderCarrito() {
+  const renderCarrito = () => {
     contenedor.innerHTML = '';
 
-    if (!carrito || carrito.length === 0) {
+    if (!carrito.length) {
       contenedor.innerHTML = `
         <div style="max-width:900px;margin:40px auto;text-align:center;">
           <h1 style="margin-bottom:20px;font-size:28px;color:#3a2a20;">Tu carrito está vacío</h1>
           <a href="/DeLaVilla/pages/productos.html"
              class="btn-seguir"
-             style="
-               display:inline-block;
-               padding:10px 20px;
-               background:#7a4b27;
-               color:#fff;
-               text-decoration:none;
-               border-radius:6px;
-               font-weight:500;
-             ">
-            Seguir comprando
+             style="display:inline-block;background-color:#3E4E35;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600;">
+             Seguir comprando
           </a>
-        </div>
-      `;
+        </div>`;
       return;
     }
 
     carrito.forEach((item, index) => {
+      const subtotal = Number(item.precio || 0) * Number(item.cantidad || 0);
+
       const div = document.createElement('div');
       div.className = 'producto-item';
       div.style.maxWidth = '900px';
@@ -1063,7 +1057,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">
           <div>
             <h2 style="margin:0 0 6px 0;font-size:20px;color:#3a2a20;">${item.nombre}</h2>
-            <p style="margin:0 0 4px 0;color:#555;">Precio: $${Number(item.precio).toLocaleString('es-CO')}</p>
+            <p style="margin:0 0 4px 0;color:#555;">Precio: $${formatear(item.precio)}</p>
             <p style="margin:0;color:#555;">
               Cantidad:
               <input type="number"
@@ -1076,23 +1070,15 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div style="text-align:right;">
             <p style="margin:0 0 8px 0;font-weight:600;color:#3a2a20;">
-              Subtotal: $${(Number(item.precio) * Number(item.cantidad)).toLocaleString('es-CO')}
+              Subtotal: $${formatear(subtotal)}
             </p>
             <button class="btn-eliminar"
                     data-index="${index}"
-                    style="
-                      padding:6px 12px;
-                      background:#b3261e;
-                      color:#fff;
-                      border:none;
-                      border-radius:4px;
-                      cursor:pointer;
-                    ">
+                    style="padding:6px 12px;background:#b3261e;color:#fff;border:none;border-radius:4px;cursor:pointer;">
               Eliminar
             </button>
           </div>
-        </div>
-      `;
+        </div>`;
       contenedor.appendChild(div);
     });
 
@@ -1102,42 +1088,30 @@ document.addEventListener('DOMContentLoaded', () => {
     totalDiv.style.display = 'flex';
     totalDiv.style.justifyContent = 'space-between';
     totalDiv.style.alignItems = 'center';
-    totalDiv.style.gap = '16px';
-
+    totalDiv.style.flexWrap = 'wrap';
     totalDiv.innerHTML = `
-      <h2 style="margin:0;font-size:22px;color:#3a2a20;">
-        Total: $${calcularTotal().toLocaleString('es-CO')}
-      </h2>
+      <div style="font-size:18px;font-weight:600;color:#3a2a20;">
+        Total: $${formatear(calcularTotal())}
+      </div>
       <button id="btn-pagar-carrito"
-              style="
-                padding:10px 24px;
-                background:#006b3c;
-                color:#fff;
-                border:none;
-                border-radius:6px;
-                font-size:16px;
-                font-weight:600;
-                cursor:pointer;
-              ">
-        Pagar pedido
-      </button>
-    `;
+              style="margin-top:10px;padding:12px 28px;background:#3E4E35;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;">
+        Pagar
+      </button>`;
     contenedor.appendChild(totalDiv);
 
-    document.querySelectorAll('.cantidad-input').forEach(input => {
+    contenedor.querySelectorAll('.cantidad-input').forEach(input => {
       input.addEventListener('change', (e) => {
-        const idx = e.target.dataset.index;
-        let val = parseInt(e.target.value);
-        if (isNaN(val) || val < 1) val = 1;
-        carrito[idx].cantidad = val;
+        const idx = Number(e.target.dataset.index);
+        const nuevaCant = Math.max(1, parseInt(e.target.value) || 1);
+        carrito[idx].cantidad = nuevaCant;
         guardarCarrito();
         renderCarrito();
       });
     });
 
-    document.querySelectorAll('.btn-eliminar').forEach(btn => {
+    contenedor.querySelectorAll('.btn-eliminar').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const idx = e.target.dataset.index;
+        const idx = Number(e.target.dataset.index);
         carrito.splice(idx, 1);
         guardarCarrito();
         renderCarrito();
@@ -1147,17 +1121,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnPagar = document.getElementById('btn-pagar-carrito');
     if (btnPagar) {
       btnPagar.addEventListener('click', () => {
-        if (!carrito || carrito.length === 0) {
+        if (!carrito.length) {
           alert("Tu carrito está vacío");
           return;
         }
 
         const nombre = prompt("Ingresa tu nombre completo:");
         if (!nombre) return;
-
         const direccion = prompt("Ingresa tu dirección:");
         if (!direccion) return;
-
         const telefono = prompt("Ingresa tu teléfono:");
         if (!telefono) return;
 
@@ -1170,33 +1142,27 @@ document.addEventListener('DOMContentLoaded', () => {
           direccion,
           telefono,
           total,
-          items: carrito
+          items: carrito,
           userEmail: window.currentUserEmail || null
         };
 
-        let ventas;
-        try {
-          ventas = JSON.parse(localStorage.getItem('ventas') || '[]');
-          if (!Array.isArray(ventas)) ventas = [];
-        } catch (e) {
-          ventas = [];
-        }
+        const ventas = JSON.parse(localStorage.getItem('ventas') || '[]');
         ventas.push(venta);
         localStorage.setItem('ventas', JSON.stringify(ventas));
 
         carrito = [];
         guardarCarrito();
 
-        alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${total.toLocaleString('es-CO')}`);
-
+        alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${formatear(total)}`);
         window.location.href = "/DeLaVilla";
       });
     }
-  }
+  };
 
   renderCarrito();
 });
 </script>
+
 
 
   renderCarrito();
