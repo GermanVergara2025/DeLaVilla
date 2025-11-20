@@ -1,150 +1,242 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Perfil - De La Villa</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil - DeLaVilla</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* --- Estilos Generales y Tipografía --- */
-        :root {
-            --primary-color: #4b2e1d; /* Color marrón oscuro del logo/botones */
-            --secondary-color: #f4f7f6; /* Fondo del cuerpo */
-            --accent-color: #a0a0a0; /* Color de texto secundario */
-            --link-hover: #6b3f24; /* Color hover */
-        }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+    body {
+ display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #FAFAF4;
+  font-family: 'Inter', sans-serif;
+  color: #2E3A2B;
+  padding-top: 130px;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--secondary-color);
-            margin: 0;
-            color: #333;
-        }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* --- Estilos del Top Banner (Header) --- */
-        .top-banner {
-            background-color: var(--primary-color);
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-            font-size: 0.85rem;
-            font-weight: 500;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .hover-zoom:hover {
+      transform: scale(1.03);
+      transition: transform 0.3s ease;
+    }
 
-        .top-banner .arrow {
-            cursor: pointer;
-            padding: 0 15px;
-            font-size: 1.2rem;
-        }
-        
-        /* --- Estilos del Header Principal (Header) --- */
-        header {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 40px;
-        }
+header {
+ position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #1e1200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 60px;
+  z-index: 1000;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
 
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
 
-        .logo img {
-            height: 50px; /* Ajusta el tamaño del logo */
-            margin-right: 30px;
-        }
+    .logo img {
+      height: 60px;
+    }
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
+    nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
 
-        nav li a {
-            padding: 0 15px;
-            font-weight: 500;
-            color: #333;
-            transition: color 0.3s;
-        }
+nav a {
+  text-decoration: none;
+  color: #f0f0f0;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
 
-        nav li a:hover, nav li a.active {
-            color: var(--primary-color);
-        }
+nav a:hover,
+nav a.active {
+  color: #ffffff;
+  text-decoration: underline;
+}
 
-        .icons {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+position: relative;
+}
 
-        .icons a {
-            margin-left: 20px;
-            font-size: 1.1rem;
-            color: #555;
-            position: relative;
-        }
+.icons a {
+  color: #f0f0f0;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
 
-        .icons a:hover {
-            color: var(--primary-color);
-        }
+.icons a:hover i {
+  transform: scale(1.2);
+  color: #ffffff;
+}
 
-        /* Estilos de la barra de búsqueda */
-        .search-bar {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            display: none; /* Oculto por defecto */
-            background: #fff;
-            padding: 10px;
-            border: 1px solid #ddd;
-            z-index: 10;
-        }
-        .search-bar input {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .search-bar button {
-            background: none;
-            border: none;
-            color: var(--primary-color);
-            cursor: pointer;
-        }
 
-        #cart-count {
-            position: absolute;
-            top: -8px;
-            right: -10px;
-            background-color: red;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            line-height: 1;
-        }
-        
-        /* Ocultar el mini-cart por defecto, se mostraría con JS */
-        #mini-cart {
-            display: none; 
-        }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+      }
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    footer {
+  width: 100%;
+  background-color: #1f1400;
+  padding: 50px 20px 30px;
+  color: white;
+  margin-top: auto;
+  box-sizing: border-box;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-content h3 {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .email-form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      max-width: 400px;
+    }
+
+    .email-form input[type="email"] {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid white;
+      border-radius: 6px;
+      background-color: transparent;
+      color: white;
+      font-size: 16px;
+    }
+
+    .email-form button {
+      padding: 12px 20px;
+      background-color: transparent;
+      border: 1px solid white;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .email-form button i {
+      pointer-events: none;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #2e1d00;
+      margin-top: 50px;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #cfcfcf;
+      flex-wrap: wrap;
+    }
+
+    .social-icons a {
+      color: white;
+      margin-left: 65px;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    .social-icons a:hover {
+      color: #aaaaaa;
+    }
+
+    @media (max-width: 600px) {
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .social-icons {
+        margin-top: 10px;
+      }
+    }
+
+.search-bar {
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 60px;
+  background: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+.search-bar input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 200px;
+}
+
+.search-bar button {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background: #222;
+}
+
 
         /* --- Estilos del Contenido Principal (Perfil del Cliente) --- */
         .main-content {
@@ -241,207 +333,393 @@
             background-color: #fff3cd;
             color: #856404;
         }
+#wa-floating-button{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    background-color: #25D366; 
+    text-decoration: none;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+  #wa-floating-button:hover{ transform: translateY(-4px); box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
+  #wa-floating-button svg{ width: 34px; height: 34px; fill: #fff; }
 
-        /* --- Estilos del Footer --- */
-        footer {
-            background-color: #333;
-            color: #f4f4f4;
-            padding: 40px 20px 20px;
-            text-align: center;
-            margin-top: 30px;
-        }
+  /* Ajustes en pantallas pequeñas */
+  @media (max-width: 420px){
+    #wa-floating-button{ right: 14px; bottom: 14px; width: 56px; height: 56px; }
+    #wa-floating-button svg{ width:28px; height:28px; }
+  }
+.top-banner {
+  background-color: #1f1400;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100; 
+    }
 
-        .footer-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #fff;
-        }
+    .top-banner .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      padding: 0 15px;
+    }
 
-        .email-form {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 40px;
-        }
+    .arrow.left {
+      left: 0;
+    }
 
-        .email-form input {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px 0 0 5px;
-            width: 250px;
-            font-size: 1rem;
-        }
+    .arrow.right {
+      right: 0;
+    }
 
-        .email-form button {
-            background-color: var(--primary-color);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 0 5px 5px 0;
-            cursor: pointer;
-            color: #fff;
-            transition: background 0.3s;
-        }
-        
-        .email-form button:hover {
-            background-color: var(--link-hover);
-        }
+      #mini-cart {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 280px;
+  background-color: #fff;
+  color: #2E3A2B;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  padding: 16px;
+  z-index: 2000;
+}
 
-        .footer-bottom {
-            border-top: 1px solid #444;
-            padding-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-        }
+#mini-cart h4 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
 
-        .social-icons a {
-            color: #f4f4f4;
-            margin-left: 15px;
-            font-size: 1.2rem;
-            transition: color 0.3s;
-        }
-        
-        .social-icons a:hover {
-            color: var(--primary-color);
-        }
+#mini-cart .item-name {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
 
+#mini-cart button {
+  padding: 10px 12px;
+  margin: 4px 0;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#mini-cart .btn-pagar {
+  background-color: #3E4E35;
+  color: #fff;
+}
+
+#mini-cart .btn-seguir {
+  background-color: #f0f0f0;
+  color: #2E3A2B;
+}
+
+#mini-cart .btn-pagar:hover {
+  background-color: #4e6145;
+}
+
+#mini-cart .btn-seguir:hover {
+  background-color: #e0e0e0;
+}
+      
     </style>
-    <script>
-        // Funcionalidad de ejemplo para el banner
-        const messages = ["VUELVE A LO NATURAL", "ENVÍO GRATIS en pedidos mayores a $50", "PRODUCTOS ORGÁNICOS"];
-        let currentMessageIndex = 0;
 
-        function changeMessage(direction) {
-            currentMessageIndex = (currentMessageIndex + direction + messages.length) % messages.length;
-            document.getElementById('banner-text').textContent = messages[currentMessageIndex];
-        }
-
-        // Funcionalidad de ejemplo para la barra de búsqueda
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchToggle = document.getElementById('search-toggle');
-            const searchBar = document.getElementById('search-bar');
-            
-            if (searchToggle && searchBar) {
-                searchToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    searchBar.style.display = searchBar.style.display === 'flex' ? 'none' : 'flex';
-                });
-            }
-        });
-    </script>
 </head>
 <body>
+<div class="top-banner">
+    <div class="arrow left" onclick="changeMessage(-1)">&#8249;</div>
+    <div id="banner-text">VUELVE A LO NATURAL</div>
+    <div class="arrow right" onclick="changeMessage(1)">&#8250;</div>
+  </div>
 
-    <div class="top-banner">
-        <div class="arrow left" onclick="changeMessage(-1)">&#8249;</div>
-        <div id="banner-text">VUELVE A LO NATURAL</div>
-        <div class="arrow right" onclick="changeMessage(1)">&#8250;</div>
+   <header>
+  <div class="header-left">
+    <div class="logo">
+      <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
     </div>
 
-    <header>
-        <div class="header-left">
-            <div class="logo">
-                <img src="https://delavillaa.myshopify.com/cdn/shop/files/3-DE_LA_VILLA_TRANS.png?v=1758213143&width=190" alt="Logo De La Villa">
-            </div>
+    <nav>
+      <ul>
+        <li><a href="/DeLaVilla" class="active">Inicio</a></li>
+        <li><a href="/DeLaVilla/pages/productos.html">Catálogo</a></li>
+        <li><a href="/DeLaVilla/pages/galeria.html">Galería</a></li>
+        <li><a href="/DeLaVilla/pages/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
 
-            <nav>
-                <ul>
-                    <li><a href="/DeLaVilla">Inicio</a></li>
-                    <li><a href="/DeLaVilla/pages/productos.html">Catálogo</a></li>
-                    <li><a href="/DeLaVilla/pages/galeria.html">Galería</a></li>
-                    <li><a href="/DeLaVilla/pages/contacto.html">Contacto</a></li>
-                </ul>
-            </nav>
-        </div>
+<div class="icons">
+  <a href="#" id="search-toggle" title="Buscar">
+    <i class="fas fa-search"></i>
+  </a>
 
-        <div class="icons">
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="search-input" placeholder="Buscar productos..." />
+    <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
+  </div>
 
-            <a href="#" id="search-toggle" title="Buscar">
-                <i class="fas fa-search"></i>
-            </a>
+  <a href="/DeLaVilla/pages/login.html" title="Mi cuenta">
+    <i class="fas fa-user"></i>
+  </a>
 
-            <div class="search-bar" id="search-bar">
-                <input type="text" id="search-input" placeholder="Buscar productos..." />
-                <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
-            </div>
+  <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
+    <i class="fas fa-shopping-bag"></i>
+    <span id="cart-count">0</span>
+  </a>
 
-            <a href="/DeLaVilla/pages/perfil.html" title="Mi cuenta" class="active-icon">
-                <i class="fas fa-user"></i>
-                <span id="nombreUsuario"></span>
-            </a>
+  <div id="mini-cart">
+    <h4>Artículo agregado a tu carrito</h4>
+    <div class="item-name" id="mini-cart-item">Producto</div>
+    <button class="btn-pagar" id="btn-pagar">Pagar pedido (0)</button>
+    <button class="btn-seguir" id="btn-seguir">Seguir comprando</button>
+  </div>
+</div>
 
-            <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
-                <i class="fas fa-shopping-bag"></i>
-                <span id="cart-count">0</span>
-            </a>
 
-            <div id="mini-cart">
-                <h4>Artículo agregado a tu carrito</h4>
-                <div class="item-name" id="mini-cart-item">Producto</div>
-                <button class="btn-pagar">Ir a pagar</button>
-                <button class="btn-seguir">Seguir comprando</button>
-            </div>
-
-        </div>
-    </header>
+</div>
+</header>
 
     <div class="main-content">
         <div class="perfil-cliente">
-            <h1>Bienvenido(a) a tu Perfil, Juan</h1>
+           <h1 id="tituloPerfil">Bienvenido(a) a tu Perfil</h1>
 
-            <div class="info-cliente">
-                <h2>Datos de la Cuenta</h2>
-                <p><strong>Nombre:</strong> Juan Pérez García</p>
-                <p><strong>Correo:</strong> juan.perez@ejemplo.com</p>
-                <p><strong>Teléfono:</strong> +57 310 123 4567</p>
-            </div>
+     <div class="info-cliente">
+  <h2>Datos de la Cuenta</h2>
+  <p><strong>Nombre:</strong> <span id="clienteNombre"></span></p>
+  <p><strong>Correo:</strong> <span id="clienteCorreo"></span></p>
+  <p><strong>Teléfono:</strong> <span id="clienteTelefono"></span></p>
+</div>
 
-            <div class="pedidos-realizados">
-                <h2>📦 Tu Historial de Pedidos</h2>
-                <ul class="lista-pedidos">
-                    <li>
-                        <span class="pedido-numero">#20240003</span>
-                        <span>Total: $45.500 COP</span>
-                        <span>Fecha: 15/11/2025</span>
-                        <span class="pedido-estado estado-entregado">Entregado</span>
-                    </li>
-                    <li>
-                        <span class="pedido-numero">#20240002</span>
-                        <span>Total: $78.900 COP</span>
-                        <span>Fecha: 01/10/2025</span>
-                        <span class="pedido-estado estado-enviado">Enviado</span>
-                    </li>
-                    <li>
-                        <span class="pedido-numero">#20240001</span>
-                        <span>Total: $22.100 COP</span>
-                        <span>Fecha: 20/09/2025</span>
-                        <span class="pedido-estado estado-pendiente">Pendiente</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
+<div class="pedidos-realizados">
+  <h2>📦 Tu Historial de Pedidos</h2>
+  <ul class="lista-pedidos" id="listaPedidos">
+
+  </ul>
+</div>
+
+
+  <footer>
+  <div class="footer-content">
+    <h3>Se el primero en recibir nuestras noticias</h3>
+    <form class="email-form" id="subscribeForm" action="https://formspree.io/f/xnngyapn" method="POST">
+      <input type="email" name="email" placeholder="Correo electrónico" required>
+      <button type="submit"><i class="fas fa-arrow-right"></i></button>
+    </form>
+    <p id="subscribeMessage" class="subscribe-message" style="display:none;"></p>
+  </div>
+
+  <div class="footer-bottom">
+    <div>© 2025, DeLaVilla</div>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/delavilla.162016?igsh=NHNzMnNxcThkank4"><i class="fab fa-instagram"></i></a>
+      <a href="https://tiktok.com/"><i class="fab fa-tiktok"></i></a>
     </div>
+  </div>
+</footer>
+<!-- === SCRIPT para integración con Formspree === -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("subscribeForm");
+  const message = document.getElementById("subscribeMessage");
 
-    <footer>
-        <div class="footer-content">
-            <h3>Suscríbete a nuestro boletín</h3>
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-            <form class="email-form">
-                <input type="email" placeholder="Ingresa tu correo" required>
-                <button type="submit"><i class="fas fa-arrow-right"></i></button>
-            </form>
+    const formData = new FormData(form);
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
 
-            <div class="footer-bottom">
-                <p>© 2025 De La Villa. Todos los derechos reservados.</p>
+      if (response.ok) {
+        message.textContent = "✨ ¡Gracias por suscribirte! Te mantendremos al tanto de nuestras novedades ☕";
+        message.style.color = "#d4a373";
+        message.style.display = "block";
+        form.reset();
+      } else {
+        message.textContent = "❌ Ocurrió un error al enviar tu suscripción. Inténtalo nuevamente.";
+        message.style.color = "#ffbaba";
+        message.style.display = "block";
+      }
 
-                <div class="social-icons">
-                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
+      setTimeout(() => {
+        message.style.opacity = "0";
+      }, 5000);
+
+    } catch (error) {
+      message.textContent = "⚠️ Error de conexión. Por favor, revisa tu red.";
+      message.style.color = "#ffbaba";
+      message.style.display = "block";
+    }
+  });
+});
+</script>
+    
+<script>
+  document.getElementById("search-toggle").addEventListener("click", function(e) {
+    e.preventDefault();
+    const bar = document.getElementById("search-bar");
+    bar.style.display = (bar.style.display === "block") ? "none" : "block";
+    document.getElementById("search-input").focus();
+  });
+
+  const productos = ["pollo", "miel", "huevos", "cubeta de huevos"];
+
+  document.getElementById("search-btn").addEventListener("click", function() {
+    const keyword = document.getElementById("search-input").value.trim().toLowerCase();
+    if (!keyword) return;
+
+    const encontrado = productos.find(p => keyword.includes(p) || p.includes(keyword));
+
+    if (encontrado) {
+      window.location.href = `productos.html?search=${encodeURIComponent(keyword)}`;
+    } else {
+      alert("❌ Producto no encontrado. Intenta con: pollo, miel o huevos.");
+    }
+  });
+</script>
+<script>
+<script>
+(function(){
+
+  var waNumber = '573202293640';
+
+  var prefilledMessage = encodeURIComponent('Hola 👋, quiero información sobre sus productos/servicios.');
+
+  var isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  var hrefBase = isMobile ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
+  var href = hrefBase + waNumber + (prefilledMessage ? (isMobile ? '?text=' + prefilledMessage : '&text=' + prefilledMessage) : '');
+
+  var a = document.createElement('a');
+  a.href = href;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  a.id = 'wa-floating-button';
+  a.setAttribute('aria-label', 'Contactar por WhatsApp');
+  a.title = 'Contáctanos por WhatsApp';
+
+  a.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp" style="width:34px; height:34px;">';
+
+  document.addEventListener('DOMContentLoaded', function(){
+    document.body.appendChild(a);
+  });
+})();
+</script>
+    <script>
+    const messages = [
+      "VUELVE A LO NATURAL",
+      "ALIMENTACIÓN AGROECOLÓGICA",
+      "CONSUMO RESPONSABLE",
+      "PRODUCTOS LOCALES Y ARTESANALES"
+    ];
+
+    let currentIndex = 0;
+    const bannerText = document.getElementById("banner-text");
+
+    function changeMessage(direction) {
+      currentIndex = (currentIndex + direction + messages.length) % messages.length;
+      bannerText.textContent = messages[currentIndex];
+    }
+
+    setInterval(() => {
+      changeMessage(1);
+    }, 5000);
+  </script>
+            
+<script type="module">
+  import { protectPage, updateUserIcon } from "/DeLaVilla/assets/auth.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
+  protectPage("cliente");
+  updateUserIcon();
+
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) return;
+
+    const titulo = document.getElementById("tituloPerfil");
+    const spanNombre = document.getElementById("clienteNombre");
+    const spanCorreo = document.getElementById("clienteCorreo");
+    const spanTelefono = document.getElementById("clienteTelefono");
+    const listaPedidos = document.getElementById("listaPedidos");
+
+    if (titulo) {
+      titulo.textContent = `Bienvenido(a) a tu Perfil, ${user.email}`;
+    }
+    if (spanCorreo) spanCorreo.textContent = user.email;
+    if (spanNombre) spanNombre.textContent = user.displayName || "(sin nombre configurado)";
+    if (spanTelefono) spanTelefono.textContent = "(sin teléfono registrado)";
+
+    let ventas = [];
+    try {
+      ventas = JSON.parse(localStorage.getItem("ventas") || "[]");
+      if (!Array.isArray(ventas)) ventas = [];
+    } catch (e) {
+      ventas = [];
+    }
+
+    const ventasUsuario = ventas.filter(v => v.userEmail === user.email);
+
+    if (!listaPedidos) return;
+
+    listaPedidos.innerHTML = "";
+
+    if (ventasUsuario.length === 0) {
+      const li = document.createElement("li");
+      li.textContent = "Aún no tienes compras registradas.";
+      listaPedidos.appendChild(li);
+      return;
+    }
+
+    ventasUsuario.forEach((venta) => {
+      const li = document.createElement("li");
+
+      const fechaObj = new Date(venta.fecha);
+      const fechaStr = isNaN(fechaObj) 
+        ? venta.fecha 
+        : fechaObj.toLocaleDateString("es-CO");
+
+      li.innerHTML = `
+        <span class="pedido-numero">#${venta.id}</span>
+        <span>Total: $${Number(venta.total).toLocaleString('es-CO')} COP</span>
+        <span>Fecha: ${fechaStr}</span>
+        <span class="pedido-estado estado-entregado">Registrado</span>
+      `;
+
+      listaPedidos.appendChild(li);
+    });
+  });
+</script>
 
 </body>
 </html>
