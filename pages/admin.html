@@ -28,7 +28,7 @@
       padding: 24px 32px 40px;
     }
 
-    /* Header */
+
     .header {
       display: flex;
       justify-content: space-between;
@@ -79,7 +79,7 @@
       font-size: 14px;
     }
 
-    /* Cards resumen */
+
     .stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -128,19 +128,50 @@
       font-weight: 500;
     }
 
-    @media (max-width: 640px) {
-      .container {
-        padding: 20px 16px 32px;
-      }
+@media (max-width: 640px) {
+  .container {
+    padding: 16px 12px 28px;
+  }
 
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-    }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 
- /* === Ventas registradas === */
+  .header-title h1 {
+    font-size: 22px;
+  }
+
+
+  .ventas-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .filtros-ventas {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .filtros-ventas input,
+  .filtros-ventas button {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .ventas-section th,
+  .ventas-section td {
+    padding: 8px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+
 .ventas-section {
   margin-top: 40px;
 }
@@ -209,6 +240,40 @@
 }
 
 
+.ventas-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background-color: #fff;
+}
+
+
+.ventas-section table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+}
+    
+@media (max-width: 900px) {
+  .ventas-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filtros-ventas {
+    gap: 6px;
+  }
+
+  .filtros-ventas input,
+  .filtros-ventas button {
+    font-size: 13px;
+  }
+}
+
     
   </style>
 </head>
@@ -265,22 +330,23 @@
         </div>
       </div>
 
-      <table id="tabla-ventas">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Cliente</th>
-            <th>Dirección</th>
-            <th>Teléfono</th>
-            <th>Total</th>
-            <th>Productos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Se llena con JS -->
-        </tbody>
-      </table>
-    </div>
+<div class="ventas-table-wrapper">
+  <table id="tabla-ventas">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Cliente</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Total</th>
+        <th>Productos</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+</div>
 
     
   </div>
@@ -345,8 +411,8 @@
 
       function aplicarFiltros() {
         const cli = (inputCliente.value || '').toLowerCase();
-        const desde = inputDesde.value; // YYYY-MM-DD
-        const hasta = inputHasta.value; // YYYY-MM-DD
+        const desde = inputDesde.value;
+        const hasta = inputHasta.value;
 
         ventasFiltradas = ventas.filter(v => {
           const f = v.fecha ? new Date(v.fecha) : new Date(v.id);
@@ -377,7 +443,7 @@
     return;
   }
 
-  const SEP = ';'; // separador para Excel en español
+  const SEP = ';';
 
   const encabezados = ['Fecha','Cliente','Dirección','Teléfono','Total','Productos'];
 
@@ -403,7 +469,6 @@
     csv += fila.join(SEP) + '\n';
   });
 
-  // BOM para que Excel reconozca UTF-8 y muestre bien tildes y ñ
   const csvConBOM = '\uFEFF' + csv;
 
   const blob = new Blob([csvConBOM], { type: 'text/csv;charset=utf-8;' });
@@ -421,7 +486,6 @@
       if (btnLimpiar) btnLimpiar.addEventListener('click', limpiarFiltros);
       if (btnExportar) btnExportar.addEventListener('click', exportarCSV);
 
-      // Inicial
       renderTabla(ventasFiltradas);
       actualizarVentasDia();
     });
