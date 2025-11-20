@@ -112,7 +112,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
-    // 🔧 Reemplaza con tu configuración real de Firebase
     const firebaseConfig = {
     apiKey: "AIzaSyBKWj1As-nnkcX8aZ7B0AbtzZoQ-56qTjc",
     authDomain: "delavilla-43a2a.firebaseapp.com",
@@ -138,7 +137,7 @@
           if (user.email === "admin@delavilla.com") {
             window.location.href = "/DeLaVilla/pages/admin.html";
           } else {
-            window.location.href = "/DeLaVilla/pages/cliente.html";
+            window.location.href = "/DeLaVilla/pages/productos.html";
           }
         })
         .catch((err) => {
