@@ -748,6 +748,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 </script>
+  <script type="module">
+  import { updateUserIcon, protectPage } from "/DeLaVilla/assets/auth.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
+  updateUserIcon();
+
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, (user) => {
+    console.log("Usuario en esta página:", user?.email);
+  });
+</script>
   </body>
 </html>
