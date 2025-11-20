@@ -6,7 +6,6 @@
   <title>Cubeta de huevos - DeLaVilla</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    /* Estilos generales */
 html, body {
   margin: 0;
   padding: 0;
@@ -16,14 +15,13 @@ html, body {
     body {
  display: flex;
   flex-direction: column;
-  min-height: 100vh; /* asegura que ocupe toda la pantalla */
+  min-height: 100vh;
   background-color: #FAFAF4;
   font-family: 'Inter', sans-serif;
   color: #2E3A2B;
-  padding-top: 130px; /* tu header */
+  padding-top: 130px;
     }
 
-    /* -------------------- ANIMACIONES -------------------- */
     .fade-up {
       opacity: 0;
       transform: translateY(40px);
@@ -34,13 +32,11 @@ html, body {
       transform: translateY(0);
     }
 
-    /* Efecto hover general */
     .hover-zoom:hover {
       transform: scale(1.03);
       transition: transform 0.3s ease;
     }
 
-    /* Header */
 header {
  position: fixed;
   top: 50px;
@@ -50,7 +46,7 @@ header {
   background-color: #1e1200;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* íconos a la derecha */
+  justify-content: space-between;
   padding: 10px 60px;
   z-index: 1000;
   box-sizing: border-box;
@@ -60,15 +56,13 @@ header {
 .header-left {
   display: flex;
   align-items: center;
-  gap: 50px; /* espacio entre logo y menú */
+  gap: 50px;
 }
 
-    /* Logo */
     .logo img {
       height: 60px;
     }
 
-    /* Menú de navegación */
     nav ul {
   list-style: none;
   display: flex;
@@ -90,7 +84,6 @@ nav a.active {
   text-decoration: underline;
 }
 
-/* Iconos (siguen a la derecha) */
 .icons {
   display: flex;
   align-items: center;
@@ -110,7 +103,6 @@ position: relative;
 }
 
 
-    /* Responsive */
     @media (max-width: 768px) {
       header {
         flex-direction: column;
@@ -124,12 +116,12 @@ position: relative;
     }
 
     footer {
-        width: 100%;          /* ocupa todo el ancho */
+        width: 100%;
   background-color: #1f1400;
   padding: 50px 20px 30px;
   color: white;
-  margin-top: auto;      /* empuja hacia abajo con Flexbox */
-  box-sizing: border-box; /* asegura que el padding no haga overflow */
+  margin-top: auto;
+  box-sizing: border-box;
     }
 
     .footer-content {
@@ -254,14 +246,13 @@ position: relative;
     height: 60px;
     border-radius: 50%;
     box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    background-color: #25D366; /* color WhatsApp */
+    background-color: #25D366;
     text-decoration: none;
     transition: transform 150ms ease, box-shadow 150ms ease;
   }
   #wa-floating-button:hover{ transform: translateY(-4px); box-shadow: 0 10px 22px rgba(0,0,0,0.22); }
   #wa-floating-button svg{ width: 34px; height: 34px; fill: #fff; }
 
-  /* Ajustes en pantallas pequeñas */
   @media (max-width: 420px){
     #wa-floating-button{ right: 14px; bottom: 14px; width: 56px; height: 56px; }
     #wa-floating-button svg{ width:28px; height:28px; }
@@ -277,11 +268,11 @@ position: relative;
   justify-content: center;
   align-items: center;
   height: 50px;
-  position: fixed; /* 🔹 cambia de relative a fixed */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1100; /* 🔹 superior al header */
+  z-index: 1100;
     }
 
     .top-banner .arrow {
@@ -315,7 +306,6 @@ position: relative;
       padding: 0 20px;
     }
 
-    /* ------------------ IMAGEN ------------------ */
     .producto-imagen {
       flex: 1 1 550px;
       border-radius: 8px;
@@ -329,7 +319,6 @@ position: relative;
       object-fit: cover;
     }
 
-    /* ------------------ INFO ------------------ */
     .producto-info {
       flex: 1 1 350px;
       min-width: 320px;
@@ -357,7 +346,6 @@ position: relative;
       margin-bottom: 20px;
     }
 
-    /* ------------------ CANTIDAD ------------------ */
     .cantidad {
       margin-bottom: 20px;
     }
@@ -395,7 +383,6 @@ position: relative;
       background-color: transparent;
     }
 
-    /* ------------------ BOTONES ------------------ */
     .botones {
       display: flex;
       flex-direction: column;
@@ -428,13 +415,11 @@ position: relative;
       background-color: #2E3A2B;
     }
 
-    /* ------------------ DESCRIPCIÓN ------------------ */
     .descripcion {
       color: #555;
       font-size: 15px;
     }
 
-    /* ------------------ RESPONSIVE ------------------ */
     @media (max-width: 900px) {
       .producto-container {
         flex-direction: column;
@@ -452,7 +437,7 @@ position: relative;
 
 @media (max-width: 768px) {
   body {
-    padding-top: 180px; /* más espacio en móvil */
+    padding-top: 180px;
   }
 }
 
@@ -485,7 +470,7 @@ display: inline-block;
 #mini-cart {
   display: none;
   position: absolute;
-  top: 40px; /* justo debajo del icono */
+  top: 40px;
   right: 0;
   width: 280px;
   background-color: #fff;
@@ -562,23 +547,19 @@ display: inline-block;
   </div>
 
 <div class="icons">
-  <!-- 🔍 Icono de búsqueda -->
   <a href="#" id="search-toggle" title="Buscar">
     <i class="fas fa-search"></i>
   </a>
 
-  <!-- 🧭 Barra de búsqueda oculta -->
   <div class="search-bar" id="search-bar">
     <input type="text" id="search-input" placeholder="Buscar productos..." />
     <button id="search-btn"><i class="fas fa-arrow-right"></i></button>
   </div>
 
-  <!-- 👤 Ícono de usuario -->
   <a href="/DeLaVilla/pages/login.html" title="Mi cuenta">
     <i class="fas fa-user"></i>
   </a>
 
-  <!-- 🛍 Ícono de carrito -->
   <a href="/DeLaVilla/pages/carrito.html" title="Carrito de compras">
     <i class="fas fa-shopping-bag"></i>
     <span id="cart-count">0</span>
@@ -597,12 +578,10 @@ display: inline-block;
   
 <main style="flex: 1;">
  <section class="producto-container">
-    <!-- Imagen -->
     <div class="producto-imagen">
       <img src="https://delavillaa.myshopify.com/cdn/shop/files/ovosfotopaulolanzettaembrapa.jpg?v=1758300216&width=990" alt="Cubeta de huevos naturales en canasta">
     </div>
 
-    <!-- Información -->
     <div class="producto-info">
       <div class="marca">DELAVILLA</div>
       <h2>Cubeta de Huevos</h2>
@@ -676,7 +655,6 @@ document.addEventListener("DOMContentLoaded", function () {
         message.style.display = "block";
       }
 
-      // Oculta el mensaje suavemente después de 5 segundos
       setTimeout(() => {
         message.style.opacity = "0";
       }, 5000);
@@ -690,7 +668,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 <script>
-  // Mostrar / ocultar barra de búsqueda
   document.getElementById("search-toggle").addEventListener("click", function(e) {
     e.preventDefault();
     const bar = document.getElementById("search-bar");
@@ -698,19 +675,15 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("search-input").focus();
   });
 
-  // Productos disponibles
   const productos = ["pollo", "miel", "huevos", "cubeta de huevos"];
 
-  // Evento al hacer clic en buscar
   document.getElementById("search-btn").addEventListener("click", function() {
     const keyword = document.getElementById("search-input").value.trim().toLowerCase();
     if (!keyword) return;
 
-    // Verificar si el producto existe
     const encontrado = productos.find(p => keyword.includes(p) || p.includes(keyword));
 
     if (encontrado) {
-      // Redirigir con parámetro de búsqueda
       window.location.href = `productos.html?search=${encodeURIComponent(keyword)}`;
     } else {
       alert("❌ Producto no encontrado. Intenta con: pollo, miel o huevos.");
@@ -719,18 +692,14 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 <script>
 (function(){
-  // CONFIGURA AQUÍ tu número en formato internacional (sin + ni espacios)
-  var waNumber = '573202293640'; // <- reemplázalo por tu número
+  var waNumber = '573202293640';
 
-  // Mensaje predefinido (opcional). Cámbialo o déjalo vacío ''.
   var prefilledMessage = encodeURIComponent('Hola 👋, quiero información sobre sus productos/servicios.');
 
-  // Elegir URL según dispositivo (móvil usa wa.me, escritorio usa web.whatsapp.com)
   var isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   var hrefBase = isMobile ? 'https://wa.me/' : 'https://web.whatsapp.com/send?phone=';
   var href = hrefBase + waNumber + (prefilledMessage ? (isMobile ? '?text=' + prefilledMessage : '&text=' + prefilledMessage) : '');
 
-  // Crear enlace
   var a = document.createElement('a');
   a.href = href;
   a.target = '_blank';
@@ -739,11 +708,9 @@ document.addEventListener("DOMContentLoaded", function () {
   a.setAttribute('aria-label', 'Contactar por WhatsApp');
   a.title = 'Contáctanos por WhatsApp';
 
-  // Icono (SVG de WhatsApp)
   a.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp" style="width:34px; height:34px;">';
 
   document.addEventListener('DOMContentLoaded', function(){
-    // Añadir al body
     document.body.appendChild(a);
   });
 })();
@@ -764,7 +731,6 @@ document.addEventListener("DOMContentLoaded", function () {
       bannerText.textContent = messages[currentIndex];
     }
 
-    // 🔄 Cambio automático cada 5 segundos
     setInterval(() => {
       changeMessage(1);
     }, 5000);
@@ -788,16 +754,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
 
 (function(){
-  // Selectores (coinciden con tu HTML)
   const btnAgregar = document.getElementById('agregar-carrito');
   const btnComprar = document.getElementById('buy-now');
   const cantidadInput = document.getElementById('cantidad');
   const cartCountEl = document.getElementById('cart-count');
   const cartLink = document.querySelector('a[title="Carrito de compras"], a[href*="cart"], a[href*="carrito.html"]') || document.querySelector('a[title="Carrito de compras"]');
 
-  // Si no existe el contador en el header, intenta buscar por otros selectores comunes:
   if (!cartCountEl) {
-    // crea el span dentro del enlace del carrito si no existe
     if (cartLink) {
       const span = document.createElement('span');
       span.id = 'cart-count';
@@ -816,23 +779,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Un único carrito en localStorage
   let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-  // Actualiza el contador mostrado
   function actualizarContadorVisual() {
     const total = carrito.reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
     const el = document.getElementById('cart-count');
     if (el) el.textContent = total;
   }
 
-  // Guarda carrito en localStorage
   function guardarCarrito() {
     localStorage.setItem('carrito', JSON.stringify(carrito));
     actualizarContadorVisual();
   }
 
-  // Añadir producto (evita duplicados por id)
   function añadirProducto(producto) {
     const existente = carrito.find(p => p.id === producto.id);
     if (existente) {
@@ -843,19 +802,16 @@ document.addEventListener("DOMContentLoaded", function () {
     guardarCarrito();
   }
 
-  // Inicializa contador visual al cargar
   actualizarContadorVisual();
 
-  // Evento: agregar al carrito
   if (btnAgregar) {
     btnAgregar.addEventListener('click', function(e){
-      // Si el botón es un submit dentro de un form, prevenir submit
       if (e) e.preventDefault();
 
       const qty = cantidadInput ? Math.max(1, parseInt(cantidadInput.value) || 1) : 1;
 
       const producto = {
-        id: 'huevos',            // id único por producto
+        id: 'huevos',
         nombre: 'Cubeta de Huevos',
         precio: 32000,
         cantidad: qty,
@@ -864,19 +820,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       añadirProducto(producto);
 
-      // Feedback visual
       const el = document.getElementById('cart-count');
       if (el) {
         el.classList.add('pulse');
         setTimeout(() => el.classList.remove('pulse'), 350);
       }
-
-      // Opcional: pequeño mensaje al usuario
-      // alert(`${producto.nombre} agregado (${qty})`);
+      alert(`${producto.nombre} agregado (${qty})`);
     });
   }
 
-  // Evento: comprar ahora -> añade (si hace falta) y redirige al carrito
   if (btnComprar) {
     btnComprar.addEventListener('click', function(e){
       if (e) e.preventDefault();
@@ -891,18 +843,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       añadirProducto(producto);
 
-      // Redirigir al carrito real (ajusta la URL si es otra)
       window.location.href = '/DeLaVilla/pages/carrito.html';
     });
   }
 
-  // Hacer clic en el icono del header también redirige (asegura que exista)
   if (cartLink && !cartLink.dataset.hasCartHandler) {
     cartLink.addEventListener('click', function(e){
-      // Dejar que el enlace haga su navegación normal (o forzar a tu ruta)
-      // Si quieres forzar:
-      // e.preventDefault();
-      // window.location.href = '/DeLaVilla/pages/carrito.html';
     });
     cartLink.dataset.hasCartHandler = '1';
   }
@@ -911,7 +857,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <script>
-  // Función para mostrar mini-cart
   function mostrarMiniCart(nombreProducto) {
     const miniCart = document.getElementById('mini-cart');
     const itemName = document.getElementById('mini-cart-item');
@@ -919,24 +864,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     itemName.textContent = nombreProducto;
 
-    // Contador de productos
     let cantidad = parseInt(localStorage.getItem('cartCount') || '0') + 1;
     localStorage.setItem('cartCount', cantidad);
     document.getElementById('cart-count').textContent = cantidad;
 
     btnPagar.textContent = `Pagar pedido (${cantidad})`;
 
-    // Mostrar mini-cart
+
     miniCart.style.display = 'block';
 
-    // Ocultar automáticamente después de 4 segundos
+
     clearTimeout(miniCart.timeout);
     miniCart.timeout = setTimeout(() => {
       miniCart.style.display = 'none';
     }, 4000);
   }
 
-  // Listener para el botón "Agregar al carrito"
+
   const btnAgregar = document.getElementById('agregar-carrito');
   if (btnAgregar) {
     btnAgregar.addEventListener('click', function(e) {
@@ -952,12 +896,10 @@ document.addEventListener("DOMContentLoaded", function () {
         cantidad: qty
       };
 
-      // Aquí llamamos a la función que muestra el mini-cart
       mostrarMiniCart(producto.nombre);
     });
   }
 
-  // Botón seguir comprando
   const btnSeguir = document.getElementById('btn-seguir');
   if (btnSeguir) {
     btnSeguir.addEventListener('click', () => {
@@ -994,20 +936,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function ocultarMiniCart() {
     hoverTimeout = setTimeout(() => {
       miniCart.style.display = 'none';
-    }, 300); // pequeño retraso para evitar cierres accidentales
+    }, 300);
   }
 
   if (cartIconLink) {
-    // Hover sobre icono
+
     cartIconLink.addEventListener('mouseenter', () => mostrarMiniCart('Cubeta de Huevos'));
     cartIconLink.addEventListener('mouseleave', ocultarMiniCart);
 
-    // Hover sobre mini-cart
+
     miniCart.addEventListener('mouseenter', () => mostrarMiniCart('Cubeta de Huevos'));
     miniCart.addEventListener('mouseleave', ocultarMiniCart);
   }
 
-  // Click en agregar al carrito
+
   if (btnAgregar) {
     btnAgregar.addEventListener('click', e => {
       e.preventDefault();
@@ -1015,49 +957,30 @@ document.addEventListener('DOMContentLoaded', () => {
       cartCount += cantidad;
       mostrarMiniCart('Cubeta de Huevos');
 
-      // Animación del contador
       cartCountEl.classList.add('pulse');
       setTimeout(() => cartCountEl.classList.remove('pulse'), 350);
     });
   }
 
-  // Botón seguir comprando
   if (btnSeguir) {
     btnSeguir.addEventListener('click', () => miniCart.style.display = 'none');
   }
 });
 </script>
+
 <script type="module">
-  import { protectPage } from "/DeLaVilla/js/auth.js";
-  protectPage(); // requiere login, sin importar el rol
-</script>
-
-  <script type="module">
+  import { updateUserIcon, protectPage } from "/DeLaVilla/assets/auth.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-  import { logout } from "/DeLaVilla/js/auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBKWj1As-nnkcX8aZ7B0AbtzZoQ-56qTjc",
-    authDomain: "delavilla-43a2a.firebaseapp.com",
-    projectId: "delavilla-43a2a",
-  };
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  protectPage("cliente");
+  updateUserIcon();
+
+  const auth = getAuth();
 
   onAuthStateChanged(auth, (user) => {
-    const userIcon = document.querySelector('.fa-user').parentElement;
-    if (user) {
-      userIcon.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
-      userIcon.title = "Cerrar sesión";
-      userIcon.addEventListener("click", (e) => {
-        e.preventDefault();
-        logout();
-      });
-    } else {
-      userIcon.setAttribute("href", "/DeLaVilla/pages/login.html");
-    }
+    console.log("Usuario en esta página:", user?.email);
   });
 </script>
+
 </body>
 </html>
