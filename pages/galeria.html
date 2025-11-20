@@ -562,7 +562,6 @@ section{
   </div>
 </section>
 
-<!-- BOTÓN WHATSAPP -->
 <a href="https://wa.me/573001234567" target="_blank" class="whatsapp-float">
   <i class="fa-brands fa-whatsapp"></i>
 </a>
@@ -609,7 +608,6 @@ elements.forEach(el => observer.observe(el));
 
 
   <script>
-  // Cambiar mensajes del banner
   const messages = [
     "VUELVE A LO NATURAL",
     "ALIMENTACIÓN AGROECOLÓGICA",
@@ -624,7 +622,6 @@ elements.forEach(el => observer.observe(el));
   }
   setInterval(() => { changeMessage(1); }, 5000);
 
-  // Toggle barra de búsqueda
   document.getElementById("search-toggle").addEventListener("click", function(e) {
     e.preventDefault();
     const bar = document.getElementById("search-bar");
@@ -642,4 +639,17 @@ elements.forEach(el => observer.observe(el));
   </script>
 
 </body>
+
+<script type="module">
+  import { updateUserIcon, protectPage } from "/DeLaVilla/assets/auth.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  updateUserIcon();
+
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, (user) => {
+    console.log("Usuario en esta página:", user?.email);
+  });
+</script>
+
 </html>
