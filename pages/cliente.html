@@ -775,9 +775,12 @@ document.addEventListener("DOMContentLoaded", function () {
   </script>
 
 <script type="module">
-  import { auth, db } from "/DeLaVilla/assets/auth.js";
+  import { auth, updateUserIcon, protectPage } from "/DeLaVilla/assets/auth.js";
   import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-  import { collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+  // Obliga a estar logueado y cambia el icono del header
+  protectPage("cliente");
+  updateUserIcon();
 
   function obtenerDatosExtra(uid) {
     try {
@@ -792,11 +795,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const formatear = (n) => Number(n || 0).toLocaleString("es-CO");
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      window.location.href = "/DeLaVilla/pages/login.html";
-      return;
-    }
+  onAuthStateChanged(auth, (user) => {
+    // Si protectPage ya redirigió, por aquí casi nunca pasa sin usuario,
+    // pero lo dejamos por seguridad.
+    if (!user) return;
 
     const tituloPerfil   = document.getElementById("tituloPerfil");
     const spanNombre     = document.getElementById("clienteNombre");
@@ -804,6 +806,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const spanTelefono   = document.getElementById("clienteTelefono");
     const listaPedidos   = document.getElementById("listaPedidos");
 
+    // Nombre y correo
     const nombreMostrar = user.displayName || "(sin nombre configurado)";
     const correoMostrar = user.email || "(sin correo)";
 
@@ -814,56 +817,53 @@ document.addEventListener("DOMContentLoaded", function () {
     const extra = obtenerDatosExtra(user.uid);
     if (spanTelefono)  spanTelefono.textContent  = extra.telefono || "(sin teléfono registrado)";
 
+    // Leer ventas guardadas en el navegador
+    let ventas = [];
+    try {
+      ventas = JSON.parse(localStorage.getItem("ventas") || "[]");
+      if (!Array.isArray(ventas)) ventas = [];
+    } catch (e) {
+      ventas = [];
+    }
+
+    // Filtrar por cuenta (correo)
+    let ventasUsuario = ventas.filter(v => v.userEmail === user.email);
+
+    // Fallback: si no hay userEmail en las ventas pero sí hay ventas, muestra todas
+    if (!ventasUsuario.length && ventas.length && ventas.every(v => !v.userEmail)) {
+      ventasUsuario = ventas;
+    }
+
     if (!listaPedidos) return;
     listaPedidos.innerHTML = "";
 
-    try {
-      const q = query(
-        collection(db, "ventas"),
-        where("userEmail", "==", user.email),
-        orderBy("createdAt", "desc")
-      );
-
-      const snapshot = await getDocs(q);
-      const ventasUsuario = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-
-      if (!ventasUsuario.length) {
-        const li = document.createElement("li");
-        li.textContent = "Aún no tienes compras registradas.";
-        listaPedidos.appendChild(li);
-        return;
-      }
-
-      ventasUsuario.forEach((venta) => {
-        const fechaObj =
-          (venta.createdAt && venta.createdAt.toDate)
-            ? venta.createdAt.toDate()
-            : (venta.fecha ? new Date(venta.fecha) : null);
-
-        const fechaStr = fechaObj && !isNaN(fechaObj)
-          ? fechaObj.toLocaleDateString("es-CO")
-          : "";
-
-        const li = document.createElement("li");
-        li.innerHTML = `
-          <span class="pedido-numero">#${venta.id}</span>
-          <span>Total: $${formatear(venta.total)} COP</span>
-          <span>Fecha: ${fechaStr}</span>
-          <span class="pedido-estado estado-entregado">Registrado</span>
-        `;
-        listaPedidos.appendChild(li);
-      });
-    } catch (error) {
-      console.error("Error consultando ventas del usuario:", error);
+    if (!ventasUsuario.length) {
       const li = document.createElement("li");
-      li.textContent = "No fue posible cargar tus compras. Intenta nuevamente más tarde.";
+      li.textContent = "Aún no tienes compras registradas.";
       listaPedidos.appendChild(li);
+      return;
     }
+
+    ventasUsuario.forEach((venta) => {
+      const li = document.createElement("li");
+
+      const fechaObj = venta.fecha ? new Date(venta.fecha) : null;
+      const fechaStr = fechaObj && !isNaN(fechaObj)
+        ? fechaObj.toLocaleDateString("es-CO")
+        : (venta.fecha || "");
+
+      li.innerHTML = `
+        <span class="pedido-numero">#${venta.id}</span>
+        <span>Total: $${formatear(venta.total)} COP</span>
+        <span>Fecha: ${fechaStr}</span>
+        <span class="pedido-estado estado-entregado">Registrado</span>
+      `;
+
+      listaPedidos.appendChild(li);
+    });
   });
 </script>
+
 
   <script type="module">
   import { updateUserIcon, protectPage } from "/DeLaVilla/assets/auth.js";
