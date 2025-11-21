@@ -701,9 +701,7 @@ display: inline-block;
 <main style="flex: 1;">
   <section id="carrito-contenedor" class="producto-container"></section>
 </main>
-
-
-</section>
+  
   <footer>
   <div class="footer-content">
     <h3>Se el primero en recibir nuestras noticias</h3>
@@ -1066,33 +1064,48 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <section id="carrito-contenedor"></section>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  let carrito = [];
-  try {
-    carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
-    if (!Array.isArray(carrito)) carrito = [];
-  } catch (e) {
-    carrito = [];
-  }
+<script type="module">
+  import { auth, db, protectPage, updateUserIcon } from "/DeLaVilla/assets/auth.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-  const contenedor = document.getElementById('carrito-contenedor');
-  if (!contenedor) return;
+  protectPage("cliente");
+  updateUserIcon();
 
-  const formatear = (n) => Number(n || 0).toLocaleString('es-CO');
+  let currentUserEmail = null;
 
-  const guardarCarrito = () => {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
+  onAuthStateChanged(auth, (user) => {
+    currentUserEmail = user ? user.email : null;
+    window.currentUserEmail = currentUserEmail;
+  });
+
+  const formatear = (n) => Number(n || 0).toLocaleString("es-CO");
+
+  const leerCarrito = () => {
+    try {
+      const raw = localStorage.getItem("carrito") || "[]";
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch {
+      return [];
+    }
   };
 
-  const calcularTotal = () =>
+  const guardarCarrito = (carrito) => {
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+  };
+
+  const calcularTotal = (carrito) =>
     carrito.reduce(
       (acc, item) => acc + Number(item.precio || 0) * Number(item.cantidad || 0),
       0
     );
 
-  const renderCarrito = () => {
-    contenedor.innerHTML = '';
+  const renderCarrito = (carrito) => {
+    const contenedor = document.getElementById("carrito-contenedor");
+    if (!contenedor) return;
+
+    contenedor.innerHTML = "";
 
     if (!carrito.length) {
       contenedor.innerHTML = `
@@ -1110,14 +1123,14 @@ document.addEventListener('DOMContentLoaded', () => {
     carrito.forEach((item, index) => {
       const subtotal = Number(item.precio || 0) * Number(item.cantidad || 0);
 
-      const div = document.createElement('div');
-      div.className = 'producto-item';
-      div.style.maxWidth = '900px';
-      div.style.margin = '20px auto';
-      div.style.padding = '16px';
-      div.style.background = '#fff';
-      div.style.borderRadius = '8px';
-      div.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
+      const div = document.createElement("div");
+      div.className = "producto-item";
+      div.style.maxWidth = "900px";
+      div.style.margin = "20px auto";
+      div.style.padding = "16px";
+      div.style.background = "#fff";
+      div.style.borderRadius = "8px";
+      div.style.boxShadow = "0 2px 8px rgba(0,0,0,0.06)";
 
       div.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">
@@ -1140,102 +1153,103 @@ document.addEventListener('DOMContentLoaded', () => {
             </p>
             <button class="btn-eliminar"
                     data-index="${index}"
-                    style="padding:6px 12px;background:#b3261e;color:#fff;border:none;border-radius:4px;cursor:pointer;">
+                    style="padding:6px 14px;background-color:#b3261e;color:#fff;border:none;border-radius:4px;cursor:pointer;">
               Eliminar
             </button>
           </div>
-        </div>`;
+        </div>
+      `;
       contenedor.appendChild(div);
     });
 
-    const totalDiv = document.createElement('div');
-    totalDiv.style.maxWidth = '900px';
-    totalDiv.style.margin = '20px auto 40px auto';
-    totalDiv.style.display = 'flex';
-    totalDiv.style.justifyContent = 'space-between';
-    totalDiv.style.alignItems = 'center';
-    totalDiv.style.flexWrap = 'wrap';
+    const totalDiv = document.createElement("div");
+    totalDiv.style.maxWidth = "900px";
+    totalDiv.style.margin = "30px auto";
+    totalDiv.style.display = "flex";
+    totalDiv.style.justifyContent = "space-between";
+    totalDiv.style.alignItems = "center";
+    totalDiv.style.flexWrap = "wrap";
     totalDiv.innerHTML = `
       <div style="font-size:18px;font-weight:600;color:#3a2a20;">
-        Total: $${formatear(calcularTotal())}
+        Total: $${formatear(calcularTotal(carrito))}
       </div>
       <button id="btn-pagar-carrito"
-              style="margin-top:10px;padding:12px 28px;background:#3E4E35;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;">
+              style="margin-top:10px;padding:12px 28px;background-color:#3E4E35;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;">
         Pagar
       </button>`;
     contenedor.appendChild(totalDiv);
+  };
 
-    contenedor.querySelectorAll('.cantidad-input').forEach(input => {
-      input.addEventListener('change', (e) => {
-        const idx = Number(e.target.dataset.index);
-        const nuevaCant = Math.max(1, parseInt(e.target.value) || 1);
-        carrito[idx].cantidad = nuevaCant;
-        guardarCarrito();
-        renderCarrito();
-      });
-    });
+  document.addEventListener("DOMContentLoaded", () => {
+    let carrito = leerCarrito();
+    const contenedor = document.getElementById("carrito-contenedor");
+    if (!contenedor) return;
 
-    contenedor.querySelectorAll('.btn-eliminar').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const idx = Number(e.target.dataset.index);
-        carrito.splice(idx, 1);
-        guardarCarrito();
-        renderCarrito();
-      });
-    });
+    renderCarrito(carrito);
 
-const btnPagar = document.getElementById('btn-pagar-carrito');
-if (btnPagar) {
-  btnPagar.addEventListener('click', async () => {
-    if (!carrito.length) {
-      alert("Tu carrito está vacío");
-      return;
-    }
-
-    const nombre = prompt("Ingresa tu nombre completo:");
-    if (!nombre) return;
-    const direccion = prompt("Ingresa tu dirección:");
-    if (!direccion) return;
-    const telefono = prompt("Ingresa tu teléfono:");
-    if (!telefono) return;
-
-    const total = calcularTotal();
-
-    const venta = {
-      id: Date.now(),
-      fecha: new Date().toISOString(),
-      nombre,
-      direccion,
-      telefono,
-      total,
-      items: carrito,
-      userEmail: window.currentUserEmail || null
-    };
-
-    try {
-      if (window.guardarVentaEnServidor) {
-        await window.guardarVentaEnServidor(venta);
-      } else {
-        console.warn("guardarVentaEnServidor no está definido. Revisa el script de Firestore en carrito.html");
+    // Cambios de cantidad
+    contenedor.addEventListener("change", (e) => {
+      if (e.target.classList.contains("cantidad-input")) {
+        const index = Number(e.target.dataset.index);
+        const nuevaCantidad = Math.max(1, Number(e.target.value || 1));
+        carrito[index].cantidad = nuevaCantidad;
+        guardarCarrito(carrito);
+        renderCarrito(carrito);
       }
-    } catch (error) {
-      console.error("Error al registrar la venta en Firestore:", error);
-      alert("Ocurrió un error al registrar tu compra. Intenta nuevamente.");
-      return;
-    }
+    });
 
-    carrito = [];
-    guardarCarrito();
+    // Eliminar / pagar
+    contenedor.addEventListener("click", async (e) => {
+      if (e.target.classList.contains("btn-eliminar")) {
+        const index = Number(e.target.dataset.index);
+        carrito.splice(index, 1);
+        guardarCarrito(carrito);
+        renderCarrito(carrito);
+        return;
+      }
 
-    alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${formatear(total)}`);
-    window.location.href = "/DeLaVilla/pages/cliente.html";
+      if (e.target.id === "btn-pagar-carrito") {
+        if (!carrito.length) {
+          alert("Tu carrito está vacío");
+          return;
+        }
+
+        const nombre = prompt("Ingresa tu nombre completo:");
+        if (!nombre) return;
+        const direccion = prompt("Ingresa tu dirección:");
+        if (!direccion) return;
+        const telefono = prompt("Ingresa tu teléfono:");
+        if (!telefono) return;
+
+        const total = calcularTotal(carrito);
+
+        try {
+          await addDoc(collection(db, "ventas"), {
+            fecha: new Date().toISOString(),
+            nombre,
+            direccion,
+            telefono,
+            total,
+            items: carrito,
+            userEmail: currentUserEmail,
+            createdAt: serverTimestamp()
+          });
+
+          carrito = [];
+          guardarCarrito(carrito);
+          renderCarrito(carrito);
+
+          alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${formatear(total)}`);
+          window.location.href = "/DeLaVilla/pages/cliente.html";
+        } catch (error) {
+          console.error("Error al registrar la venta:", error);
+          alert("Ocurrió un error al registrar tu compra. Intenta nuevamente.");
+        }
+      }
+    });
   });
-}
-
-
-  renderCarrito();
-});
 </script>
+
   
 <script type="module">
   import { protectPage, updateUserIcon, auth, db } from "/DeLaVilla/assets/auth.js";
