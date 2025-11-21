@@ -1063,192 +1063,186 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<section id="carrito-contenedor"></section>
-<script type="module">
-  import { auth, db, protectPage, updateUserIcon } from "/DeLaVilla/assets/auth.js";
-  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // 1. Leer carrito desde localStorage
+  let carrito;
+  try {
+    carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+    if (!Array.isArray(carrito)) carrito = [];
+  } catch (e) {
+    carrito = [];
+  }
 
-  protectPage("cliente");
-  updateUserIcon();
+  const contenedor = document.getElementById('carrito-contenedor');
+  if (!contenedor) return;
 
-  let currentUserEmail = null;
-
-  onAuthStateChanged(auth, (user) => {
-    currentUserEmail = user ? user.email : null;
-    window.currentUserEmail = currentUserEmail;
-  });
-
-  const formatear = (n) => Number(n || 0).toLocaleString("es-CO");
-
-  const leerCarrito = () => {
-    try {
-      const raw = localStorage.getItem("carrito") || "[]";
-      const arr = JSON.parse(raw);
-      return Array.isArray(arr) ? arr : [];
-    } catch {
-      return [];
-    }
+  const formatear = function (n) {
+    return Number(n || 0).toLocaleString('es-CO');
   };
 
-  const guardarCarrito = (carrito) => {
-    localStorage.setItem("carrito", JSON.stringify(carrito));
+  const guardarCarrito = function () {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
   };
 
-  const calcularTotal = (carrito) =>
-    carrito.reduce(
-      (acc, item) => acc + Number(item.precio || 0) * Number(item.cantidad || 0),
-      0
-    );
+  const calcularTotal = function () {
+    return carrito.reduce(function (acc, item) {
+      return acc + Number(item.precio || 0) * Number(item.cantidad || 0);
+    }, 0);
+  };
 
-  const renderCarrito = (carrito) => {
-    const contenedor = document.getElementById("carrito-contenedor");
-    if (!contenedor) return;
-
-    contenedor.innerHTML = "";
+  // 2. Pintar el carrito
+  function renderCarrito() {
+    contenedor.innerHTML = '';
 
     if (!carrito.length) {
-      contenedor.innerHTML = `
-        <div style="max-width:900px;margin:40px auto;text-align:center;">
-          <h1 style="margin-bottom:20px;font-size:28px;color:#3a2a20;">Tu carrito está vacío</h1>
-          <a href="/DeLaVilla/pages/productos.html"
-             class="btn-seguir"
-             style="display:inline-block;background-color:#3E4E35;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600;">
-             Seguir comprando
-          </a>
-        </div>`;
+      contenedor.innerHTML = '' +
+        '<div style="max-width:900px;margin:40px auto;text-align:center;">' +
+        '  <h1 style="margin-bottom:20px;font-size:28px;color:#3a2a20;">Tu carrito está vacío</h1>' +
+        '  <a href="/DeLaVilla/pages/productos.html"' +
+        '     class="btn-seguir"' +
+        '     style="display:inline-block;background-color:#3E4E35;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600;">' +
+        '     Seguir comprando' +
+        '  </a>' +
+        '</div>';
       return;
     }
 
-    carrito.forEach((item, index) => {
-      const subtotal = Number(item.precio || 0) * Number(item.cantidad || 0);
+    carrito.forEach(function (item, index) {
+      var subtotal = Number(item.precio || 0) * Number(item.cantidad || 0);
 
-      const div = document.createElement("div");
-      div.className = "producto-item";
-      div.style.maxWidth = "900px";
-      div.style.margin = "20px auto";
-      div.style.padding = "16px";
-      div.style.background = "#fff";
-      div.style.borderRadius = "8px";
-      div.style.boxShadow = "0 2px 8px rgba(0,0,0,0.06)";
+      var div = document.createElement('div');
+      div.className = 'producto-item';
+      div.style.maxWidth = '900px';
+      div.style.margin = '20px auto';
+      div.style.padding = '16px';
+      div.style.background = '#fff';
+      div.style.borderRadius = '8px';
+      div.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
 
-      div.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">
-          <div>
-            <h2 style="margin:0 0 6px 0;font-size:20px;color:#3a2a20;">${item.nombre}</h2>
-            <p style="margin:0 0 4px 0;color:#555;">Precio: $${formatear(item.precio)}</p>
-            <p style="margin:0;color:#555;">
-              Cantidad:
-              <input type="number"
-                     min="1"
-                     value="${item.cantidad}"
-                     class="cantidad-input"
-                     data-index="${index}"
-                     style="width:70px;padding:4px;border-radius:4px;border:1px solid #ccc;">
-            </p>
-          </div>
-          <div style="text-align:right;">
-            <p style="margin:0 0 8px 0;font-weight:600;color:#3a2a20;">
-              Subtotal: $${formatear(subtotal)}
-            </p>
-            <button class="btn-eliminar"
-                    data-index="${index}"
-                    style="padding:6px 14px;background-color:#b3261e;color:#fff;border:none;border-radius:4px;cursor:pointer;">
-              Eliminar
-            </button>
-          </div>
-        </div>
-      `;
+      div.innerHTML =
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;">' +
+        '  <div>' +
+        '    <h2 style="margin:0 0 6px 0;font-size:20px;color:#3a2a20;">' + (item.nombre || '') + '</h2>' +
+        '    <p style="margin:0 0 4px 0;color:#555;">Precio: $' + formatear(item.precio) + '</p>' +
+        '    <p style="margin:0;color:#555;">' +
+        '      Cantidad: ' +
+        '      <input type="number"' +
+        '             min="1"' +
+        '             value="' + (item.cantidad || 1) + '"' +
+        '             class="cantidad-input"' +
+        '             data-index="' + index + '"' +
+        '             style="width:70px;padding:4px;border-radius:4px;border:1px solid #ccc;">' +
+        '    </p>' +
+        '  </div>' +
+        '  <div style="text-align:right;">' +
+        '    <p style="margin:0 0 8px 0;font-weight:600;color:#3a2a20;">' +
+        '      Subtotal: $' + formatear(subtotal) +
+        '    </p>' +
+        '    <button class="btn-eliminar"' +
+        '            data-index="' + index + '"' +
+        '            style="padding:6px 12px;background:#b3261e;color:#fff;border:none;border-radius:4px;cursor:pointer;">' +
+        '      Eliminar' +
+        '    </button>' +
+        '  </div>' +
+        '</div>';
+
       contenedor.appendChild(div);
     });
 
-    const totalDiv = document.createElement("div");
-    totalDiv.style.maxWidth = "900px";
-    totalDiv.style.margin = "30px auto";
-    totalDiv.style.display = "flex";
-    totalDiv.style.justifyContent = "space-between";
-    totalDiv.style.alignItems = "center";
-    totalDiv.style.flexWrap = "wrap";
-    totalDiv.innerHTML = `
-      <div style="font-size:18px;font-weight:600;color:#3a2a20;">
-        Total: $${formatear(calcularTotal(carrito))}
-      </div>
-      <button id="btn-pagar-carrito"
-              style="margin-top:10px;padding:12px 28px;background-color:#3E4E35;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;">
-        Pagar
-      </button>`;
+    // Bloque de total + botón pagar
+    var totalDiv = document.createElement('div');
+    totalDiv.style.maxWidth = '900px';
+    totalDiv.style.margin = '20px auto 40px auto';
+    totalDiv.style.display = 'flex';
+    totalDiv.style.justifyContent = 'space-between';
+    totalDiv.style.alignItems = 'center';
+    totalDiv.style.flexWrap = 'wrap';
+
+    totalDiv.innerHTML =
+      '<div style="font-size:18px;font-weight:600;color:#3a2a20;">' +
+      '  Total: $' + formatear(calcularTotal()) +
+      '</div>' +
+      '<button id="btn-pagar-carrito"' +
+      '        style="margin-top:10px;padding:12px 28px;background:#3E4E35;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;">' +
+      '  Pagar' +
+      '</button>';
+
     contenedor.appendChild(totalDiv);
-  };
+  }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    let carrito = leerCarrito();
-    const contenedor = document.getElementById("carrito-contenedor");
-    if (!contenedor) return;
+  // 3. Eventos de cambio de cantidad y eliminar
+  contenedor.addEventListener('change', function (e) {
+    if (e.target.classList.contains('cantidad-input')) {
+      var index = parseInt(e.target.getAttribute('data-index'), 10);
+      var nuevaCantidad = Math.max(1, parseInt(e.target.value, 10) || 1);
+      carrito[index].cantidad = nuevaCantidad;
+      guardarCarrito();
+      renderCarrito();
+    }
+  });
 
-    renderCarrito(carrito);
+  contenedor.addEventListener('click', function (e) {
+    // Eliminar producto
+    if (e.target.classList.contains('btn-eliminar')) {
+      var index = parseInt(e.target.getAttribute('data-index'), 10);
+      carrito.splice(index, 1);
+      guardarCarrito();
+      renderCarrito();
+      return;
+    }
 
-    // Cambios de cantidad
-    contenedor.addEventListener("change", (e) => {
-      if (e.target.classList.contains("cantidad-input")) {
-        const index = Number(e.target.dataset.index);
-        const nuevaCantidad = Math.max(1, Number(e.target.value || 1));
-        carrito[index].cantidad = nuevaCantidad;
-        guardarCarrito(carrito);
-        renderCarrito(carrito);
-      }
-    });
-
-    // Eliminar / pagar
-    contenedor.addEventListener("click", async (e) => {
-      if (e.target.classList.contains("btn-eliminar")) {
-        const index = Number(e.target.dataset.index);
-        carrito.splice(index, 1);
-        guardarCarrito(carrito);
-        renderCarrito(carrito);
+    // Pagar (por ahora sigue guardando en localStorage "ventas")
+    if (e.target.id === 'btn-pagar-carrito') {
+      if (!carrito.length) {
+        alert('Tu carrito está vacío');
         return;
       }
 
-      if (e.target.id === "btn-pagar-carrito") {
-        if (!carrito.length) {
-          alert("Tu carrito está vacío");
-          return;
-        }
+      var nombre = prompt('Ingresa tu nombre completo:');
+      if (!nombre) return;
+      var direccion = prompt('Ingresa tu dirección:');
+      if (!direccion) return;
+      var telefono = prompt('Ingresa tu teléfono:');
+      if (!telefono) return;
 
-        const nombre = prompt("Ingresa tu nombre completo:");
-        if (!nombre) return;
-        const direccion = prompt("Ingresa tu dirección:");
-        if (!direccion) return;
-        const telefono = prompt("Ingresa tu teléfono:");
-        if (!telefono) return;
+      var total = calcularTotal();
 
-        const total = calcularTotal(carrito);
+      var venta = {
+        id: Date.now(),
+        fecha: new Date().toISOString(),
+        nombre: nombre,
+        direccion: direccion,
+        telefono: telefono,
+        total: total,
+        items: carrito.slice(), // copia
+        userEmail: window.currentUserEmail || null
+      };
 
-        try {
-          await addDoc(collection(db, "ventas"), {
-            fecha: new Date().toISOString(),
-            nombre,
-            direccion,
-            telefono,
-            total,
-            items: carrito,
-            userEmail: currentUserEmail,
-            createdAt: serverTimestamp()
-          });
-
-          carrito = [];
-          guardarCarrito(carrito);
-          renderCarrito(carrito);
-
-          alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${formatear(total)}`);
-          window.location.href = "/DeLaVilla/pages/cliente.html";
-        } catch (error) {
-          console.error("Error al registrar la venta:", error);
-          alert("Ocurrió un error al registrar tu compra. Intenta nuevamente.");
-        }
+      var ventas = [];
+      try {
+        ventas = JSON.parse(localStorage.getItem('ventas') || '[]');
+        if (!Array.isArray(ventas)) ventas = [];
+      } catch (err) {
+        ventas = [];
       }
-    });
+      ventas.push(venta);
+      localStorage.setItem('ventas', JSON.stringify(ventas));
+
+      carrito = [];
+      guardarCarrito();
+      renderCarrito();
+
+      alert('Gracias por tu compra, ' + nombre + '.\nTotal pagado: $' + formatear(total));
+      window.location.href = '/DeLaVilla/pages/cliente.html';
+    }
   });
+
+  // 4. Primera pintura
+  renderCarrito();
+});
 </script>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
