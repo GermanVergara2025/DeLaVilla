@@ -775,10 +775,9 @@ document.addEventListener("DOMContentLoaded", function () {
   </script>
 
 <script type="module">
-  import { auth, updateUserIcon, protectPage } from "/DeLaVilla/assets/auth.js";
+  import { auth, protectPage, updateUserIcon } from "/DeLaVilla/assets/auth.js";
   import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
-  // Obliga a estar logueado y cambia el icono del header
   protectPage("cliente");
   updateUserIcon();
 
@@ -796,8 +795,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const formatear = (n) => Number(n || 0).toLocaleString("es-CO");
 
   onAuthStateChanged(auth, (user) => {
-    // Si protectPage ya redirigió, por aquí casi nunca pasa sin usuario,
-    // pero lo dejamos por seguridad.
     if (!user) return;
 
     const tituloPerfil   = document.getElementById("tituloPerfil");
@@ -806,7 +803,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const spanTelefono   = document.getElementById("clienteTelefono");
     const listaPedidos   = document.getElementById("listaPedidos");
 
-    // Nombre y correo
     const nombreMostrar = user.displayName || "(sin nombre configurado)";
     const correoMostrar = user.email || "(sin correo)";
 
@@ -817,19 +813,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const extra = obtenerDatosExtra(user.uid);
     if (spanTelefono)  spanTelefono.textContent  = extra.telefono || "(sin teléfono registrado)";
 
-    // Leer ventas guardadas en el navegador
     let ventas = [];
     try {
       ventas = JSON.parse(localStorage.getItem("ventas") || "[]");
       if (!Array.isArray(ventas)) ventas = [];
-    } catch (e) {
+    } catch {
       ventas = [];
     }
 
-    // Filtrar por cuenta (correo)
     let ventasUsuario = ventas.filter(v => v.userEmail === user.email);
-
-    // Fallback: si no hay userEmail en las ventas pero sí hay ventas, muestra todas
     if (!ventasUsuario.length && ventas.length && ventas.every(v => !v.userEmail)) {
       ventasUsuario = ventas;
     }
@@ -846,7 +838,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ventasUsuario.forEach((venta) => {
       const li = document.createElement("li");
-
       const fechaObj = venta.fecha ? new Date(venta.fecha) : null;
       const fechaStr = fechaObj && !isNaN(fechaObj)
         ? fechaObj.toLocaleDateString("es-CO")
@@ -858,25 +849,11 @@ document.addEventListener("DOMContentLoaded", function () {
         <span>Fecha: ${fechaStr}</span>
         <span class="pedido-estado estado-entregado">Registrado</span>
       `;
-
       listaPedidos.appendChild(li);
     });
   });
 </script>
 
-
-  <script type="module">
-  import { updateUserIcon, protectPage } from "/DeLaVilla/assets/auth.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-
-  updateUserIcon();
-
-  const auth = getAuth();
-
-  onAuthStateChanged(auth, (user) => {
-    console.log("Usuario en esta página:", user?.email);
-  });
-</script>
   <script>
 document.addEventListener("DOMContentLoaded", function () {
   const toggle = document.querySelector(".menu-toggle");
