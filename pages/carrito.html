@@ -1184,62 +1184,85 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    const btnPagar = document.getElementById('btn-pagar-carrito');
-    if (btnPagar) {
-      btnPagar.addEventListener('click', () => {
-        if (!carrito.length) {
-          alert("Tu carrito está vacío");
-          return;
-        }
-
-        const nombre = prompt("Ingresa tu nombre completo:");
-        if (!nombre) return;
-        const direccion = prompt("Ingresa tu dirección:");
-        if (!direccion) return;
-        const telefono = prompt("Ingresa tu teléfono:");
-        if (!telefono) return;
-
-        const total = calcularTotal();
-
-        const venta = {
-          id: Date.now(),
-          fecha: new Date().toISOString(),
-          nombre,
-          direccion,
-          telefono,
-          total,
-          items: carrito,
-          userEmail: window.currentUserEmail || null
-        };
-
-        const ventas = JSON.parse(localStorage.getItem('ventas') || '[]');
-        ventas.push(venta);
-        localStorage.setItem('ventas', JSON.stringify(ventas));
-
-        carrito = [];
-        guardarCarrito();
-
-        alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${formatear(total)}`);
-        window.location.href = "/DeLaVilla/pages/cliente.html";
-      });
+const btnPagar = document.getElementById('btn-pagar-carrito');
+if (btnPagar) {
+  btnPagar.addEventListener('click', async () => {
+    if (!carrito.length) {
+      alert("Tu carrito está vacío");
+      return;
     }
-  };
+
+    const nombre = prompt("Ingresa tu nombre completo:");
+    if (!nombre) return;
+    const direccion = prompt("Ingresa tu dirección:");
+    if (!direccion) return;
+    const telefono = prompt("Ingresa tu teléfono:");
+    if (!telefono) return;
+
+    const total = calcularTotal();
+
+    const venta = {
+      id: Date.now(),
+      fecha: new Date().toISOString(),
+      nombre,
+      direccion,
+      telefono,
+      total,
+      items: carrito,
+      userEmail: window.currentUserEmail || null
+    };
+
+    try {
+      if (window.guardarVentaEnServidor) {
+        await window.guardarVentaEnServidor(venta);
+      } else {
+        console.warn("guardarVentaEnServidor no está definido. Revisa el script de Firestore en carrito.html");
+      }
+    } catch (error) {
+      console.error("Error al registrar la venta en Firestore:", error);
+      alert("Ocurrió un error al registrar tu compra. Intenta nuevamente.");
+      return;
+    }
+
+    carrito = [];
+    guardarCarrito();
+
+    alert(`Gracias por tu compra, ${nombre}.\nTotal pagado: $${formatear(total)}`);
+    window.location.href = "/DeLaVilla/pages/cliente.html";
+  });
+}
+
 
   renderCarrito();
 });
 </script>
   
 <script type="module">
-  import { protectPage, updateUserIcon } from "/DeLaVilla/assets/auth.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import { protectPage, updateUserIcon, auth, db } from "/DeLaVilla/assets/auth.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
   protectPage("cliente");
   updateUserIcon();
 
-  const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
     window.currentUserEmail = user ? user.email : null;
+    window.currentUserUid   = user ? user.uid   : null;
   });
+
+  // Función global que usará el botón "Pagar" para guardar la venta en Firestore
+  window.guardarVentaEnServidor = async function (venta) {
+    const ventaParaGuardar = {
+      ...venta,
+      userEmail: window.currentUserEmail || venta.userEmail || null,
+      userUid: window.currentUserUid || null,
+      createdAt: serverTimestamp()
+    };
+
+    await addDoc(collection(db, "ventas"), ventaParaGuardar);
+  };
 </script>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.querySelector('.menu-toggle');
