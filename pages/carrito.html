@@ -1250,33 +1250,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 </script>
 
-  
-<script type="module">
-  import { protectPage, updateUserIcon, auth, db } from "/DeLaVilla/assets/auth.js";
-  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-
-  protectPage("cliente");
-  updateUserIcon();
-
-  onAuthStateChanged(auth, (user) => {
-    window.currentUserEmail = user ? user.email : null;
-    window.currentUserUid   = user ? user.uid   : null;
-  });
-
-  // Función global que usará el botón "Pagar" para guardar la venta en Firestore
-  window.guardarVentaEnServidor = async function (venta) {
-    const ventaParaGuardar = {
-      ...venta,
-      userEmail: window.currentUserEmail || venta.userEmail || null,
-      userUid: window.currentUserUid || null,
-      createdAt: serverTimestamp()
-    };
-
-    await addDoc(collection(db, "ventas"), ventaParaGuardar);
-  };
-</script>
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.querySelector('.menu-toggle');
