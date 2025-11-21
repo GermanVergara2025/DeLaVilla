@@ -1,5 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 import { 
@@ -9,19 +7,20 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyBKWj1As-nnkcX8aZ7B0AbtzZoQ-56qTjc",
-@@ -16,47 +17,51 @@
+    authDomain: "delavilla-43a2a.firebaseapp.com",
+    projectId: "delavilla-43a2a",
+    storageBucket: "delavilla-43a2a.firebasestorage.app",
+    messagingSenderId: "567143397487",
+    appId: "1:567143397487:web:19d7c005bf966d475f759a",
     measurementId: "G-XB6BTBJGND"
 };
 
-const app = initializeApp(firebaseConfig);
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
-
-export { app, auth, db };
-
 
 export function logout() {
   signOut(auth).then(() => {
