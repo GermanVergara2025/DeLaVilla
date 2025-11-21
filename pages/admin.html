@@ -331,19 +331,17 @@
       </div>
 
 <div class="ventas-table-wrapper">
-<table id="tabla-ventas">
-  <thead>
-    <tr>
-      <th>Fecha</th>
-      <th>Cliente</th>
-      <th>Cuenta (correo)</th>
-      <th>Dirección</th>
-      <th>Teléfono</th>
-      <th>Total</th>
-      <th>Productos</th>
-    </tr>
-  </thead>
-
+  <table id="tabla-ventas">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Cliente</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Total</th>
+        <th>Productos</th>
+      </tr>
+    </thead>
     <tbody>
 
     </tbody>
@@ -353,183 +351,145 @@
     
   </div>
 </body>
-<script type="module">
-  import { db } from "/DeLaVilla/assets/auth.js";
-  import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tablaBody = document.querySelector('#tabla-ventas tbody');
+      const ventasDiaEl = document.getElementById('ventas-dia');
+      const inputDesde = document.getElementById('filtro-desde');
+      const inputHasta = document.getElementById('filtro-hasta');
+      const inputCliente = document.getElementById('filtro-cliente');
+      const btnFiltrar = document.getElementById('btn-filtrar');
+      const btnLimpiar = document.getElementById('btn-limpiar');
+      const btnExportar = document.getElementById('btn-exportar');
 
-  document.addEventListener('DOMContentLoaded', async () => {
-    const tablaBody   = document.querySelector('#tabla-ventas tbody');
-    const ventasDiaEl = document.getElementById('ventas-dia');
-    const inputDesde  = document.getElementById('filtro-desde');
-    const inputHasta  = document.getElementById('filtro-hasta');
-    const inputCliente= document.getElementById('filtro-cliente');
-    const btnFiltrar  = document.getElementById('btn-filtrar');
-    const btnLimpiar  = document.getElementById('btn-limpiar');
-    const btnExportar = document.getElementById('btn-exportar');
+      let ventas = JSON.parse(localStorage.getItem('ventas')) || [];
+      let ventasFiltradas = [...ventas];
 
-    let ventas = [];
-    let ventasFiltradas = [];
-
-    function formatearFecha(fechaValor, createdAt) {
-      let fecha = null;
-      if (createdAt && createdAt.toDate) {
-        fecha = createdAt.toDate();
-      } else if (fechaValor) {
-        fecha = new Date(fechaValor);
-      } else {
-        fecha = new Date();
-      }
-      return fecha.toLocaleString('es-CO');
-    }
-
-    function renderTabla(lista) {
-      if (!tablaBody) return;
-      tablaBody.innerHTML = '';
-
-      lista.forEach(v => {
-        const fechaTexto = formatearFecha(v.fecha, v.createdAt);
-        const itemsTexto = (v.items || [])
-          .map(item => `${item.nombre} x${item.cantidad}`)
-          .join(', ');
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${fechaTexto}</td>
-          <td>${v.nombre || ''}</td>
-          <td>${v.userEmail || ''}</td>
-          <td>${v.direccion || ''}</td>
-          <td>${v.telefono || ''}</td>
-          <td>$${Number(v.total || 0).toLocaleString('es-CO')}</td>
-          <td>${itemsTexto}</td>
-        `;
-        tablaBody.appendChild(tr);
-      });
-    }
-
-    function actualizarVentasDia() {
-      if (!ventasDiaEl) return;
-      const hoyISO = new Date().toISOString().slice(0, 10);
-      let total = 0;
-
-      ventas.forEach(v => {
-        const fechaBase =
-          (v.createdAt && v.createdAt.toDate)
-            ? v.createdAt.toDate()
-            : (v.fecha ? new Date(v.fecha) : null);
-        if (!fechaBase) return;
-        const iso = fechaBase.toISOString().slice(0, 10);
-        if (iso === hoyISO) {
-          total += Number(v.total || 0);
-        }
-      });
-
-      ventasDiaEl.textContent = `$${total.toLocaleString('es-CO')}`;
-    }
-
-    function aplicarFiltros() {
-      const cli   = (inputCliente.value || '').toLowerCase();
-      const desde = inputDesde.value;
-      const hasta = inputHasta.value;
-
-      ventasFiltradas = ventas.filter(v => {
-        const fechaBase =
-          (v.createdAt && v.createdAt.toDate)
-            ? v.createdAt.toDate()
-            : (v.fecha ? new Date(v.fecha) : null);
-        if (!fechaBase) return false;
-
-        const iso = fechaBase.toISOString().slice(0, 10);
-
-        if (desde && iso < desde) return false;
-        if (hasta && iso > hasta) return false;
-
-        if (cli) {
-          const nombre = (v.nombre || '').toLowerCase();
-          const correo = (v.userEmail || '').toLowerCase();
-          if (!nombre.includes(cli) && !correo.includes(cli)) return false;
-        }
-
-        return true;
-      });
-
-      renderTabla(ventasFiltradas);
-    }
-
-    function limpiarFiltros() {
-      if (inputDesde)   inputDesde.value = '';
-      if (inputHasta)   inputHasta.value = '';
-      if (inputCliente) inputCliente.value = '';
-      ventasFiltradas = [...ventas];
-      renderTabla(ventasFiltradas);
-    }
-
-    function exportarCSV() {
-      if (!ventasFiltradas.length) {
-        alert('No hay ventas para exportar');
-        return;
+      function formatearFecha(fechaValor) {
+        const fecha = fechaValor ? new Date(fechaValor) : new Date();
+        return fecha.toLocaleString('es-CO');
       }
 
-      const SEP = ';';
-      const encabezados = ['Fecha','Cliente','Cuenta','Dirección','Teléfono','Total','Productos'];
+      function renderTabla(lista) {
+        if (!tablaBody) return;
+        tablaBody.innerHTML = '';
 
-      const filas = ventasFiltradas.map(v => {
-        const fechaTexto = formatearFecha(v.fecha, v.createdAt).replace(/;/g, ' ');
-        const itemsTexto = (v.items || [])
-          .map(i => `${i.nombre} x${i.cantidad}`)
-          .join(' | ')
-          .replace(/;/g, ' ');
+        lista.forEach(v => {
+          const fechaTexto = formatearFecha(v.fecha || v.id);
+          const itemsTexto = (v.items || [])
+            .map(item => `${item.nombre} x${item.cantidad}`)
+            .join(', ');
 
-        return [
-          fechaTexto,
-          (v.nombre || '').replace(/;/g, ' '),
-          (v.userEmail || '').replace(/;/g, ' '),
-          (v.direccion || '').replace(/;/g, ' '),
-          (v.telefono || '').replace(/;/g, ' '),
-          Number(v.total || 0),
-          itemsTexto
-        ];
-      });
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${fechaTexto}</td>
+            <td>${v.nombre || ''}</td>
+            <td>${v.direccion || ''}</td>
+            <td>${v.telefono || ''}</td>
+            <td>$${Number(v.total || 0).toLocaleString('es-CO')}</td>
+            <td>${itemsTexto}</td>
+          `;
+          tablaBody.appendChild(tr);
+        });
+      }
 
-      let csv = encabezados.join(SEP) + '\n';
-      filas.forEach(fila => {
-        csv += fila.join(SEP) + '\n';
-      });
+      function actualizarVentasDia() {
+        if (!ventasDiaEl) return;
+        const hoyISO = new Date().toISOString().slice(0, 10);
+        let total = 0;
 
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'ventas_delavilla.csv');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }
+        ventas.forEach(v => {
+          const f = v.fecha ? new Date(v.fecha) : new Date(v.id);
+          const iso = f.toISOString().slice(0, 10);
+          if (iso === hoyISO) {
+            total += Number(v.total || 0);
+          }
+        });
 
-    if (btnFiltrar)  btnFiltrar.addEventListener('click', aplicarFiltros);
-    if (btnLimpiar) {
-      btnLimpiar.addEventListener('click', aplicarFiltros);
-      btnLimpiar.addEventListener('click', limpiarFiltros);
-    }
-    if (btnExportar) btnExportar.addEventListener('click', exportarCSV);
+        ventasDiaEl.textContent = `$${total.toLocaleString('es-CO')}`;
+      }
 
-    // 🔥 Cargar ventas desde Firestore
-    try {
-      const snapshot = await getDocs(collection(db, "ventas"));
-      ventas = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      ventasFiltradas = [...ventas];
+      function aplicarFiltros() {
+        const cli = (inputCliente.value || '').toLowerCase();
+        const desde = inputDesde.value;
+        const hasta = inputHasta.value;
+
+        ventasFiltradas = ventas.filter(v => {
+          const f = v.fecha ? new Date(v.fecha) : new Date(v.id);
+          const iso = f.toISOString().slice(0, 10);
+
+          if (desde && iso < desde) return false;
+          if (hasta && iso > hasta) return false;
+
+          if (cli && !(v.nombre || '').toLowerCase().includes(cli)) return false;
+
+          return true;
+        });
+
+        renderTabla(ventasFiltradas);
+      }
+
+      function limpiarFiltros() {
+        inputDesde.value = '';
+        inputHasta.value = '';
+        inputCliente.value = '';
+        ventasFiltradas = [...ventas];
+        renderTabla(ventasFiltradas);
+      }
+
+     function exportarCSV() {
+  if (!ventasFiltradas.length) {
+    alert('No hay ventas para exportar');
+    return;
+  }
+
+  const SEP = ';';
+
+  const encabezados = ['Fecha','Cliente','Dirección','Teléfono','Total','Productos'];
+
+  const filas = ventasFiltradas.map(v => {
+    const fechaTexto = formatearFecha(v.fecha || v.id).replace(/;/g, ' ');
+    const itemsTexto = (v.items || [])
+      .map(i => `${i.nombre} x${i.cantidad}`)
+      .join(' | ')
+      .replace(/;/g, ' ');
+
+    return [
+      fechaTexto,
+      (v.nombre || '').replace(/;/g, ' '),
+      (v.direccion || '').replace(/;/g, ' '),
+      (v.telefono || '').replace(/;/g, ' '),
+      Number(v.total || 0),
+      itemsTexto
+    ];
+  });
+
+  let csv = encabezados.join(SEP) + '\n';
+  filas.forEach(fila => {
+    csv += fila.join(SEP) + '\n';
+  });
+
+  const csvConBOM = '\uFEFF' + csv;
+
+  const blob = new Blob([csvConBOM], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'ventas-delavilla.csv';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+      if (btnFiltrar) btnFiltrar.addEventListener('click', aplicarFiltros);
+      if (btnLimpiar) btnLimpiar.addEventListener('click', limpiarFiltros);
+      if (btnExportar) btnExportar.addEventListener('click', exportarCSV);
+
       renderTabla(ventasFiltradas);
       actualizarVentasDia();
-    } catch (error) {
-      console.error("Error cargando ventas desde Firestore:", error);
-      alert("No fue posible cargar las ventas. Intenta nuevamente más tarde.");
-    }
-  });
-</script>
-
+    });
+  </script>
 <script type="module">
   import { updateUserIcon, protectPage } from "/DeLaVilla/assets/auth.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
