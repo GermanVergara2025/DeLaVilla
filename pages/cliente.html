@@ -775,11 +775,21 @@ document.addEventListener("DOMContentLoaded", function () {
   </script>
 
 <script type="module">
-  import { auth, protectPage, updateUserIcon } from "/DeLaVilla/assets/auth.js";
-  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
-  protectPage("cliente");
-  updateUserIcon();
+  const firebaseConfig = {
+    apiKey: "AIzaSyBKWj1As-nnkcX8aZ7B0AbtzZoQ-56qTjc",
+    authDomain: "delavilla-43a2a.firebaseapp.com",
+    projectId: "delavilla-43a2a",
+    storageBucket: "delavilla-43a2a.firebasestorage.app",
+    messagingSenderId: "567143397487",
+    appId: "1:567143397487:web:19d7c005bf966d475f759a",
+    measurementId: "G-XB6BTBJGND"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
   function obtenerDatosExtra(uid) {
     try {
@@ -795,7 +805,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const formatear = (n) => Number(n || 0).toLocaleString("es-CO");
 
   onAuthStateChanged(auth, (user) => {
-    if (!user) return;
+    if (!user) {
+      window.location.href = "/DeLaVilla/pages/login.html";
+      return;
+    }
 
     const tituloPerfil   = document.getElementById("tituloPerfil");
     const spanNombre     = document.getElementById("clienteNombre");
@@ -803,6 +816,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const spanTelefono   = document.getElementById("clienteTelefono");
     const listaPedidos   = document.getElementById("listaPedidos");
 
+    // Nombre y correo
     const nombreMostrar = user.displayName || "(sin nombre configurado)";
     const correoMostrar = user.email || "(sin correo)";
 
@@ -817,14 +831,11 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       ventas = JSON.parse(localStorage.getItem("ventas") || "[]");
       if (!Array.isArray(ventas)) ventas = [];
-    } catch {
+    } catch (e) {
       ventas = [];
     }
 
-    let ventasUsuario = ventas.filter(v => v.userEmail === user.email);
-    if (!ventasUsuario.length && ventas.length && ventas.every(v => !v.userEmail)) {
-      ventasUsuario = ventas;
-    }
+    const ventasUsuario = ventas.filter(v => v.userEmail === user.email);
 
     if (!listaPedidos) return;
     listaPedidos.innerHTML = "";
@@ -838,10 +849,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ventasUsuario.forEach((venta) => {
       const li = document.createElement("li");
-      const fechaObj = venta.fecha ? new Date(venta.fecha) : null;
-      const fechaStr = fechaObj && !isNaN(fechaObj)
-        ? fechaObj.toLocaleDateString("es-CO")
-        : (venta.fecha || "");
+
+      const fechaObj = new Date(venta.fecha);
+      const fechaStr = isNaN(fechaObj) 
+        ? venta.fecha 
+        : fechaObj.toLocaleDateString("es-CO");
 
       li.innerHTML = `
         <span class="pedido-numero">#${venta.id}</span>
@@ -849,11 +861,23 @@ document.addEventListener("DOMContentLoaded", function () {
         <span>Fecha: ${fechaStr}</span>
         <span class="pedido-estado estado-entregado">Registrado</span>
       `;
+
       listaPedidos.appendChild(li);
     });
   });
 </script>
+  <script type="module">
+  import { updateUserIcon, protectPage } from "/DeLaVilla/assets/auth.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
+  updateUserIcon();
+
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, (user) => {
+    console.log("Usuario en esta página:", user?.email);
+  });
+</script>
   <script>
 document.addEventListener("DOMContentLoaded", function () {
   const toggle = document.querySelector(".menu-toggle");
