@@ -331,17 +331,19 @@
       </div>
 
 <div class="ventas-table-wrapper">
-  <table id="tabla-ventas">
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Cliente</th>
-        <th>Dirección</th>
-        <th>Teléfono</th>
-        <th>Total</th>
-        <th>Productos</th>
-      </tr>
-    </thead>
+<table id="tabla-ventas">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Cliente</th>
+      <th>Cuenta (correo)</th>
+      <th>Dirección</th>
+      <th>Teléfono</th>
+      <th>Total</th>
+      <th>Productos</th>
+    </tr>
+  </thead>
+
     <tbody>
 
     </tbody>
@@ -370,28 +372,32 @@
         return fecha.toLocaleString('es-CO');
       }
 
-      function renderTabla(lista) {
-        if (!tablaBody) return;
-        tablaBody.innerHTML = '';
+function renderTabla(lista) {
+  if (!tablaBody) return;
+  tablaBody.innerHTML = '';
 
-        lista.forEach(v => {
-          const fechaTexto = formatearFecha(v.fecha || v.id);
-          const itemsTexto = (v.items || [])
-            .map(item => `${item.nombre} x${item.cantidad}`)
-            .join(', ');
+  lista.forEach(v => {
+    const fechaTexto = formatearFecha(v.fecha || v.id);
+    const itemsTexto = (v.items || [])
+      .map(item => `${item.nombre} x${item.cantidad}`)
+      .join(', ');
 
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${fechaTexto}</td>
-            <td>${v.nombre || ''}</td>
-            <td>${v.direccion || ''}</td>
-            <td>${v.telefono || ''}</td>
-            <td>$${Number(v.total || 0).toLocaleString('es-CO')}</td>
-            <td>${itemsTexto}</td>
-          `;
-          tablaBody.appendChild(tr);
-        });
-      }
+    const correo = v.userEmail || 'Sin cuenta';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${fechaTexto}</td>
+      <td>${v.nombre || ''}</td>
+      <td>${correo}</td>
+      <td>${v.direccion || ''}</td>
+      <td>${v.telefono || ''}</td>
+      <td>$${Number(v.total || 0).toLocaleString('es-CO')}</td>
+      <td>${itemsTexto}</td>
+    `;
+    tablaBody.appendChild(tr);
+  });
+}
+
 
       function actualizarVentasDia() {
         if (!ventasDiaEl) return;
@@ -409,25 +415,30 @@
         ventasDiaEl.textContent = `$${total.toLocaleString('es-CO')}`;
       }
 
-      function aplicarFiltros() {
-        const cli = (inputCliente.value || '').toLowerCase();
-        const desde = inputDesde.value;
-        const hasta = inputHasta.value;
+function aplicarFiltros() {
+  const cli = (inputCliente.value || '').toLowerCase();
+  const desde = inputDesde.value;
+  const hasta = inputHasta.value;
 
-        ventasFiltradas = ventas.filter(v => {
-          const f = v.fecha ? new Date(v.fecha) : new Date(v.id);
-          const iso = f.toISOString().slice(0, 10);
+  ventasFiltradas = ventas.filter(v => {
+    const f = v.fecha ? new Date(v.fecha) : new Date(v.id);
+    const iso = f.toISOString().slice(0, 10);
 
-          if (desde && iso < desde) return false;
-          if (hasta && iso > hasta) return false;
+    if (desde && iso < desde) return false;
+    if (hasta && iso > hasta) return false;
 
-          if (cli && !(v.nombre || '').toLowerCase().includes(cli)) return false;
+    if (cli) {
+      const nombre = (v.nombre || '').toLowerCase();
+      const correo = (v.userEmail || '').toLowerCase();
+      if (!nombre.includes(cli) && !correo.includes(cli)) return false;
+    }
 
-          return true;
-        });
+    return true;
+  });
 
-        renderTabla(ventasFiltradas);
-      }
+  renderTabla(ventasFiltradas);
+}
+
 
       function limpiarFiltros() {
         inputDesde.value = '';
@@ -443,26 +454,28 @@
     return;
   }
 
-  const SEP = ';';
+ const SEP = ';';
 
-  const encabezados = ['Fecha','Cliente','Dirección','Teléfono','Total','Productos'];
+const encabezados = ['Fecha','Cliente','Cuenta','Dirección','Teléfono','Total','Productos'];
 
-  const filas = ventasFiltradas.map(v => {
-    const fechaTexto = formatearFecha(v.fecha || v.id).replace(/;/g, ' ');
-    const itemsTexto = (v.items || [])
-      .map(i => `${i.nombre} x${i.cantidad}`)
-      .join(' | ')
-      .replace(/;/g, ' ');
+const filas = ventasFiltradas.map(v => {
+  const fechaTexto = formatearFecha(v.fecha || v.id).replace(/;/g, ' ');
+  const itemsTexto = (v.items || [])
+    .map(i => `${i.nombre} x${i.cantidad}`)
+    .join(' | ')
+    .replace(/;/g, ' ');
 
-    return [
-      fechaTexto,
-      (v.nombre || '').replace(/;/g, ' '),
-      (v.direccion || '').replace(/;/g, ' '),
-      (v.telefono || '').replace(/;/g, ' '),
-      Number(v.total || 0),
-      itemsTexto
-    ];
-  });
+  return [
+    fechaTexto,
+    (v.nombre || '').replace(/;/g, ' '),
+    (v.userEmail || '').replace(/;/g, ' '),
+    (v.direccion || '').replace(/;/g, ' '),
+    (v.telefono || '').replace(/;/g, ' '),
+    Number(v.total || 0),
+    itemsTexto
+  ];
+});
+
 
   let csv = encabezados.join(SEP) + '\n';
   filas.forEach(fila => {
